@@ -1,4 +1,4 @@
-package com.generation.progetto_finale.auth.dto;
+package com.generation.dominion.dto;
 
 
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.generation.progetto_finale.auth.security;
+package com.generation.dominion.security;
 
 import java.security.Key;
 import java.util.Date;
