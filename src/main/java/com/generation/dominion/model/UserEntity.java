@@ -1,4 +1,4 @@
-package com.generation.progetto_finale.auth.model;
+package com.generation.dominion.model;
 
 import java.util.ArrayList;
 import java.util.List;

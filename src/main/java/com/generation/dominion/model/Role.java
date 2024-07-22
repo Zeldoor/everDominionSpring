@@ -1,4 +1,4 @@
-package com.generation.progetto_finale.auth.model;
+package com.generation.dominion.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

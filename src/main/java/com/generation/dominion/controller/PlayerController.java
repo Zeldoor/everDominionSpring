@@ -1,13 +1,13 @@
-package com.generation.progetto_finale.auth;
+package com.generation.dominion.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.generation.progetto_finale.auth.dto.FightResultDTO;
-import com.generation.progetto_finale.auth.dto.TroopDTO;
-import com.generation.progetto_finale.auth.model.Troop;
+import com.generation.dominion.dto.FightResultDTO;
+import com.generation.dominion.dto.TroopDTO;
+import com.generation.dominion.model.Troop;
 
 @RestController
 @RequestMapping("/player")
