@@ -10,10 +10,10 @@ import com.generation.progetto_finale.auth.dto.TroopDTO;
 import com.generation.progetto_finale.auth.model.Troop;
 
 @RestController
-@RequestMapping("/fight")
+@RequestMapping("/player")
 public class PlayerController 
 {
-    @PostMapping
+    @PostMapping("/fight")
     public FightResultDTO fight(@RequestBody TroopDTO dto)
     {
         Troop mock = new Troop(10, 10);
