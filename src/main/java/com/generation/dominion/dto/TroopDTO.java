@@ -5,44 +5,22 @@ import lombok.Data;
 @Data
 public class TroopDTO 
 {
-    private String role;
-    private Integer damage;
-    private Integer defence;
+    public String  role;
+    public Integer minimumDamage;
+    public Integer maximumDamage;
+    public Integer health; 
 
-    public String getRole() 
-    {
-        return role;
-    }
-
-    public void setRole(String role) 
-    {
+    public TroopDTO(String role, Integer minimumDamage, Integer maximumDamage, Integer health) {
         this.role = role;
+        this.minimumDamage = minimumDamage;
+        this.maximumDamage = maximumDamage;
+        this.health = health;
     }
 
+    public TroopDTO()
     
-    public Integer getDamage() 
     {
-        return damage;
-    }
 
-
-
-    public void setDamage(Integer damage) 
-    {
-        this.damage = damage;
-    }
-
-
-
-    public Integer getDefence() 
-    {
-        return defence;
-    }
-
-
-
-    public void setDefence(Integer defence) 
-    {
-        this.defence = defence;
-    }
+    }   
 }
+
