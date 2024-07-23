@@ -11,6 +11,7 @@ public class TroopDTO
     public Integer minimumDamage;
     public Integer maximumDamage;
     public Integer health; 
+    public Integer damage; // un danno standard base
 
     public TroopDTO(String role, Integer minimumDamage, Integer maximumDamage, Integer health) {
         this.role = role;

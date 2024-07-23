@@ -11,6 +11,7 @@ public class PlayerDTOwTroops
     private int totalMinDamage;
     private int totalMaxDamage;
     private int totalHealth; 
+    private int totalDamage; // un danno standard
 
     
 }

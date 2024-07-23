@@ -1,5 +1,7 @@
 package com.generation.dominion.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,13 +17,17 @@ import lombok.Setter;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "troop")
-public abstract class Troop 
+public abstract class Troop
 {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "damage")
     protected Integer damage;
+
+    @Column(name = "health")
     protected Integer health;
 
     

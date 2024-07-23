@@ -5,7 +5,7 @@ import com.generation.dominion.model.Troop;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Tank extends Troop 
+public class Tank extends Troop
 {
     public Tank() 
     {
