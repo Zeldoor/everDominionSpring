@@ -12,6 +12,11 @@ public class Healer extends Troop
         super(0, 5); // Esempio: nessun damage, defense bassa
     }
 
+    public Healer(Integer damage, Integer defense)
+    {
+        super(damage, defense);
+    }
+
     @Override
     public void specialAction(Troop ally) 
     {

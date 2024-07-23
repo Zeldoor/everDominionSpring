@@ -12,6 +12,11 @@ public class Tank extends Troop
         super(5, 10); // Esempio: più defense che damage
     }
 
+    public Tank(Integer damage, Integer defense) 
+    {
+        super(damage, defense);
+    }
+
     @Override
     public void specialAction(Troop ally) 
     {

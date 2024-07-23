@@ -5,8 +5,19 @@ import lombok.Data;
 @Data
 public class TroopDTO 
 {
+    private String role;
     private Integer damage;
     private Integer defence;
+
+    public String getRole() 
+    {
+        return role;
+    }
+
+    public void setRole(String role) 
+    {
+        this.role = role;
+    }
 
     
     public Integer getDamage() 
