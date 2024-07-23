@@ -12,9 +12,9 @@ public class Bard extends Troop
         super(0, 5); // Esempio: nessun damage, difesa media
     }
 
-    public Bard(Integer damage, Integer defense)
+    public Bard(Integer damage, Integer health)
     {
-        super(damage, defense);
+        super(damage, health);
     }
 
     @Override
