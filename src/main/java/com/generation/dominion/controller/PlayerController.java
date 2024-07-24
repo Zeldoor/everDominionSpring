@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class PlayerController 
 {
 
-  /*  @PostMapping("/fight")
+    @PostMapping("/fight")
      public FightResultDTO fight(@RequestBody TeamDTO teamDto) 
     {
         List<Troop> playerTroops = teamDto.getTroops().stream()
@@ -68,23 +68,23 @@ public class PlayerController
 
         return output;
     }
-*/
-    /*  private Troop createTroopFromDTO(TroopDTO dto) 
+
+      private Troop createTroopFromDTO(TroopDTO dto) 
     {
         switch (dto.getRole().toLowerCase()) 
         {
             case "fighter":
-                return new Fighter(dto.getDamage(), dto.getHealth());
+                return new Fighter(dto.randomAttackInRange(), dto.getHealth());
             case "tank":
-                return new Tank(dto.getDamage(), dto.getHealth());
+                return new Tank(dto.randomAttackInRange(), dto.getHealth());
             case "healer":
-                return new Healer(dto.getDamage(), dto.getHealth());
+                return new Healer(dto.randomAttackInRange(), dto.getHealth());
             case "bard":
-                return new Bard(dto.getDamage(), dto.getHealth());
+                return new Bard(dto.randomAttackInRange(), dto.getHealth());
             default:
                 throw new IllegalArgumentException("Invalid role: " + dto.getRole());
         }
   
         }
-    */
+    
 }

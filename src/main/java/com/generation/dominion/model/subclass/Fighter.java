@@ -11,9 +11,9 @@ public class Fighter extends Troop
         super(10, 5); // Valori di default
     }
 
-    public Fighter(Integer damage, Integer defence) 
+    public Fighter(Integer damage, Integer health) 
     {
-        super(damage, defence);
+        super(damage, health);
     }
 
     @Override

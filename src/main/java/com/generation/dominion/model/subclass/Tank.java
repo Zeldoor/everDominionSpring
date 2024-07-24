@@ -12,9 +12,9 @@ public class Tank extends Troop
         super(5, 10); // Esempio: più defense che damage
     }
 
-    public Tank(Integer damage, Integer defense) 
+    public Tank(Integer damage, Integer health) 
     {
-        super(damage, defense);
+        super(damage, health);
     }
 
     @Override

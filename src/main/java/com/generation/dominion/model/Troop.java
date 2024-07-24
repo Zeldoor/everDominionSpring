@@ -22,17 +22,17 @@ public abstract class Troop
     private int id;
 
     protected Integer damage;
-    protected Integer defence;
+    protected Integer health;
 
     
     public Troop(){}
 
 
 
-    public Troop(Integer damage, Integer defence) 
+    public Troop(Integer damage, Integer health) 
     {
         this.damage = damage;
-        this.defence = defence;
+        this.health = health;
     }
 
 
@@ -46,7 +46,7 @@ public abstract class Troop
 
     public boolean takeDamage(Integer damage) 
     {
-        this.defence -= damage;
+        this.health -= damage;
         return isDead();
     }
 
@@ -54,14 +54,14 @@ public abstract class Troop
 
     public boolean isAlive() 
     {
-        return this.defence > 0;
+        return this.health > 0;
     }
 
 
 
     public boolean isDead() 
     {
-        return this.defence <= 0;
+        return this.health <= 0;
     }
 
     // Metodi per i ruoli specifici

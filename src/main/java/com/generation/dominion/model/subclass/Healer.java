@@ -12,14 +12,14 @@ public class Healer extends Troop
         super(0, 5); // Esempio: nessun damage, defense bassa
     }
 
-    public Healer(Integer damage, Integer defense)
+    public Healer(Integer damage, Integer health)
     {
-        super(damage, defense);
+        super(damage, health);
     }
 
     @Override
     public void specialAction(Troop ally) 
     {
-        ally.setDefence(ally.getDefence() + 5); // Potenzia la defense dei compagni
+        ally.setHealth(ally.getHealth() + 5); // Potenzia la defense dei compagni
     }
 }
