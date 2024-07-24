@@ -57,16 +57,16 @@ public class Troop
     public Troop(TroopDTO dto) 
     {
         this.className = dto.getClassName();
-        this.minDamage = dto.getMinimumDamage();
-        this.maxDamage = dto.getMaximumDamage();
+        this.minDamage = dto.getMinDamage();
+        this.maxDamage = dto.getMaxDamage();
         this.health = dto.getHealth();
     }
 
     public Troop(TroopDTO dto, Player player) 
     {
         this.className = dto.getClassName();
-        this.minDamage = dto.getMinimumDamage();
-        this.maxDamage = dto.getMaximumDamage();
+        this.minDamage = dto.getMinDamage();
+        this.maxDamage = dto.getMaxDamage();
         this.health = dto.getHealth();
         this.player = player;
     }
