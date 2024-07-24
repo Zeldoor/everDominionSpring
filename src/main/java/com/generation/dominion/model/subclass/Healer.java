@@ -15,6 +15,6 @@ public class Healer extends Troop
     @Override
     public void specialAction(Troop ally) 
     {
-        ally.setDefence(ally.getDefence() + 5); // Potenzia la defense dei compagni
+        ally.setHealth(ally.getHealth() + 5); // Potenzia la defense dei compagni
     }
 }

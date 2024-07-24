@@ -1,5 +1,7 @@
 package com.generation.dominion.model;
 
+import java.util.Random;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,32 +23,32 @@ public abstract class Troop
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    protected Integer damage;
-    protected Integer defence;
+    protected Integer minDamage;
+    protected Integer maxDamage;
+    protected Integer health;
 
     
     public Troop(){}
 
-
-
     public Troop(Integer damage, Integer defence) 
     {
-        this.damage = damage;
-        this.defence = defence;
+        this.minDamage = damage - 2;
+        this.maxDamage = damage + 2;
+        this.health = defence;
     }
 
-
+    
 
     public boolean attack(Troop enemy) 
     {
-        return enemy.takeDamage(this.damage);
+        return enemy.takeDamage(randomAttackInRange());
     }
 
 
 
     public boolean takeDamage(Integer damage) 
     {
-        this.defence -= damage;
+        this.health -= damage;
         return isDead();
     }
 
@@ -54,16 +56,31 @@ public abstract class Troop
 
     public boolean isAlive() 
     {
-        return this.defence > 0;
+        return this.health > 0;
     }
 
 
 
     public boolean isDead() 
     {
-        return this.defence <= 0;
+        return this.health <= 0;
     }
 
     // Metodi per i ruoli specifici
     public abstract void specialAction(Troop ally);
+
+    
+   
+
+    public int randomAttackInRange() 
+    {
+        Random random = new Random();
+
+        if (this.minDamage > this.maxDamage) 
+        {
+            throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
+        }
+
+        return random.nextInt((this.maxDamage - this.minDamage) + 1) + this.minDamage;
+    }
 }

@@ -15,6 +15,7 @@ public class Bard extends Troop
     @Override
     public void specialAction(Troop ally) 
     {
-        ally.setDamage(ally.getDamage() + 5); // Potenzia il damage degli alleati
+        ally.setMinDamage(ally.getMinDamage() + 5); // Potenzia il damage degli alleati
+        ally.setMaxDamage(ally.getMaxDamage() + 5); // Potenzia il damage degli alleati
     }
 }
