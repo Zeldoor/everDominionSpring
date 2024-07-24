@@ -11,7 +11,6 @@ public class PlayerDTOwTroops
     private int playerMaxDmg;
     private int playerHealth; 
     
-    private List<TroopDTO> troops;
     private int totalMinDamage;
     private int totalMaxDamage;
     private int totalHealth; 
@@ -19,6 +18,5 @@ public class PlayerDTOwTroops
     private int lifeEnergy;
     private int gold;
     
-
-    
+    private List<TroopDTO> troops;
 }

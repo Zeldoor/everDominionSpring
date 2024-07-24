@@ -20,8 +20,8 @@ public class MockService {
              PlayerDTOwTroops player = new PlayerDTOwTroops();
              player.setNick("Player" + (i + 1));
              player.setTroops(generateRandomTroopIds());
-             player.setTotalMinDamage(calculateTotalMinDamage(player.getTroops()));
-             player.setTotalMaxDamage(calculateTotalMaxDamage(player.getTroops()));
+             player.setPlayerMinDmg(calculateTotalMinDamage(player.getTroops()));
+             player.setPlayerMaxDmg(calculateTotalMaxDamage(player.getTroops()));
              player.setTotalHealth(calculateTotalHealth(player.getTroops()));
              players.add(player);
          }

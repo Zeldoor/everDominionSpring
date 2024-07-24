@@ -16,7 +16,7 @@ public class MockPlayerController {
      @Autowired
      private MockService mockService;
 
-     @GetMapping("/player")
+     @GetMapping
      public List<PlayerDTOwTroops> getMockPlayers() {
          return mockService.generateMockPlayers(3);
      }

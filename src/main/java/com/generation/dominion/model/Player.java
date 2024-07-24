@@ -36,12 +36,14 @@ public class Player
         this.lifeEnergy = lifeEnergy;
     }
 
-    public void loseLifeEnergy() 
+    public boolean loseLifeEnergy() 
     {
         if (this.lifeEnergy > 0) 
         {
             this.lifeEnergy--;
         }
+
+        return isDead();
     }
 
     public int getGold() 
@@ -61,6 +63,6 @@ public class Player
 
     public boolean isDead() 
     {
-        return this.lifeEnergy == 0;
+        return this.lifeEnergy <= 0;
     }
 }

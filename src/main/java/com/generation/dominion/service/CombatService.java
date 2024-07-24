@@ -12,8 +12,8 @@ public class CombatService {
 
     public void handleCombat(Player winner, Player loser) 
     {
-        winner.addGold(100); //chi vince, +100 gold
-        loser.addGold(70);  //chi perde, +70 gold
+        winner.addGold((int)(Math.random()*30)+70); //chi vince, 70+(0-30)
+        loser.addGold((int)(Math.random()*20)+50);  //chi perde, 50+(0-20) gold
 
         loser.loseLifeEnergy();
         if (loser.isDead()) {

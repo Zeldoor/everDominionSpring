@@ -11,7 +11,7 @@ import com.generation.dominion.repository.TroopRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/troops")
+@RequestMapping("/troop")
 public class TroopController {
 
     @Autowired

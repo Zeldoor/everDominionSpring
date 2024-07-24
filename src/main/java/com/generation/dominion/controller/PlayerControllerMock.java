@@ -27,55 +27,55 @@ public class PlayerControllerMock
     @Autowired
     private TroopRepository troopRepository;
 
-    @PostMapping("/fight")
-    public FightResultDTO fight(@RequestBody TeamDTO teamDto) 
-    {
-        List<Troop> playerTroops = teamDto.getTroops()
-                // .stream()
-                // .map(this::createTroopFromDTO)
-                // .collect(Collectors.toList());
-        Team playerTeam = new Team(playerTroops);
+    // @PostMapping("/fight")
+    // public FightResultDTO fight(@RequestBody TeamDTO teamDto) 
+    // {
+    //     List<Troop> playerTroops = teamDto.getTroops()
+    //             .stream()
+    //             .map(this::createTroopFromDTO)
+    //             .collect(Collectors.toList());
+    //     Team playerTeam = new Team(playerTroops);
 
-        List<Troop> mockTroops = troopRepository.findAll().stream().limit(6).collect(Collectors.toList());
-        Team mockTeam = new Team(mockTroops);
+    //     List<Troop> mockTroops = troopRepository.findAll().stream().limit(6).collect(Collectors.toList());
+    //     Team mockTeam = new Team(mockTroops);
 
-        FightResultDTO output = new FightResultDTO();
+    //     FightResultDTO output = new FightResultDTO();
 
-        while (playerTeam.isAlive() && mockTeam.isAlive()) 
-        {
-            Troop playerTroop = playerTeam.getTroops().stream().filter(Troop::isAlive).findFirst().orElse(null);
-            Troop mockTroop = mockTeam.getTroops().stream().filter(Troop::isAlive).findFirst().orElse(null);
+    //     while (playerTeam.isAlive() && mockTeam.isAlive()) 
+    //     {
+    //         Troop playerTroop = playerTeam.getTroops().stream().filter(Troop::isAlive).findFirst().orElse(null);
+    //         Troop mockTroop = mockTeam.getTroops().stream().filter(Troop::isAlive).findFirst().orElse(null);
 
-            if (playerTroop != null && mockTroop != null) 
-            {
-                mockTroop.takeDamage(playerTroop.getMinDamage());
-                if (mockTroop.isDead()) 
-                {
-                    continue;
-                }
-                playerTroop.takeDamage(mockTroop.getMinDamage());
-            }
+    //         if (playerTroop != null && mockTroop != null) 
+    //         {
+    //             mockTroop.takeDamage(playerTroop.getMinDamage());
+    //             if (mockTroop.isDead()) 
+    //             {
+    //                 continue;
+    //             }
+    //             playerTroop.takeDamage(mockTroop.getMinDamage());
+    //         }
 
-            playerTeam.getTroops().forEach(troop -> troop.specialAction(playerTroop));
-            mockTeam.getTroops().forEach(troop -> troop.specialAction(mockTroop));
-        }
+    //         playerTeam.getTroops().forEach(troop -> troop.specialAction(playerTroop));
+    //         mockTeam.getTroops().forEach(troop -> troop.specialAction(mockTroop));
+    //     }
 
-        if (playerTeam.isAlive()) 
-        {
-            output.setResult("Player Team Won");
-        } else {
-            output.setResult("Enemy Team Won");
-        }
+    //     if (playerTeam.isAlive()) 
+    //     {
+    //         output.setResult("Player Team Won");
+    //     } else {
+    //         output.setResult("Enemy Team Won");
+    //     }
 
-        return output;
-    }
+    //     return output;
+    // }
 
     // private Troop createTroopFromDTO(TroopDTO dto) 
     // {
     //     switch (dto.getRole().toLowerCase()) 
     //     {
     //         case "fighter":
-    //             return new Fighter(dto.getMinDamage(), dto.getHealth());
+    //             return new Fighter(dto.get(), dto.getHealth());
     //         case "tank":
     //             return new Tank(dto.getDamage(), dto.getHealth());
     //         case "healer":

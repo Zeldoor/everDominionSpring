@@ -1,7 +1,5 @@
 package com.generation.dominion.dto;
 
-import java.util.Random;
-
 import lombok.Data;
 
 @Data
