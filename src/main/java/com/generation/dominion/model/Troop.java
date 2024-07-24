@@ -2,6 +2,7 @@ package com.generation.dominion.model;
 
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.dto.TroopDTO;
 
 import jakarta.persistence.Column;
@@ -38,6 +39,7 @@ public class Troop
     @Column(name = "health")
     protected Integer health;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "player_id",nullable = false)
     Player player;
@@ -58,6 +60,15 @@ public class Troop
         this.minDamage = dto.getMinimumDamage();
         this.maxDamage = dto.getMaximumDamage();
         this.health = dto.getHealth();
+    }
+
+    public Troop(TroopDTO dto, Player player) 
+    {
+        this.className = dto.getClassName();
+        this.minDamage = dto.getMinimumDamage();
+        this.maxDamage = dto.getMaximumDamage();
+        this.health = dto.getHealth();
+        this.player = player;
     }
 
     public boolean attack(Troop enemy) 

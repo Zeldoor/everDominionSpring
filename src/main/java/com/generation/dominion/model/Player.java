@@ -30,6 +30,9 @@ public class Player
     private int lifeEnergy;
     private int gold;
 
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<Troop> troops;
+
     public Player()
     {
         this.gold = 100;
@@ -42,11 +45,6 @@ public class Player
         this.gold = playerDto.getGold();
         this.lifeEnergy = playerDto.getLifeEnergy();
     }
-
-
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    List<Troop> troops;
-
 
     public int getLifeEnergy() 
     {
