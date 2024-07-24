@@ -22,7 +22,7 @@ public class MockService {
              player.setTroops(generateRandomTroopIds());
              player.setPlayerMinDmg(calculateTotalMinDamage(player.getTroops()));
              player.setPlayerMaxDmg(calculateTotalMaxDamage(player.getTroops()));
-             player.setTotalHealth(calculateTotalHealth(player.getTroops()));
+             player.setPlayerHealth(calculateTotalHealth(player.getTroops()));
              players.add(player);
          }
 
@@ -45,7 +45,7 @@ public class MockService {
          for (TroopDTO troop : troops) 
          {
             
-             totalDamage += troop.getMinimumDamage() ; // danno minimo messo nel total damage
+             totalDamage += troop.getMaxDamage() ; // danno minimo messo nel total damage
          }
          return totalDamage;
      }
@@ -55,7 +55,7 @@ public class MockService {
          for (TroopDTO troop : troops) 
          {
             
-             totalDamage += troop.getMinimumDamage() ; // danno minimo messo nel total damage
+             totalDamage += troop.getMaxDamage() ; // danno minimo messo nel total damage
          }
          return totalDamage;
      }

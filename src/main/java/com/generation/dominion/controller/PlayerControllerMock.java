@@ -10,10 +10,6 @@ import com.generation.dominion.dto.FightResultDTO;
 import com.generation.dominion.dto.TeamDTO;
 import com.generation.dominion.dto.TroopDTO;
 import com.generation.dominion.model.*;
-import com.generation.dominion.model.subclass.Bard;
-import com.generation.dominion.model.subclass.Fighter;
-import com.generation.dominion.model.subclass.Healer;
-import com.generation.dominion.model.subclass.Tank;
 import com.generation.dominion.repository.TroopRepository;
 
 import java.util.List;
@@ -24,14 +20,13 @@ import java.util.stream.Collectors;
 public class PlayerControllerMock
 {
 
-    @Autowired
-    private TroopRepository troopRepository;
+    // @Autowired
+    // private TroopRepository troopRepository;
 
-    // @PostMapping("/fight")
+    // @PostMapping("/mock-fight")
     // public FightResultDTO fight(@RequestBody TeamDTO teamDto) 
     // {
-    //     List<Troop> playerTroops = teamDto.getTroops()
-    //             .stream()
+    //     List<Troop> playerTroops = teamDto.getTroops().stream()
     //             .map(this::createTroopFromDTO)
     //             .collect(Collectors.toList());
     //     Team playerTeam = new Team(playerTroops);
@@ -48,12 +43,12 @@ public class PlayerControllerMock
 
     //         if (playerTroop != null && mockTroop != null) 
     //         {
-    //             mockTroop.takeDamage(playerTroop.getMinDamage());
+    //             mockTroop.takeDamage(playerTroop.getDamage());
     //             if (mockTroop.isDead()) 
     //             {
     //                 continue;
     //             }
-    //             playerTroop.takeDamage(mockTroop.getMinDamage());
+    //             playerTroop.takeDamage(mockTroop.getDamage());
     //         }
 
     //         playerTeam.getTroops().forEach(troop -> troop.specialAction(playerTroop));
@@ -75,7 +70,7 @@ public class PlayerControllerMock
     //     switch (dto.getRole().toLowerCase()) 
     //     {
     //         case "fighter":
-    //             return new Fighter(dto.get(), dto.getHealth());
+    //             return new Fighter(dto.getDamage(), dto.getHealth());
     //         case "tank":
     //             return new Tank(dto.getDamage(), dto.getHealth());
     //         case "healer":
