@@ -13,12 +13,12 @@ import java.util.List;
 @RequestMapping("/mock")
 public class MockPlayerController {
 
-    @Autowired
-    private MockService mockService;
+    // @Autowired
+    // private MockService mockService;
 
-    @GetMapping("/player")
-    public List<PlayerDTOwTroops> getMockPlayers() {
-        return mockService.generateMockPlayers(3);
-    }
+    // @GetMapping("/player")
+    // public List<PlayerDTOwTroops> getMockPlayers() {
+    //     return mockService.generateMockPlayers(3);
+    // }
     
 }
