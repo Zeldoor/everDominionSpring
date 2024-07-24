@@ -22,7 +22,7 @@ public class Bard extends Troop
     {
         if (ally != null && ally.isAlive())
         {
-        ally.setDamage(ally.getDamage() + 5); // Potenzia il damage degli alleati
+            // ally.setDamage(ally.getDamage() + 5); // Potenzia il damage degli alleati
         }
     }
 }

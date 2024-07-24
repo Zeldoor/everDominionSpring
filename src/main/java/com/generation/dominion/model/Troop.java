@@ -3,7 +3,6 @@ package com.generation.dominion.model;
 import java.util.Random;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,10 +34,7 @@ public abstract class Troop
     @Column(name = "health")
     protected Integer health;
 
-    
     public Troop(){}
-
-
 
     public Troop(Integer damage, Integer health) 
     {
@@ -47,14 +43,10 @@ public abstract class Troop
         this.health = health;
     }
 
-    
-
     public boolean attack(Troop enemy) 
     {
         return enemy.takeDamage(randomAttackInRange());
     }
-
-
 
     public boolean takeDamage(Integer damage) 
     {
@@ -62,14 +54,10 @@ public abstract class Troop
         return isDead();
     }
 
-
-
     public boolean isAlive() 
     {
         return this.health > 0;
     }
-
-
 
     public boolean isDead() 
     {
@@ -78,9 +66,6 @@ public abstract class Troop
 
     // Metodi per i ruoli specifici
     public abstract void specialAction(Troop ally);
-
-    
-   
 
     public int randomAttackInRange() 
     {

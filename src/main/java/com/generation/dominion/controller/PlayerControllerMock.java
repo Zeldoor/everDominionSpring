@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/player")
+@RequestMapping("/mock")
 public class PlayerControllerMock
 {
 
     @Autowired
     private TroopRepository troopRepository;
 
-    @PostMapping("/mock-fight")
+    @PostMapping("/fight")
     public FightResultDTO fight(@RequestBody TeamDTO teamDto) 
     {
         List<Troop> playerTroops = teamDto.getTroops().stream()
@@ -47,12 +47,12 @@ public class PlayerControllerMock
 
             if (playerTroop != null && mockTroop != null) 
             {
-                mockTroop.takeDamage(playerTroop.getDamage());
+                mockTroop.takeDamage(playerTroop.getMinDamage());
                 if (mockTroop.isDead()) 
                 {
                     continue;
                 }
-                playerTroop.takeDamage(mockTroop.getDamage());
+                playerTroop.takeDamage(mockTroop.getMinDamage());
             }
 
             playerTeam.getTroops().forEach(troop -> troop.specialAction(playerTroop));

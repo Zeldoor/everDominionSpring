@@ -11,8 +11,6 @@ import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Team;
 import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.PlayerRepository;
-import com.generation.dominion.repository.TeamRepository;
-import com.generation.dominion.repository.TroopRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,17 +22,11 @@ public class PlayerController {
     @Autowired
     private PlayerRepository playerRepository;
 
-    @Autowired
-    private TeamRepository teamRepository;
-
-    @Autowired
-    private TroopRepository troopRepository;
-
     @PostMapping("/fight")
     public FightResultDTO fight(@RequestBody List<Integer> playerIds) {
-        if (playerIds.size() != 2) {
+        if (playerIds.size() != 2)
             throw new IllegalArgumentException("Two player IDs must be provided.");
-        }
+        
 
         Player player1 = getPlayer(playerIds.get(0));
         Player player2 = getPlayer(playerIds.get(1));
@@ -52,11 +44,13 @@ public class PlayerController {
             Troop troop2 = team2.getAliveTroop();
 
             if (troop1 != null && troop2 != null) {
-                troop2.takeDamage(troop1.getDamage());
-                if (troop2.isDead()) {
-                    continue;
-                }
-                troop1.takeDamage(troop2.getDamage());
+                troop2.takeDamage(troop1.getMinDamage());
+
+            if (troop2.isDead()) 
+            {
+                continue;
+            }
+                troop1.takeDamage(troop2.getMinDamage());
             }
 
             team1.performSpecialActions(troop1);
