@@ -3,9 +3,11 @@ package com.generation.dominion.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.generation.dominion.dto.FightResultDTO;
 import com.generation.dominion.dto.PlayerDTOwTroops;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.repository.PlayerRepository;
+import com.generation.dominion.service.CombatService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,9 @@ public class PlayerController
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private CombatService combatServ;
 
 
     @PostMapping
@@ -39,12 +44,21 @@ public class PlayerController
         return res;
     }
 
-       
-
     @GetMapping("/{id}")
     public Player getPlayer(@PathVariable int id) 
     {
         return playerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Player not found")); 
+    }
+
+    @PostMapping("/fight")
+    public FightResultDTO getPlayer(@RequestBody FightResultDTO dto) 
+    {
+        FightResultDTO fightRes = dto;
+        System.out.println(fightRes.getAttacker());
+
+        fightRes = combatServ.fightSystem(fightRes);
+
+        return fightRes; 
     }
 
 

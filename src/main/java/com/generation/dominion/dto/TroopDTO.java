@@ -8,7 +8,7 @@ import lombok.Data;
 public class TroopDTO 
 
 {
-    public Integer Id;
+    public Integer id;
     public String className;
     public Integer minDamage;
     public Integer maxDamage;
@@ -27,7 +27,7 @@ public class TroopDTO
 
     public TroopDTO(Troop t)
     {
-        this.Id = t.getId();
+        this.id = t.getId();
         this.className = t.getClassName();
         this.minDamage = t.getMinDamage();
         this.maxDamage = t.getMaxDamage();
