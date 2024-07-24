@@ -1,90 +1,93 @@
 package com.generation.dominion.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import com.generation.dominion.dto.FightResultDTO;
-import com.generation.dominion.dto.TeamDTO;
-import com.generation.dominion.dto.TroopDTO;
-import com.generation.dominion.model.Team;
-import com.generation.dominion.model.Troop;
-import com.generation.dominion.model.subclass.Bard;
-import com.generation.dominion.model.subclass.Fighter;
-import com.generation.dominion.model.subclass.Healer;
-import com.generation.dominion.model.subclass.Tank;
+import com.generation.dominion.dto.PlayerDTOwTroops;
+import com.generation.dominion.model.Player;
+import com.generation.dominion.repository.PlayerRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/player")
 public class PlayerController 
 {
 
-  /*  @PostMapping("/fight")
-     public FightResultDTO fight(@RequestBody TeamDTO teamDto) 
-    {
-        List<Troop> playerTroops = teamDto.getTroops().stream()
-                .map(this::createTroopFromDTO)
-                .collect(Collectors.toList());
-        Team playerTeam = new Team(playerTroops);
+    @Autowired
+    private PlayerRepository playerRepository;
 
-        List<Troop> mockTroops = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            mockTroops.add(new Fighter()); 
-        }
-        Team mockTeam = new Team(mockTroops);
 
-        FightResultDTO output = new FightResultDTO();
-
-        while (playerTeam.isAlive() && mockTeam.isAlive()) 
-        {
-            Troop playerTroop = playerTeam.getTroops().stream().filter(Troop::isAlive).findFirst().orElse(null);
-            Troop mockTroop = mockTeam.getTroops().stream().filter(Troop::isAlive).findFirst().orElse(null);
-
-            if (playerTroop != null && mockTroop != null) 
-            {
-                mockTroop.takeDamage(playerTroop.getDamage());
-                if (mockTroop.isDead()) 
-                {
-                    continue;
-                }
-                playerTroop.takeDamage(mockTroop.getDamage());
-            }
-
-            playerTeam.getTroops().forEach(troop -> troop.specialAction(playerTroop));
-            mockTeam.getTroops().forEach(troop -> troop.specialAction(mockTroop));
-        }
-
-        if (playerTeam.isAlive()) 
-        {
-            output.setResult("Player Team Won");
-        } else {
-            output.setResult("Enemy Team Won");
-        }
-
-        return output;
+    @PostMapping
+    public Player createPlayer(@RequestBody PlayerDTOwTroops playerDto) 
+    { 
+        Player player = new Player(playerDto);
+        return playerRepository.save(player); 
     }
-*/
-    /*  private Troop createTroopFromDTO(TroopDTO dto) 
+
+
+    @GetMapping
+    public List<Player> getAllPlayers() { return playerRepository.findAll(); }
+
+
+    @GetMapping("/{id}")
+    public Player getPlayer(@PathVariable int id) 
     {
-        switch (dto.getRole().toLowerCase()) 
-        {
-            case "fighter":
-                return new Fighter(dto.getDamage(), dto.getHealth());
-            case "tank":
-                return new Tank(dto.getDamage(), dto.getHealth());
-            case "healer":
-                return new Healer(dto.getDamage(), dto.getHealth());
-            case "bard":
-                return new Bard(dto.getDamage(), dto.getHealth());
-            default:
-                throw new IllegalArgumentException("Invalid role: " + dto.getRole());
-        }
-  
-        }
-    */
+        return playerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Player not found")); 
+    }
+
+
+
+    // qua sotto il figth, che forse più in là avrà un controller suo
+
+    // @PostMapping("/fight")
+    // public FightResultDTO fight(@RequestBody List<Integer> playerIds) 
+    // {
+    //     FightResultDTO output = new FightResultDTO();
+
+    //     if (playerIds.size() != 2) 
+    //     {
+    //         throw new IllegalArgumentException("Two player IDs must be provided.");
+    //     }
+
+    //     Player player1 = getPlayer(playerIds.get(0));
+    //     Player player2 = getPlayer(playerIds.get(1));
+
+    //     while (team1.isAlive() && team2.isAlive()) 
+    //     {
+    //         Troop troop1 = team1.getAliveTroop();
+    //         Troop troop2 = team2.getAliveTroop();
+
+    //         if (troop1.attack(troop2)) 
+    //         {
+    //             if (troop2.isDead()) 
+    //             {
+    //                 troop2 = team2.getAliveTroop();
+    //             }
+    //         }
+
+    //         if (troop2 != null && troop2.attack(troop1)) 
+    //         {
+    //             if (troop1.isDead()) 
+    //             {
+    //                 troop1 = team1.getAliveTroop();
+    //             }
+    //         }
+
+    //         team1.performSpecialActions(troop1);
+    //         team2.performSpecialActions(troop2);
+    //     }
+
+    //     if (team1.isAlive()) 
+    //     {
+    //         output.setResult("Player " + player1.getNick() + " Won");
+    //     } else if (team2.isAlive()) 
+    //     {
+    //         output.setResult("Player " + player2.getNick() + " Won");
+    //     } else {
+    //         output.setResult("Draw");
+    //     }
+
+    //     return output;
+    // }
 }
