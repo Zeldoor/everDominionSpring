@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
@@ -46,5 +47,53 @@ public class PlayerDTOwTroops
             this.playerMaxDmg += troop.maxDamage;
             this.playerHealth += troop.health;
         }
+    }
+
+    public String attack(PlayerDTOwTroops enemy) 
+    {
+        return enemy.takeDamage(randomAttackInRange());
+    }
+
+    public String takeDamage(Integer damage) 
+    {
+        Integer res = this.playerHealth - damage;
+        this.playerHealth -= damage;
+
+        return res+"";
+    }
+
+    public boolean isAlive() 
+    {
+        return this.playerHealth > 0;
+    }
+
+    public boolean isDead() 
+    {
+        return this.playerHealth <= 0;
+    }
+
+    public void addGold(int amount) 
+    {
+        this.gold += amount;
+    }
+
+    public boolean loseLifeEnergy() 
+    {
+        if (this.lifeEnergy > 0) 
+        {
+            this.lifeEnergy--;
+        }
+
+        return isDead();
+    }
+
+    public int randomAttackInRange() 
+    {
+        Random random = new Random();
+
+        if (this.playerMinDmg > this.playerMaxDmg) 
+            throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
+
+        return random.nextInt((this.playerMaxDmg - this.playerMinDmg) + 1) + this.playerMinDmg;
     }
 }

@@ -46,40 +46,6 @@ public class Player
         this.lifeEnergy = playerDto.getLifeEnergy();
     }
 
-    public int getLifeEnergy() 
-    {
-        return lifeEnergy;
-    }
-
-    public void setLifeEnergy(int lifeEnergy) 
-    {
-        this.lifeEnergy = lifeEnergy;
-    }
-
-    public boolean loseLifeEnergy() 
-    {
-        if (this.lifeEnergy > 0) 
-        {
-            this.lifeEnergy--;
-        }
-
-        return isDead();
-    }
-
-    public int getGold() 
-    {
-        return gold;
-    }
-
-    public void setGold(int gold) 
-    {
-        this.gold = gold;
-    }
-
-    public void addGold(int amount) 
-    {
-        this.gold += amount;
-    }
 
     public boolean isDead() 
     {

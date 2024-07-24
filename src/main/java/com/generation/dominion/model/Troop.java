@@ -1,6 +1,5 @@
 package com.generation.dominion.model;
 
-import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.dto.TroopDTO;
@@ -71,36 +70,4 @@ public class Troop
         this.player = player;
     }
 
-    public boolean attack(Troop enemy) 
-    {
-        return enemy.takeDamage(randomAttackInRange());
-    }
-
-    public boolean takeDamage(Integer damage) 
-    {
-        this.health -= damage;
-        return isDead();
-    }
-
-    public boolean isAlive() 
-    {
-        return this.health > 0;
-    }
-
-    public boolean isDead() 
-    {
-        return this.health <= 0;
-    }
-
-    public int randomAttackInRange() 
-    {
-        Random random = new Random();
-
-        if (this.minDamage > this.maxDamage) 
-        {
-            throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
-        }
-
-        return random.nextInt((this.maxDamage - this.minDamage) + 1) + this.minDamage;
-    }
 }
