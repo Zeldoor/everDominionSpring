@@ -1,5 +1,7 @@
 package com.generation.dominion.model;
 
+import java.util.Random;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -24,8 +26,11 @@ public abstract class Troop
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "damage")
-    protected Integer damage;
+    @Column(name = "min_damage")
+    protected Integer minDamage;
+
+    @Column(name = "max_damage")
+    protected Integer maxDamage;
 
     @Column(name = "health")
     protected Integer health;
@@ -37,7 +42,8 @@ public abstract class Troop
 
     public Troop(Integer damage, Integer health) 
     {
-        this.damage = damage;
+        this.minDamage = damage - 2;
+        this.maxDamage = damage + 2;
         this.health = health;
     }
 
