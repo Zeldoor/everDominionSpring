@@ -2,9 +2,11 @@ package com.generation.dominion.model.subclass;
 
 import com.generation.dominion.model.Troop;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("healer")
 public class Healer extends Troop 
 {
     public Healer() 

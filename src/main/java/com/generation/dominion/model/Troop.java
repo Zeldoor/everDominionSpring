@@ -16,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role_type")
 @Table(name = "troop")
 public abstract class Troop
 {
