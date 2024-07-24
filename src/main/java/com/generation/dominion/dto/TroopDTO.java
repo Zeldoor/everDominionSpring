@@ -6,14 +6,13 @@ import lombok.Data;
 public class TroopDTO 
 {
     public String className;
-    public String  role;
     public Integer minimumDamage;
     public Integer maximumDamage;
     public Integer health; 
 
-    public TroopDTO(String role, Integer minimumDamage, Integer maximumDamage, Integer health) 
+    public TroopDTO(String className, Integer minimumDamage, Integer maximumDamage, Integer health) 
     {
-        this.role = role;
+        this.className = className;
         this.minimumDamage = minimumDamage;
         this.maximumDamage = maximumDamage;
         this.health = health;

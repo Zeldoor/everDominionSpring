@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Troop
+public class Troop
 {
     @Id
     @Column(name = "id", nullable = false)
@@ -41,6 +41,7 @@ public abstract class Troop
     @ManyToOne
     @JoinColumn(name = "player_id",nullable = false)
     Player player;
+    
 
     public Troop(){}
 
@@ -79,9 +80,6 @@ public abstract class Troop
     {
         return this.health <= 0;
     }
-
-    // Metodi per i ruoli specifici
-    public abstract void specialAction(Troop ally);
 
     public int randomAttackInRange() 
     {
