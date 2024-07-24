@@ -2,6 +2,7 @@ package com.generation.dominion.model;
 
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.dto.TroopDTO;
 
 import jakarta.persistence.Column;
@@ -40,6 +41,7 @@ public class Troop
 
     @ManyToOne
     @JoinColumn(name = "player_id",nullable = false)
+    @JsonIgnore
     Player player;
     
 
