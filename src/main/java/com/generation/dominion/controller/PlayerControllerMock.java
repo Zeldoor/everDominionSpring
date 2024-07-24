@@ -30,9 +30,10 @@ public class PlayerControllerMock
     @PostMapping("/fight")
     public FightResultDTO fight(@RequestBody TeamDTO teamDto) 
     {
-        List<Troop> playerTroops = teamDto.getTroops().stream()
-                .map(this::createTroopFromDTO)
-                .collect(Collectors.toList());
+        List<Troop> playerTroops = teamDto.getTroops()
+                // .stream()
+                // .map(this::createTroopFromDTO)
+                // .collect(Collectors.toList());
         Team playerTeam = new Team(playerTroops);
 
         List<Troop> mockTroops = troopRepository.findAll().stream().limit(6).collect(Collectors.toList());
@@ -69,20 +70,20 @@ public class PlayerControllerMock
         return output;
     }
 
-    private Troop createTroopFromDTO(TroopDTO dto) 
-    {
-        switch (dto.getRole().toLowerCase()) 
-        {
-            case "fighter":
-                return new Fighter(dto.getDamage(), dto.getHealth());
-            case "tank":
-                return new Tank(dto.getDamage(), dto.getHealth());
-            case "healer":
-                return new Healer(dto.getDamage(), dto.getHealth());
-            case "bard":
-                return new Bard(dto.getDamage(), dto.getHealth());
-            default:
-                throw new IllegalArgumentException("Invalid role: " + dto.getRole());
-        }
-    }
+    // private Troop createTroopFromDTO(TroopDTO dto) 
+    // {
+    //     switch (dto.getRole().toLowerCase()) 
+    //     {
+    //         case "fighter":
+    //             return new Fighter(dto.getMinDamage(), dto.getHealth());
+    //         case "tank":
+    //             return new Tank(dto.getDamage(), dto.getHealth());
+    //         case "healer":
+    //             return new Healer(dto.getDamage(), dto.getHealth());
+    //         case "bard":
+    //             return new Bard(dto.getDamage(), dto.getHealth());
+    //         default:
+    //             throw new IllegalArgumentException("Invalid role: " + dto.getRole());
+    //     }
+    // }
 }
