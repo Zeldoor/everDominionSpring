@@ -12,10 +12,17 @@ public class Bard extends Troop
         super(0, 5); // Esempio: nessun damage, difesa media
     }
 
+    public Bard(Integer damage, Integer health)
+    {
+        super(damage, health);
+    }
+
     @Override
     public void specialAction(Troop ally) 
     {
-        ally.setMinDamage(ally.getMinDamage() + 5); // Potenzia il damage degli alleati
-        ally.setMaxDamage(ally.getMaxDamage() + 5); // Potenzia il damage degli alleati
+        if (ally != null && ally.isAlive())
+        {
+        ally.setDamage(ally.getDamage() + 5); // Potenzia il damage degli alleati
+        }
     }
 }

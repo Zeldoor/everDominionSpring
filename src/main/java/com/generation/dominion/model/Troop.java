@@ -1,7 +1,7 @@
 package com.generation.dominion.model;
 
-import java.util.Random;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,24 +17,28 @@ import lombok.Setter;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "troop")
-public abstract class Troop 
+public abstract class Troop
 {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    protected Integer minDamage;
-    protected Integer maxDamage;
+    @Column(name = "damage")
+    protected Integer damage;
+
+    @Column(name = "health")
     protected Integer health;
 
     
     public Troop(){}
 
-    public Troop(Integer damage, Integer defence) 
+
+
+    public Troop(Integer damage, Integer health) 
     {
-        this.minDamage = damage - 2;
-        this.maxDamage = damage + 2;
-        this.health = defence;
+        this.damage = damage;
+        this.health = health;
     }
 
     

@@ -1,37 +1,41 @@
 package com.generation.dominion.dto;
 
+import java.util.Random;
+
 import lombok.Data;
 
 @Data
 public class TroopDTO 
 {
-    private Integer damage;
-    private Integer defence;
+    public String  role;
+    public Integer minimumDamage;
+    public Integer maximumDamage;
+    public Integer health; 
+    public Integer damage; // un danno standard base
 
+    public TroopDTO(String role, Integer minimumDamage, Integer maximumDamage, Integer health) {
+        this.role = role;
+        this.minimumDamage = minimumDamage;
+        this.maximumDamage = maximumDamage;
+        this.health = health;
+    }
+
+    public TroopDTO()
     
-    public Integer getDamage() 
     {
-        return damage;
-    }
 
+    }   
 
-
-    public void setDamage(Integer damage) 
+    public int randomAttackInRange() 
     {
-        this.damage = damage;
-    }
+        Random random = new Random();
 
+        if (this.minimumDamage > this.maximumDamage) 
+        {
+            throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
+        }
 
-
-    public Integer getDefence() 
-    {
-        return defence;
-    }
-
-
-
-    public void setDefence(Integer defence) 
-    {
-        this.defence = defence;
+        return random.nextInt((this.maximumDamage - this.minimumDamage) + 1) + this.minimumDamage;
     }
 }
+
