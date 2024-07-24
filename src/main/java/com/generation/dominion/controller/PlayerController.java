@@ -41,13 +41,16 @@ public class PlayerController
 
        
 
+
     @GetMapping("/{id}")
-    public Player getPlayer(@PathVariable int id) 
+    public PlayerDTOwTroops getPlayer(@PathVariable int id) 
     {
-        return playerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Player not found")); 
+        Player player = playerRepository.findById(id)
+                            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+        return new PlayerDTOwTroops(player);
     }
 
-
+}
 
     // qua sotto il figth, che forse più in là avrà un controller suo
 
@@ -101,4 +104,3 @@ public class PlayerController
 
     //     return output;
     // }
-}

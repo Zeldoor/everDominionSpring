@@ -9,6 +9,7 @@ import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.TroopRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,18 +35,25 @@ public class TroopController
 
 
     @GetMapping
-    public List<Troop> getAllTroops() { return troopRepository.findAll(); }
+    public List<TroopDTO> getAllTroops() 
+    { 
+        List<TroopDTO> res = new ArrayList<>();
+        List<Troop> troops = troopRepository.findAll();
+
+        for (Troop troop : troops) 
+        {
+            res.add(new TroopDTO(troop));
+        }
+        return res;
+    }
 
 
     @GetMapping("/{id}")
-    public Troop getTroop(@PathVariable int id) 
+    public TroopDTO getTroop(@PathVariable int id) 
     {
-        Optional<Troop> troop = troopRepository.findById(id);
-        if (troop.isEmpty()) 
-        {
-            throw new IllegalArgumentException("Troop not found with ID: " + id);
-        }
-        return troop.get();
+        Troop troop = troopRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Troop not found"));
+        return new TroopDTO(troop);
     }
 
     

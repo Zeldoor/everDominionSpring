@@ -25,9 +25,10 @@ public class PlayerDTOwTroops
 
     public PlayerDTOwTroops(Player player) 
     {
-        this.nick = player.nick;
-        this.lifeEnergy = player.lifeEnergy;
-        this.gold = player.gold;
+        this.id = player.getId();
+        this.nick = player.getNick();
+        this.lifeEnergy = player.getLifeEnergy();
+        this.gold = player.getGold();
         
         initDTO(player);
     }
