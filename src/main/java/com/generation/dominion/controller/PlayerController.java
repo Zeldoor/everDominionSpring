@@ -7,6 +7,7 @@ import com.generation.dominion.dto.PlayerDTOwTroops;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.repository.PlayerRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,8 +28,18 @@ public class PlayerController
 
 
     @GetMapping
-    public List<Player> getAllPlayers() { return playerRepository.findAll(); }
+    public List<PlayerDTOwTroops> getAllPlayers() 
+    { 
+        List<PlayerDTOwTroops> res = new ArrayList<>();
+        List<Player> players = playerRepository.findAll();
 
+        for (Player player : players)
+            res.add(new PlayerDTOwTroops(player));
+        
+        return res;
+    }
+
+       
 
     @GetMapping("/{id}")
     public Player getPlayer(@PathVariable int id) 

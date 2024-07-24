@@ -26,12 +26,12 @@ public class Player
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nick;
-    private int lifeEnergy;
-    private int gold;
+    public String nick;
+    public int lifeEnergy;
+    public int gold;
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    List<Troop> troops;
+    public List<Troop> troops;
 
     public Player()
     {

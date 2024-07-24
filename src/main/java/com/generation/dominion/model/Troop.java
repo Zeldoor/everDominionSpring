@@ -28,16 +28,16 @@ public class Troop
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String className;
+    public String className;
 
     @Column(name = "min_damage")
-    protected Integer minDamage;
+    public Integer minDamage;
 
     @Column(name = "max_damage")
-    protected Integer maxDamage;
+    public Integer maxDamage;
 
     @Column(name = "health")
-    protected Integer health;
+    public Integer health;
 
     @ManyToOne
     @JoinColumn(name = "player_id",nullable = false)

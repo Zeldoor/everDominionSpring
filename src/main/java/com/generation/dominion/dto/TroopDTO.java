@@ -1,5 +1,7 @@
 package com.generation.dominion.dto;
 
+import com.generation.dominion.model.Troop;
+
 import lombok.Data;
 
 @Data
@@ -20,5 +22,14 @@ public class TroopDTO
     }
 
     public TroopDTO(){}   
+
+    public TroopDTO(Troop t)
+    {
+        this.className = t.getClassName();
+        this.minDamage = t.getMinDamage();
+        this.maxDamage = t.getMaxDamage();
+        this.health = t.getHealth();
+        this.playerId = t.getPlayer().getId();
+    }
 }
 
