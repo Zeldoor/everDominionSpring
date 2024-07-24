@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.TroopRepository;
-import com.generation.dominion.model.subclass.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,22 +21,6 @@ public class TroopController
 
     @PostMapping("/create")
     public Troop createTroop(@RequestBody Troop troop) { return troopRepository.save(troop); }
-
-
-    @PostMapping("/create/fighter")
-    public Troop createFighter(@RequestBody Fighter fighter) { return troopRepository.save(fighter); }
-
-
-    @PostMapping("/create/tank")
-    public Troop createTank(@RequestBody Tank tank) { return troopRepository.save(tank); }
-
-
-    @PostMapping("/create/healer")
-    public Troop createHealer(@RequestBody Healer healer) { return troopRepository.save(healer); }
-
-
-    @PostMapping("/create/bard")
-    public Troop createBard(@RequestBody Bard bard) { return troopRepository.save(bard); }
 
 
     @GetMapping("/all")

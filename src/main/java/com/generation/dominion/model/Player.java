@@ -1,10 +1,17 @@
 package com.generation.dominion.model;
 
+
+import java.util.List;
+
+import com.generation.dominion.dto.PlayerDTOwTroops;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +27,26 @@ public class Player
     private int id;
 
     private String nick;
-    private int lifeEnergy = 3; //life energy base è 3
-    private int gold = 100; // gold di partenza è 100
+    private int lifeEnergy;
+    private int gold;
 
-    @OneToOne
-    private Team team;
+    public Player()
+    {
+        this.gold = 100;
+        this.lifeEnergy = 3;
+    }
+
+    public Player(PlayerDTOwTroops playerDto)
+    {
+        this.nick = playerDto.getNick();
+        this.gold = playerDto.getGold();
+        this.lifeEnergy = playerDto.getLifeEnergy();
+    }
+
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<Troop> troops;
+
 
     public int getLifeEnergy() 
     {

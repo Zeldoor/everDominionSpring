@@ -22,7 +22,7 @@ public class MockService {
              player.setTroops(generateRandomTroopIds());
              player.setPlayerMinDmg(calculateTotalMinDamage(player.getTroops()));
              player.setPlayerMaxDmg(calculateTotalMaxDamage(player.getTroops()));
-             player.setTotalHealth(calculateTotalHealth(player.getTroops()));
+             player.setPlayerHealth(calculateTotalHealth(player.getTroops()));
              players.add(player);
          }
 

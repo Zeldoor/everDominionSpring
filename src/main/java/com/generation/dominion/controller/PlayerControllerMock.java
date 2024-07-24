@@ -10,10 +10,6 @@ import com.generation.dominion.dto.FightResultDTO;
 import com.generation.dominion.dto.TeamDTO;
 import com.generation.dominion.dto.TroopDTO;
 import com.generation.dominion.model.*;
-import com.generation.dominion.model.subclass.Bard;
-import com.generation.dominion.model.subclass.Fighter;
-import com.generation.dominion.model.subclass.Healer;
-import com.generation.dominion.model.subclass.Tank;
 import com.generation.dominion.repository.TroopRepository;
 
 import java.util.List;

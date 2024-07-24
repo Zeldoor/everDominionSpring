@@ -3,14 +3,11 @@ package com.generation.dominion.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.generation.dominion.dto.FightResultDTO;
+import com.generation.dominion.dto.PlayerDTOwTroops;
 import com.generation.dominion.model.Player;
-import com.generation.dominion.model.Team;
-import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.PlayerRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/player")
@@ -22,7 +19,11 @@ public class PlayerController
 
 
     @PostMapping("/create")
-    public Player createPlayer(@RequestBody Player player) { return playerRepository.save(player); }
+    public Player createPlayer(@RequestBody PlayerDTOwTroops playerDto) 
+    { 
+        Player player = new Player(playerDto);
+        return playerRepository.save(player); 
+    }
 
 
     @GetMapping("/all")
@@ -39,57 +40,54 @@ public class PlayerController
 
     // qua sotto il figth, che forse più in là avrà un controller suo
 
-    @PostMapping("/fight")
-    public FightResultDTO fight(@RequestBody List<Integer> playerIds) 
-    {
-        if (playerIds.size() != 2) 
-        {
-            throw new IllegalArgumentException("Two player IDs must be provided.");
-        
+    // @PostMapping("/fight")
+    // public FightResultDTO fight(@RequestBody List<Integer> playerIds) 
+    // {
+    //     FightResultDTO output = new FightResultDTO();
 
-        Player player1 = getPlayer(playerIds.get(0));
-        Player player2 = getPlayer(playerIds.get(1));
+    //     if (playerIds.size() != 2) 
+    //     {
+    //         throw new IllegalArgumentException("Two player IDs must be provided.");
+    //     }
 
-        Team team1 = player1.getTeam();
-        Team team2 = player2.getTeam();
+    //     Player player1 = getPlayer(playerIds.get(0));
+    //     Player player2 = getPlayer(playerIds.get(1));
 
-        FightResultDTO output = new FightResultDTO();
+    //     while (team1.isAlive() && team2.isAlive()) 
+    //     {
+    //         Troop troop1 = team1.getAliveTroop();
+    //         Troop troop2 = team2.getAliveTroop();
 
-        while (team1.isAlive() && team2.isAlive()) 
-        {
-            Troop troop1 = team1.getAliveTroop();
-            Troop troop2 = team2.getAliveTroop();
+    //         if (troop1.attack(troop2)) 
+    //         {
+    //             if (troop2.isDead()) 
+    //             {
+    //                 troop2 = team2.getAliveTroop();
+    //             }
+    //         }
 
-            if (troop1.attack(troop2)) 
-            {
-                if (troop2.isDead()) 
-                {
-                    troop2 = team2.getAliveTroop();
-                }
-            }
+    //         if (troop2 != null && troop2.attack(troop1)) 
+    //         {
+    //             if (troop1.isDead()) 
+    //             {
+    //                 troop1 = team1.getAliveTroop();
+    //             }
+    //         }
 
-            if (troop2 != null && troop2.attack(troop1)) 
-            {
-                if (troop1.isDead()) 
-                {
-                    troop1 = team1.getAliveTroop();
-                }
-            }
+    //         team1.performSpecialActions(troop1);
+    //         team2.performSpecialActions(troop2);
+    //     }
 
-            team1.performSpecialActions(troop1);
-            team2.performSpecialActions(troop2);
-        }
+    //     if (team1.isAlive()) 
+    //     {
+    //         output.setResult("Player " + player1.getNick() + " Won");
+    //     } else if (team2.isAlive()) 
+    //     {
+    //         output.setResult("Player " + player2.getNick() + " Won");
+    //     } else {
+    //         output.setResult("Draw");
+    //     }
 
-        if (team1.isAlive()) 
-        {
-            output.setResult("Player " + player1.getNick() + " Won");
-        } else if (team2.isAlive()) 
-        {
-            output.setResult("Player " + player2.getNick() + " Won");
-        } else {
-            output.setResult("Draw");
-        }
-
-        return output;
-    }
+    //     return output;
+    // }
 }

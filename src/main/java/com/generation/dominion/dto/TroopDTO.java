@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class TroopDTO 
 {
+    public String className;
     public String  role;
     public Integer minimumDamage;
     public Integer maximumDamage;
