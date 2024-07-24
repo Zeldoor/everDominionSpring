@@ -9,6 +9,7 @@ public class TroopDTO
     public Integer minimumDamage;
     public Integer maximumDamage;
     public Integer health; 
+    public Integer playerId;
 
     public TroopDTO(String className, Integer minimumDamage, Integer maximumDamage, Integer health) 
     {

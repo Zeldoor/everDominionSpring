@@ -18,7 +18,7 @@ public class PlayerController
     private PlayerRepository playerRepository;
 
 
-    @PostMapping("/create")
+    @PostMapping
     public Player createPlayer(@RequestBody PlayerDTOwTroops playerDto) 
     { 
         Player player = new Player(playerDto);
@@ -26,7 +26,7 @@ public class PlayerController
     }
 
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Player> getAllPlayers() { return playerRepository.findAll(); }
 
 

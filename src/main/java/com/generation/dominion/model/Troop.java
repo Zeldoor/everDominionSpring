@@ -39,6 +39,7 @@ public class Troop
     @Column(name = "health")
     protected Integer health;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "player_id",nullable = false)
     @JsonIgnore
@@ -60,6 +61,15 @@ public class Troop
         this.minDamage = dto.getMinimumDamage();
         this.maxDamage = dto.getMaximumDamage();
         this.health = dto.getHealth();
+    }
+
+    public Troop(TroopDTO dto, Player player) 
+    {
+        this.className = dto.getClassName();
+        this.minDamage = dto.getMinimumDamage();
+        this.maxDamage = dto.getMaximumDamage();
+        this.health = dto.getHealth();
+        this.player = player;
     }
 
     public boolean attack(Troop enemy) 

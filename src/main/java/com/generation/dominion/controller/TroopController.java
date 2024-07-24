@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.dto.TroopDTO;
+import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
+import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.TroopRepository;
 
 import java.util.List;
@@ -17,16 +19,21 @@ public class TroopController
     @Autowired
     private TroopRepository troopRepository;
 
+    @Autowired
+    private PlayerRepository playerRepo;
 
-    @PostMapping("/create")
+
+    @PostMapping
     public Troop createTroop(@RequestBody TroopDTO troopDto) 
     { 
-        Troop troop = new Troop(troopDto);       
+        Player player =  playerRepo.findById(troopDto.playerId).get();
+
+        Troop troop = new Troop(troopDto, player);       
         return troopRepository.save(troop); 
     }
 
 
-    @GetMapping("/all")
+    @GetMapping
     public List<Troop> getAllTroops() { return troopRepository.findAll(); }
 
 
