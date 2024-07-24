@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.dominion.dto.FightResultDTO;
-import com.generation.dominion.dto.TeamDTO;
 import com.generation.dominion.dto.TroopDTO;
 import com.generation.dominion.model.*;
 import com.generation.dominion.repository.TroopRepository;
