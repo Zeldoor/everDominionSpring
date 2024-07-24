@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.generation.dominion.model.UserEntity;
 
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> 
+{
     Optional<UserEntity> findByUsername(String username);
+    
     Boolean existsByUsername(String username);
 }
