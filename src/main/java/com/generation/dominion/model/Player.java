@@ -20,7 +20,47 @@ public class Player
     private int id;
 
     private String nick;
+    private int lifeEnergy = 3; //life energy base è 3
+    private int gold = 100; // gold di partenza è 100
 
     @OneToOne
     private Team team;
+
+    public int getLifeEnergy() 
+    {
+        return lifeEnergy;
+    }
+
+    public void setLifeEnergy(int lifeEnergy) 
+    {
+        this.lifeEnergy = lifeEnergy;
+    }
+
+    public void loseLifeEnergy() 
+    {
+        if (this.lifeEnergy > 0) 
+        {
+            this.lifeEnergy--;
+        }
+    }
+
+    public int getGold() 
+    {
+        return gold;
+    }
+
+    public void setGold(int gold) 
+    {
+        this.gold = gold;
+    }
+
+    public void addGold(int amount) 
+    {
+        this.gold += amount;
+    }
+
+    public boolean isDead() 
+    {
+        return this.lifeEnergy == 0;
+    }
 }
