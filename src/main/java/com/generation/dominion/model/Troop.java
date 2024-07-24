@@ -39,7 +39,6 @@ public class Troop
     @Column(name = "health")
     protected Integer health;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "player_id",nullable = false)
     @JsonIgnore
