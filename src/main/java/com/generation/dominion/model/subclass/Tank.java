@@ -2,9 +2,11 @@ package com.generation.dominion.model.subclass;
 
 import com.generation.dominion.model.Troop;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("tank")
 public class Tank extends Troop
 {
     public Tank() 
