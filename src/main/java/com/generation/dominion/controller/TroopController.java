@@ -11,7 +11,6 @@ import com.generation.dominion.repository.TroopRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/troop")
