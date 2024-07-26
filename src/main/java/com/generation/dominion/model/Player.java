@@ -27,7 +27,7 @@ public class Player
     private int id;
 
     public String nick;
-    public int lifeEnergy;
+    public int stamina;
     public int gold;
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -36,19 +36,19 @@ public class Player
     public Player()
     {
         this.gold = 100;
-        this.lifeEnergy = 3;
+        this.stamina = 3;
     }
 
     public Player(PlayerDTOwTroops playerDto)
     {
         this.nick = playerDto.getNick();
         this.gold = playerDto.getGold();
-        this.lifeEnergy = playerDto.getLifeEnergy();
+        this.stamina = playerDto.getStamina();
     }
 
 
     public boolean isDead() 
     {
-        return this.lifeEnergy <= 0;
+        return this.stamina <= 0;
     }
 }
