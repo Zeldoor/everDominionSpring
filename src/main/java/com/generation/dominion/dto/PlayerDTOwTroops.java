@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.generation.dominion.model.Equipment;
+import com.generation.dominion.model.Item;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
 
@@ -22,6 +24,8 @@ public class PlayerDTOwTroops
     private int gold;
     
     private List<TroopDTO> troops = new ArrayList<>();
+    private List<Item> inventory = new ArrayList<>(10);
+    private List<Equipment> equipSlots = new ArrayList<>(3);
 
 
     public PlayerDTOwTroops(Player player) 
@@ -95,5 +99,34 @@ public class PlayerDTOwTroops
             throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
 
         return random.nextInt((this.playerMaxDmg - this.playerMinDmg) + 1) + this.playerMinDmg;
+    }
+
+    public boolean addItemToInventory(Item item) 
+    {
+        if (inventory.size() < 10) 
+        {
+            inventory.add(item);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean equipItem(Equipment equipment) 
+    {
+        if (equipSlots.size() < 3) 
+        {
+            equipSlots.add(equipment);
+            return true;
+        }
+        return false;
+    }
+
+    public void buyItem(Item item) 
+    {
+        if (gold >= item.getPrice()) 
+        {
+            gold -= item.getPrice();
+            addItemToInventory(item);
+        }
     }
 }
