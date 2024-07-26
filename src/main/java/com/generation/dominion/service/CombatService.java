@@ -13,7 +13,7 @@ public class CombatService
     {
         Integer[] loots = new Integer[2];
         Integer winBaseGold = 70;
-        Integer loseBaseGold = 40;
+        Integer loseBaseGold = 20;
 
         Integer winnerGold = (int)(Math.random()*30)+winBaseGold;
         Integer loserGold = (int)(Math.random()*20)+loseBaseGold;
@@ -38,36 +38,51 @@ public class CombatService
 
         do
         {
+            attacker.attack(defender);
             fightDtoRes.getResults().add(
-                attacker.getNick()+" ha inflitto "+attacker.attack(defender)+" danni a "+defender.getNick()
+                attacker.getNick()+" ha inflitto "+defender.getLastDmg()+" danni a "+defender.getNick()
+                );
+            fightDtoRes.getResults().add(
+                defender.getNick()+" adesso ha "+defender.getPlayerHealth()
                 );
 
+
+            ////
+
+
+            defender.attack(attacker);
             fightDtoRes.getResults().add(
-                defender.getNick()+" ha inflitto "+defender.attack(attacker)+" danni a "+attacker.getNick()
+                defender.getNick()+" ha inflitto "+attacker.getLastDmg()+" danni a "+attacker.getNick()
                 );
+            fightDtoRes.getResults().add(
+            attacker.getNick()+" adesso ha "+attacker.getPlayerHealth()
+            );
         } 
         while (attacker.isAlive() && defender.isAlive());
 
-        Integer[] loots = rewardSystem(defender, attacker);
 
         if(attacker.isDead())
         {
+            Integer[] loots = rewardSystem(defender, attacker);
+
             fightDtoRes.getResults().add(
                 defender.getNick()+" HA VINTO"
                 );
             fightDtoRes.getResults().add(
                 defender.getNick()+" VINCENDO ha guadagnato "+loots[0]+" oro, "+
-                attacker.getNick()+" PERDENDO ha guadagnato "+loots[1]+" oro"
+                attacker.getNick()+" PERDENDO ha perso "+loots[1]+" oro"
                 );
         }
         else
         {
+            Integer[] loots = rewardSystem(attacker, defender);
+
             fightDtoRes.getResults().add(
                 attacker.getNick()+" HA VINTO"
                 );
             fightDtoRes.getResults().add(
                 attacker.getNick()+" VINCENDO ha guadagnato "+loots[0]+" oro, "+
-                defender.getNick()+" PERDENDO ha guadagnato "+loots[1]+" oro"
+                defender.getNick()+" PERDENDO ha perso "+loots[1]+" oro"
                 );
         }
 

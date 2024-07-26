@@ -2,13 +2,9 @@ package com.generation.dominion.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "equipment")
-@Data
 @NoArgsConstructor
 public class Equipment extends Item 
 {
@@ -20,4 +16,16 @@ public class Equipment extends Item
         super(name, description, price);
         this.type = type;
     }
+
+
+    public String getType() 
+    {
+        return type;
+    }
+
+    public void setType(String type) 
+    {
+        this.type = type;
+    }
+    
 }

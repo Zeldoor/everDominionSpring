@@ -15,7 +15,7 @@ public class ShopController
     @Autowired
     private ShopService shopService;
 
-    @GetMapping("/items")
+    @GetMapping
     public List<Item> getShopItems() 
     {
         return shopService.getShopItems();
@@ -28,9 +28,7 @@ public class ShopController
         PlayerDTOwTroops player = fetchPlayerByName(playerName);
 
         if (player == null) 
-        {
             return "Player not found.";
-        }
 
         boolean success = shopService.buyItem(player, itemName);
         return success ? "Purchase successful!" : "Purchase failed. Not enough gold or inventory full.";
