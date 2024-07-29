@@ -1,47 +1,74 @@
 package com.generation.dominion.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.generation.dominion.dto.PlayerDTOwTroops;
-import com.generation.dominion.dto.TroopDTO;
-import com.generation.dominion.dto.PlayerDTOwStorage;
 import com.generation.dominion.model.Gear;
+import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
+import com.generation.dominion.repository.GearRepository;
+import com.generation.dominion.repository.PlayerRepository;
+import com.generation.dominion.repository.TroopRepository;
 
-import java.util.ArrayList;
+import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @Service
-public class ShopService {
+public class ShopService 
+{
+
+    @Autowired
+    private GearRepository gearRepository;
+
+    @Autowired
+    private TroopRepository troopRepository;
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
     private List<Gear> shopGears;
     private List<Troop> shopTroops;
 
-    public ShopService() {
-        shopGears = new ArrayList<>();
-        shopTroops = new ArrayList<>();
-        initMOCK();
+    @PostConstruct
+    private void init() 
+    {
+        shopGears = gearRepository.findAll();
+        shopTroops = troopRepository.findAll();
     }
 
-    private void initMOCK() {
-        shopGears.add(new Gear(200, "spada", "una spada da infilare nel culo"));
-        shopGears.add(new Gear(150, "scudo", "uno scudo da infilare nel culo"));
-
-        shopTroops.add(new Troop("figther", 6, 11, 7, 300));
-        shopTroops.add(new Troop("Tank", 5, 9, 13, 300));
-    }
-
-    public List<Gear> getShopGears() {
+    public List<Gear> getShopGears() 
+    {
         return shopGears;
     }
 
-    public List<Troop> getShopTroops() {
+    public List<Troop> getShopTroops() 
+    {
         return shopTroops;
     }
 
-    public boolean buyGear(PlayerDTOwTroops player, String itemName) {
-        for (Gear gear : shopGears) {
-            if (gear.getName().equalsIgnoreCase(itemName)) {
-                if (player.getGold() >= gear.getPrice() && player.addItemToInventory(gear)) {
-                    player.buyGear(gear);
+   @Transactional
+   public boolean buyGear(PlayerDTOwTroops playerDto, String itemName) 
+    {
+        Player player = playerRepository.findById(playerDto.getId()).orElse(null);
+        if (player == null) 
+        {
+            return false;
+        }
+
+        for (Gear gear : shopGears) 
+        {
+            if (gear.getName().equalsIgnoreCase(itemName)) 
+            {
+                if (player.getGold() >= gear.getPrice()) 
+                {
+                    player.setGold(player.getGold() - gear.getPrice());
+                    gear.setPlayer(player);
+                    player.getGear().add(gear);
+
+                    playerRepository.save(player);
+                    gearRepository.save(gear);
                     return true;
                 }
             }
@@ -49,16 +76,20 @@ public class ShopService {
         return false;
     }
 
-    public boolean buyTroop(PlayerDTOwTroops player, String troopName) {
-        for (Troop troop : shopTroops) {
-            if (troop.getClassName().equalsIgnoreCase(troopName)) {
-                if (player.getGold() >= troop.getPrice()) {
-                    player.getTroops().add(troop);
-                    player.setGold(player.getGold() - troop.getPrice());
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    // public boolean buyTroop(PlayerDTOwTroops player, String troopName, boolean addToActive) {
+    //     for (Troop troop : shopTroops) {
+    //         if (troop.getClassName().equalsIgnoreCase(troopName)) {
+    //             if (player.getGold() >= troop.getPrice()) {
+    //                 if (addToActive) {
+    //                     player.addActiveTroop(troop);
+    //                 } else {
+    //                     player.addTroopToStorage(troop);
+    //                 }
+    //                 player.setGold(player.getGold() - troop.getPrice());
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
 }

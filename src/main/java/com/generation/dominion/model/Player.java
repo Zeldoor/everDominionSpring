@@ -38,18 +38,8 @@ public class Player
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
 
-
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Troop> troopsInStorage = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
-
-
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Gear> inventory = new ArrayList<>(); // questi sono i gear attivi durante il figth
-
-
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Gear> gearInStorage = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva
-
+    private List<Gear> gear = new ArrayList<>(); // questi sono i gear attivi durante il figth
 
 
     public Player()
@@ -66,3 +56,11 @@ public class Player
     }
 
 }
+
+   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   // private List<Troop> troopsInStorage = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
+
+
+
+   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   // private List<Gear> gearInStorage = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva

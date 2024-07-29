@@ -2,12 +2,14 @@ package com.generation.dominion.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +17,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "gear")
 public class Gear 
 {
 
@@ -28,6 +29,12 @@ public class Gear
     private String name;
 
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "player_id", nullable = true)
+    @JsonIgnore
+    Player player;
+    
 
     public Gear() {}
 
@@ -45,9 +52,5 @@ public class Gear
         this.name = name;
         this.description = description;
     }
-
-    /*
-     * Questa è attualmente la classe Gear
-     */
 
 }

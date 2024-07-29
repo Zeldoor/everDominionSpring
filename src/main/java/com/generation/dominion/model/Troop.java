@@ -39,7 +39,7 @@ public class Troop
     public Integer health;
 
     @ManyToOne
-    @JoinColumn(name = "player_id",nullable = false)
+    @JoinColumn(name = "player_id",nullable = true)
     @JsonIgnore
     Player player;
 

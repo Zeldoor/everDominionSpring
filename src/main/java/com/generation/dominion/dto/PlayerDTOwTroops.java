@@ -60,9 +60,9 @@ public class PlayerDTOwTroops
             this.playerMaxDmg = 1;
             this.playerHealth = 1;
         }
-        if(player.getInventory().size() != 0) 
+        if(player.getGear().size() != 0) 
         {
-            this.activeGears.addAll(player.getInventory());
+            this.activeGears.addAll(player.getGear());
         }
     }
 
@@ -79,6 +79,10 @@ public class PlayerDTOwTroops
         this.gold -= gear.getPrice();
     }
    
+    public boolean addActiveTroop(Troop troop) 
+    {
+        return this.troops.add(new TroopDTO(troop));
+    }
     
     public void attack(PlayerDTOwTroops enemy) 
     {
@@ -125,6 +129,8 @@ public class PlayerDTOwTroops
 
         return (int)(((Math.random() * diff)+1)+this.playerMinDmg);
     }
+
+
 
     // AGGIUNGERE METODO CHE USI I GEAR ATTIVI DURANTE IL FIGTH
     // Da riga 63 a riga 66 c'è scritto l'if per vedere i gear equipaggiati nell'inventario

@@ -1,52 +1,63 @@
-package com.generation.dominion.dto;
+// package com.generation.dominion.dto;
 
-import lombok.Data;
+// import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import com.generation.dominion.model.Gear;
-import com.generation.dominion.model.Player;
-import com.generation.dominion.model.Troop;
+// import com.generation.dominion.model.Gear;
+// import com.generation.dominion.model.Player;
+// import com.generation.dominion.model.Troop;
 
-@Data
-public class PlayerDTOwStorage {
-    //INFO
-    private int id;
-    private String nick;
-    private int stamina;
-    private int gold;
+// @Data
+// public class PlayerDTOwStorage {
+//     //INFO
+//     private int id;
+//     private String nick;
+//     private int stamina;
+//     private int gold;
 
-    //RISORSE
-    private List<TroopDTO> troopsInStorage = new ArrayList<>();
-    private List<Gear> gearInStorage = new ArrayList<>();
+//     //RISORSE
+//     private List<TroopDTO> troopsInStorage = new ArrayList<>();
+//     private List<Gear> gearInStorage = new ArrayList<>();
 
-    //COSTRUTTORI
+//     //COSTRUTTORI
 
-    public PlayerDTOwStorage() {}
+//     public PlayerDTOwStorage() {}
 
-    public PlayerDTOwStorage(Player player) {
-        this.id = player.getId();
-        this.nick = player.getNick();
-        this.stamina = player.getStamina();
-        this.gold = player.getGold();
+//     public PlayerDTOwStorage(Player player) {
+//         this.id = player.getId();
+//         this.nick = player.getNick();
+//         this.stamina = player.getStamina();
+//         this.gold = player.getGold();
         
-        initDTO(player);
-    }
+//         initDTO(player);
+//     }
 
-    private void initDTO(Player player) {
-        if(player.getTroopsInStorage().size() != 0) {
-            for (Troop troop : player.getTroopsInStorage()) {
-                TroopDTO dto = new TroopDTO(troop);
-                this.troopsInStorage.add(dto);
-            }
-        }
 
-        if(player.getGearInStorage().size() != 0) {
-            this.gearInStorage.addAll(player.getGearInStorage());
-        }
-    }
-}
+//     //METODI
+//     private void initDTO(Player player) 
+//     {
+//         if(player.getTroopsInStorage().size() != 0) 
+//         {
+//             for (Troop troop : player.getTroopsInStorage()) 
+//             {
+//                 TroopDTO dto = new TroopDTO(troop);
+//                 this.troopsInStorage.add(dto);
+//             }
+//         }
+
+//         if(player.getGearInStorage().size() != 0) 
+//         {
+//             this.gearInStorage.addAll(player.getGearInStorage());
+//         }
+//     }
+    
+//     public boolean addTroopToStorage(Troop troop) 
+//     {
+//         return this.troopsInStorage.add(new TroopDTO(troop));
+//     }
+// }
 /*
  * Per ora ho fatto un DTO a parte per vedere il player con ciò che non ha equipaggiato
  * Si può modificare più avanti per metterlo nel PlayerDTOwTroops ma sembrava troppo un mappazzone
