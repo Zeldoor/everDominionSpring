@@ -23,10 +23,8 @@ public class CombatService
         winner.addGold(winnerGold); //chi vince, 70+(0-30)
         loser.addGold(loserGold);  //chi perde, 40+(0-20) 
 
-        loser.loseLifeEnergy();
-        if (loser.isDead()) 
-            System.out.println(loser.getNick() + " has died and can no longer play the game.");
-
+        loser.loseStamina();
+        
         return loots;
     }
 
@@ -43,7 +41,7 @@ public class CombatService
                 attacker.getNick()+" ha inflitto "+defender.getLastDmg()+" danni a "+defender.getNick()
                 );
             fightDtoRes.getResults().add(
-                defender.getNick()+" adesso ha "+defender.getPlayerHealth()
+                defender.getNick()+" ha "+defender.getPlayerHealth()+" HP"
                 );
 
 
@@ -55,7 +53,7 @@ public class CombatService
                 defender.getNick()+" ha inflitto "+attacker.getLastDmg()+" danni a "+attacker.getNick()
                 );
             fightDtoRes.getResults().add(
-            attacker.getNick()+" adesso ha "+attacker.getPlayerHealth()
+            attacker.getNick()+" ha "+attacker.getPlayerHealth()+" HP"
             );
         } 
         while (attacker.isAlive() && defender.isAlive());
@@ -66,11 +64,10 @@ public class CombatService
             Integer[] loots = rewardSystem(defender, attacker);
 
             fightDtoRes.getResults().add(
-                defender.getNick()+" HA VINTO"
+                defender.getNick()+" ha VINTO "+loots[0]+" oro"
                 );
             fightDtoRes.getResults().add(
-                defender.getNick()+" VINCENDO ha guadagnato "+loots[0]+" oro, "+
-                attacker.getNick()+" PERDENDO ha perso "+loots[1]+" oro"
+                attacker.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
         }
         else
@@ -78,11 +75,10 @@ public class CombatService
             Integer[] loots = rewardSystem(attacker, defender);
 
             fightDtoRes.getResults().add(
-                attacker.getNick()+" HA VINTO"
+                attacker.getNick()+" ha VINTO "+loots[0]+" oro"
                 );
             fightDtoRes.getResults().add(
-                attacker.getNick()+" VINCENDO ha guadagnato "+loots[0]+" oro, "+
-                defender.getNick()+" PERDENDO ha perso "+loots[1]+" oro"
+                defender.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
         }
 
