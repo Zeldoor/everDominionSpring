@@ -1,22 +1,13 @@
 package com.generation.dominion.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
 public class FightResultDTO 
 {
-    private String result;
-
-
-    public String getResult() 
-    {
-        return result;
-    }
-
-
-
-    public void setResult(String result) 
-    {
-        this.result = result;
-    }
+    private PlayerDTOwTroops attacker;
+    private PlayerDTOwTroops defender;
+    private List<String> results;
 }

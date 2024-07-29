@@ -1,27 +1,94 @@
 package com.generation.dominion.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.generation.dominion.repository.PlayerRepository;
-import com.generation.dominion.model.Player;
+
+import com.generation.dominion.dto.FightResultDTO;
+import com.generation.dominion.dto.PlayerDTOwTroops;
 
 @Service
-public class CombatService {
-    @Autowired
-    private PlayerRepository playerRepository;
+public class CombatService 
+{
 
-    public void handleCombat(Player winner, Player loser) 
+    public Integer[] rewardSystem(PlayerDTOwTroops winner, PlayerDTOwTroops loser) 
     {
-        winner.addGold((int)(Math.random()*30)+70); //chi vince, 70+(0-30)
-        loser.addGold((int)(Math.random()*20)+50);  //chi perde, 50+(0-20) gold
+        Integer[] loots = new Integer[2];
+        Integer winBaseGold = 70;
+        Integer loseBaseGold = 20;
+
+        Integer winnerGold = (int)(Math.random()*30)+winBaseGold;
+        Integer loserGold = (int)(Math.random()*20)+loseBaseGold;
+
+        loots[0] = winnerGold;
+        loots[1] = loserGold;
+        winner.addGold(winnerGold); //chi vince, 70+(0-30)
+        loser.addGold(loserGold);  //chi perde, 40+(0-20) 
 
         loser.loseLifeEnergy();
-        if (loser.isDead()) {
+        if (loser.isDead()) 
             System.out.println(loser.getNick() + " has died and can no longer play the game.");
-            // altra possibile logica da implementare in futuro
+
+        return loots;
+    }
+
+    public FightResultDTO fightSystem(FightResultDTO FightDto)
+    {
+        FightResultDTO fightDtoRes = FightDto;
+        PlayerDTOwTroops attacker = fightDtoRes.getAttacker();
+        PlayerDTOwTroops defender = fightDtoRes.getDefender();
+
+        do
+        {
+            attacker.attack(defender);
+            fightDtoRes.getResults().add(
+                attacker.getNick()+" ha inflitto "+defender.getLastDmg()+" danni a "+defender.getNick()
+                );
+            fightDtoRes.getResults().add(
+                defender.getNick()+" adesso ha "+defender.getPlayerHealth()
+                );
+
+
+            ////
+
+
+            defender.attack(attacker);
+            fightDtoRes.getResults().add(
+                defender.getNick()+" ha inflitto "+attacker.getLastDmg()+" danni a "+attacker.getNick()
+                );
+            fightDtoRes.getResults().add(
+            attacker.getNick()+" adesso ha "+attacker.getPlayerHealth()
+            );
+        } 
+        while (attacker.isAlive() && defender.isAlive());
+
+
+        if(attacker.isDead())
+        {
+            Integer[] loots = rewardSystem(defender, attacker);
+
+            fightDtoRes.getResults().add(
+                defender.getNick()+" HA VINTO"
+                );
+            fightDtoRes.getResults().add(
+                defender.getNick()+" VINCENDO ha guadagnato "+loots[0]+" oro, "+
+                attacker.getNick()+" PERDENDO ha perso "+loots[1]+" oro"
+                );
+        }
+        else
+        {
+            Integer[] loots = rewardSystem(attacker, defender);
+
+            fightDtoRes.getResults().add(
+                attacker.getNick()+" HA VINTO"
+                );
+            fightDtoRes.getResults().add(
+                attacker.getNick()+" VINCENDO ha guadagnato "+loots[0]+" oro, "+
+                defender.getNick()+" PERDENDO ha perso "+loots[1]+" oro"
+                );
         }
 
-        playerRepository.save(winner);
-        playerRepository.save(loser);
+        fightDtoRes.setAttacker(attacker);
+        fightDtoRes.setDefender(defender);
+
+        return fightDtoRes;
     }
 }

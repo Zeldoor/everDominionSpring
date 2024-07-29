@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class TroopDTO 
+
 {
     public Integer id;
     public String className;
@@ -34,4 +35,3 @@ public class TroopDTO
         this.playerId = t.getPlayer().getId();
     }
 }
-
