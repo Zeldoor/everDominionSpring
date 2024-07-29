@@ -110,7 +110,7 @@ public class PlayerDTOwTroops
         this.gold += amount;
     }
 
-    public boolean loseLifeEnergy() 
+    public boolean loseStamina() 
     {
         if (this.stamina > 0) 
         {
