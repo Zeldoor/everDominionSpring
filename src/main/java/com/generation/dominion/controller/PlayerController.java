@@ -44,11 +44,15 @@ public class PlayerController
         return res;
     }
 
+
     @GetMapping("/{id}")
-    public Player getPlayer(@PathVariable int id) 
+    public PlayerDTOwTroops getPlayer(@PathVariable int id) 
     {
-        return playerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Player not found")); 
+        Player player = playerRepository.findById(id)
+                            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+        return new PlayerDTOwTroops(player);
     }
+
 
     @PostMapping("/fight")
     public FightResultDTO getPlayer(@RequestBody FightResultDTO dto) 
@@ -60,59 +64,4 @@ public class PlayerController
 
         return fightRes; 
     }
-
-
-
-    // qua sotto il figth, che forse più in là avrà un controller suo
-
-    // @PostMapping("/fight")
-    // public FightResultDTO fight(@RequestBody List<Integer> playerIds) 
-    // {
-    //     FightResultDTO output = new FightResultDTO();
-
-    //     if (playerIds.size() != 2) 
-    //     {
-    //         throw new IllegalArgumentException("Two player IDs must be provided.");
-    //     }
-
-    //     Player player1 = getPlayer(playerIds.get(0));
-    //     Player player2 = getPlayer(playerIds.get(1));
-
-    //     while (team1.isAlive() && team2.isAlive()) 
-    //     {
-    //         Troop troop1 = team1.getAliveTroop();
-    //         Troop troop2 = team2.getAliveTroop();
-
-    //         if (troop1.attack(troop2)) 
-    //         {
-    //             if (troop2.isDead()) 
-    //             {
-    //                 troop2 = team2.getAliveTroop();
-    //             }
-    //         }
-
-    //         if (troop2 != null && troop2.attack(troop1)) 
-    //         {
-    //             if (troop1.isDead()) 
-    //             {
-    //                 troop1 = team1.getAliveTroop();
-    //             }
-    //         }
-
-    //         team1.performSpecialActions(troop1);
-    //         team2.performSpecialActions(troop2);
-    //     }
-
-    //     if (team1.isAlive()) 
-    //     {
-    //         output.setResult("Player " + player1.getNick() + " Won");
-    //     } else if (team2.isAlive()) 
-    //     {
-    //         output.setResult("Player " + player2.getNick() + " Won");
-    //     } else {
-    //         output.setResult("Draw");
-    //     }
-
-    //     return output;
-    // }
 }

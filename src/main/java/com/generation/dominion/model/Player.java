@@ -1,6 +1,7 @@
 package com.generation.dominion.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.generation.dominion.dto.PlayerDTOwTroops;
@@ -11,6 +12,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -22,33 +26,62 @@ import lombok.Setter;
 @Table(name = "player")
 public class Player 
 {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     public String nick;
-    public int lifeEnergy;
+    public int stamina;
     public int gold;
 
+
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<Troop> troops;
+    public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable
+    (
+        name = "player_gears",
+        joinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "gear_id", referencedColumnName = "id")
+    )
+    private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
 
     public Player()
     {
         this.gold = 100;
-        this.lifeEnergy = 3;
+        this.stamina = 3;
     }
 
     public Player(PlayerDTOwTroops playerDto)
     {
         this.nick = playerDto.getNick();
         this.gold = playerDto.getGold();
-        this.lifeEnergy = playerDto.getLifeEnergy();
+        this.stamina = playerDto.getStamina();
+    }
+
+    public void buyGear(Gear gear)
+    {
+        detractGold(gear.getPrice());
+        this.gears.add(gear);
+    }
+
+    public boolean checkForBuy(Integer ammount)
+    {
+        return this.gold >= ammount;
     }
 
 
-    public boolean isDead() 
+    private void detractGold(Integer ammount)
     {
-        return this.lifeEnergy <= 0;
+        this.gold -= ammount;
     }
 }
+
+   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   // private List<Troop> troopsInStorage = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
+
+
+
+   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   // private List<Gear> gearInStorage = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva
