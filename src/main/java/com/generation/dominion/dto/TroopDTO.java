@@ -35,4 +35,3 @@ public class TroopDTO
         this.playerId = t.getPlayer().getId();
     }
 }
-

@@ -5,8 +5,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.generation.dominion.model.Equipment;
-import com.generation.dominion.model.Item;
+import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
 
@@ -27,8 +26,7 @@ public class PlayerDTOwTroops
 
     //RISORSE 
     private List<TroopDTO> troops = new ArrayList<>();
-    private List<Item> inventory = new ArrayList<>();  
-    private List<Equipment> equipSlots = new ArrayList<>();
+    private List<Gear> activeGears = new ArrayList<>();
 
     //COSTRUTTORI
 
@@ -62,11 +60,26 @@ public class PlayerDTOwTroops
             this.playerMaxDmg = 1;
             this.playerHealth = 1;
         }
+        if(player.getInventory().size() != 0) 
+        {
+            this.activeGears.addAll(player.getInventory());
+        }
     }
 
 
     //METODI
 
+    public boolean addItemToInventory(Gear gear)  //salva un gear
+    {
+        return this.activeGears.add(gear);
+    }
+
+    public void buyGear(Gear gear)  // compra un gear
+    {
+        this.gold -= gear.getPrice();
+    }
+   
+    
     public void attack(PlayerDTOwTroops enemy) 
     {
         enemy.takeDamage(randomAttackInRange());
@@ -111,37 +124,8 @@ public class PlayerDTOwTroops
         Integer diff = this.playerMaxDmg - this.playerMinDmg;
 
         return (int)(((Math.random() * diff)+1)+this.playerMinDmg);
-
-        // return random.nextInt((this.playerMaxDmg - this.playerMinDmg) + 1) + this.playerMinDmg;
     }
 
-    public boolean addItemToInventory(Item item) 
-    {
-        if (inventory.size() < 10) 
-        {
-            inventory.add(item);
-            return true;
-        }
-        
-        return false;
-    }
-
-    public boolean equipItem(Equipment equipment) 
-    {
-        if (equipSlots.size() < 3) 
-        {
-            equipSlots.add(equipment);
-            return true;
-        }
-        return false;
-    }
-
-    public void buyItem(Item item) 
-    {
-        if (gold >= item.getPrice()) 
-        {
-            gold -= item.getPrice();
-            addItemToInventory(item);
-        }
-    }
+    // AGGIUNGERE METODO CHE USI I GEAR ATTIVI DURANTE IL FIGTH
+    // Da riga 63 a riga 66 c'è scritto l'if per vedere i gear equipaggiati nell'inventario
 }

@@ -44,8 +44,6 @@ public class PlayerController
         return res;
     }
 
-       
-
 
     @GetMapping("/{id}")
     public PlayerDTOwTroops getPlayer(@PathVariable int id) 

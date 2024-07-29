@@ -42,7 +42,9 @@ public class Troop
     @JoinColumn(name = "player_id",nullable = false)
     @JsonIgnore
     Player player;
-    
+
+    @Column(name = "price")
+    public Integer price;    
 
     public Troop(){}
 
@@ -69,5 +71,18 @@ public class Troop
         this.health = dto.getHealth();
         this.player = player;
     }
+
+
+    //costruttore per shop 
+    public Troop(String className, Integer minDamage, Integer maxDamage, Integer health, Integer price) 
+    {
+        this.className = className;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
+        this.health = health;
+        this.price = price;
+    }
+
+    
 
 }

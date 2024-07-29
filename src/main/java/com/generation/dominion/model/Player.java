@@ -1,6 +1,7 @@
 package com.generation.dominion.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.generation.dominion.dto.PlayerDTOwTroops;
@@ -22,16 +23,34 @@ import lombok.Setter;
 @Table(name = "player")
 public class Player 
 {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     public String nick;
+    
     public int stamina;
+    
     public int gold;
 
+
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<Troop> troops;
+    public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
+
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Troop> troopsInStorage = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
+
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Gear> inventory = new ArrayList<>(); // questi sono i gear attivi durante il figth
+
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Gear> gearInStorage = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva
+
+
 
     public Player()
     {
@@ -46,9 +65,4 @@ public class Player
         this.stamina = playerDto.getStamina();
     }
 
-
-    public boolean isDead() 
-    {
-        return this.stamina <= 0;
-    }
 }
