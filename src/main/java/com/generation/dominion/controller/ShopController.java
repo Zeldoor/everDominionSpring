@@ -1,13 +1,14 @@
 package com.generation.dominion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.service.ShopService;
 import com.generation.dominion.dto.PlayerDTOwTroops;
 import com.generation.dominion.model.Gear;
+import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
+import com.generation.dominion.repository.PlayerRepository;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class ShopController
 {
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private PlayerRepository playerRepo;
 
     @GetMapping("/gears")
     public List<Gear> getShopGears() 
@@ -31,17 +35,13 @@ public class ShopController
     }
 
     @PostMapping("/buyGear")
-    public ResponseEntity<String> buyGear(@RequestBody PlayerDTOwTroops player, @RequestParam String itemName) 
+    public PlayerDTOwTroops buyGear(@RequestBody PlayerDTOwTroops player, @RequestParam String itemName) 
     {
-        boolean success = shopService.buyGear(player, itemName);
-        if (success) 
-        {
-            return ResponseEntity.ok("Oggetto aggiunto all'inventario");
-        } 
-        else 
-        {
-            return ResponseEntity.badRequest().body("Acquisto fallito");
-        }
+        Player p = shopService.buyGear(player, itemName);
+        
+        PlayerDTOwTroops playerDto = new PlayerDTOwTroops(p);
+
+        return playerDto;
     }
 }
 

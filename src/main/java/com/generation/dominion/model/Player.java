@@ -12,6 +12,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -27,20 +30,22 @@ public class Player
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     public String nick;
-    
     public int stamina;
-    
     public int gold;
 
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
 
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Gear> gear = new ArrayList<>(); // questi sono i gear attivi durante il figth
-
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable
+    (
+        name = "player_gears",
+        joinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "gear_id", referencedColumnName = "id")
+    )
+    private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
 
     public Player()
     {
@@ -55,6 +60,22 @@ public class Player
         this.stamina = playerDto.getStamina();
     }
 
+    public void buyGear(Gear gear)
+    {
+        detractGold(gear.getPrice());
+        this.gears.add(gear);
+    }
+
+    public boolean checkForBuy(Integer ammount)
+    {
+        return this.gold >= ammount;
+    }
+
+
+    private void detractGold(Integer ammount)
+    {
+        this.gold -= ammount;
+    }
 }
 
    // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

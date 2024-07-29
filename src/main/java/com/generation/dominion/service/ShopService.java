@@ -11,7 +11,6 @@ import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.TroopRepository;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -48,32 +47,29 @@ public class ShopService
         return shopTroops;
     }
 
-   @Transactional
-   public boolean buyGear(PlayerDTOwTroops playerDto, String itemName) 
+    public Player buyGear(PlayerDTOwTroops playerDto, String itemName) 
     {
         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
         if (player == null) 
         {
-            return false;
+            throw new RuntimeException("Player non trovato");
         }
 
         for (Gear gear : shopGears) 
         {
             if (gear.getName().equalsIgnoreCase(itemName)) 
             {
-                if (player.getGold() >= gear.getPrice()) 
+                if (player.checkForBuy(gear.getPrice())) 
                 {
-                    player.setGold(player.getGold() - gear.getPrice());
-                    gear.setPlayer(player);
-                    player.getGear().add(gear);
-
+                    player.buyGear(gear);
                     playerRepository.save(player);
-                    gearRepository.save(gear);
-                    return true;
+
+                    return player;
                 }
             }
         }
-        return false;
+
+        throw new RuntimeException("Oro insufficente");
     }
 
     // public boolean buyTroop(PlayerDTOwTroops player, String troopName, boolean addToActive) {

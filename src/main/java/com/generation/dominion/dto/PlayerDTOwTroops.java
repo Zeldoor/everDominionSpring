@@ -60,9 +60,9 @@ public class PlayerDTOwTroops
             this.playerMaxDmg = 1;
             this.playerHealth = 1;
         }
-        if(player.getGear().size() != 0) 
+        if(player.getGears().size() != 0) 
         {
-            this.activeGears.addAll(player.getGear());
+            this.activeGears.addAll(player.getGears());
         }
     }
 
