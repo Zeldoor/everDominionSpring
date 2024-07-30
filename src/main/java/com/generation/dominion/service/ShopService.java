@@ -78,7 +78,8 @@ public class ShopService
 
 
 
-    public boolean buyTroop(PlayerDTOwTroops playerDto, String troopName, boolean addToActive) {
+    public boolean buyTroop(PlayerDTOwTroops playerDto, String troopName, boolean addToActive) 
+    {
         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
         if (player == null || player.getGold() < 300) {
             return false; // Giocatore non trovato o non abbastanza oro

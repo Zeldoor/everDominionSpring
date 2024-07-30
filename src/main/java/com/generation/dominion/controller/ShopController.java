@@ -8,6 +8,7 @@ import com.generation.dominion.dto.PlayerDTOwTroops;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
+import com.generation.dominion.repository.PlayerRepository;
 
 import java.util.List;
 
@@ -53,10 +54,13 @@ public class ShopController
     public PlayerDTOwTroops buyTroop(@RequestBody PlayerDTOwTroops player, @RequestParam String troopName, @RequestParam boolean addToActive) 
     {
         boolean success = shopService.buyTroop(player, troopName, addToActive);
-        if (success) {
+        if (success) 
+        {
             Player updatedPlayer = playerRepo.findById(player.getId()).orElse(null);
             return new PlayerDTOwTroops(updatedPlayer);
-        } else {
+        } 
+        else 
+        {
             throw new IllegalArgumentException("Failed to purchase troop. Not enough gold or invalid troop name.");
         }
     }
