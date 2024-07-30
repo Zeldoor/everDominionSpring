@@ -115,3 +115,10 @@ public class ShopService
         return true;
     }
 }
+/*
+ * Le prossime cose da fare sono: 
+ * Far si che Player possa avere massimo 6 Troop e 3 Gear durante il Fight
+ * Creare uno Storage dove vengano salvate le Troop e i Gear che Player non ha equipaggiato
+ * Salvere gli acquisti dello Shop nello Storage
+ * Creare un metodo che faccia spostare al Player le Troop e i Gear dallo Storage al Player attivo e viceversa
+ */
