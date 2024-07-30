@@ -5,12 +5,13 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
 
 @Data
-public class PlayerDTOwTroops 
+public class PlayerDTOwAll 
 {
     //INFO
     private int id;
@@ -25,14 +26,16 @@ public class PlayerDTOwTroops
     private int lastDmg;
 
     //RISORSE 
-    private List<TroopDTO> troops = new ArrayList<>();
-    private List<Gear> gears = new ArrayList<>();
+    private List<TroopDTO> activeTroops = new ArrayList<>();
+    private List<Gear> activeGears = new ArrayList<>();
+    private List<TroopDTO> storageTroops = new ArrayList<>();
+    private List<Gear> storageGears = new ArrayList<>();
 
     //COSTRUTTORI
 
-    public PlayerDTOwTroops(){}
+    public PlayerDTOwAll(){}
 
-    public PlayerDTOwTroops(Player player) 
+    public PlayerDTOwAll(Player player) 
     {
         this.id = player.getId();
         this.nick = player.getNick();
@@ -48,7 +51,7 @@ public class PlayerDTOwTroops
             for (Troop troop : player.troops) 
             {
                 TroopDTO dto = new TroopDTO(troop);
-                this.troops.add(dto);
+                this.activeTroops.add(dto);
 
                 this.playerMinDmg += troop.minDamage;
                 this.playerMaxDmg += troop.maxDamage;
@@ -60,9 +63,10 @@ public class PlayerDTOwTroops
             this.playerMaxDmg = 1;
             this.playerHealth = 1;
         }
+
         if(player.getGears().size() != 0) 
         {
-            this.gears.addAll(player.getGears());
+            this.activeGears.addAll(player.getGears());
         }
     }
 
@@ -71,7 +75,7 @@ public class PlayerDTOwTroops
 
     public boolean addItemToInventory(Gear gear)  // Questi sono i gear attivi durante il fight
     {
-        return this.gears.add(gear);
+        return this.activeGears.add(gear);
     }
 
     public void buyGear(Gear gear)  // compra un gear
@@ -81,10 +85,10 @@ public class PlayerDTOwTroops
    
     public boolean addActiveTroop(Troop troop) // Queste sono le troop attive durante il fight
     {
-        return this.troops.add(new TroopDTO(troop));
+        return this.activeTroops.add(new TroopDTO(troop));
     }
     
-    public void attack(PlayerDTOwTroops enemy) 
+    public void attack(PlayerDTOwAll enemy) 
     {
         enemy.takeDamage(randomAttackInRange());
     }
@@ -95,11 +99,13 @@ public class PlayerDTOwTroops
         this.playerHealth -= damage;
     }
 
+    @JsonIgnore
     public boolean isAlive() 
     {
         return this.playerHealth > 0;
     }
 
+    @JsonIgnore
     public boolean isDead() 
     {
         return this.playerHealth <= 0;

@@ -3,13 +3,13 @@ package com.generation.dominion.service;
 import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.FightResultDTO;
-import com.generation.dominion.dto.PlayerDTOwTroops;
+import com.generation.dominion.dto.PlayerDTOwAll;
 
 @Service
 public class CombatService 
 {
 
-    public Integer[] rewardSystem(PlayerDTOwTroops winner, PlayerDTOwTroops loser) 
+    public Integer[] rewardSystem(PlayerDTOwAll winner, PlayerDTOwAll loser) 
     {
         Integer[] loots = new Integer[2];
         Integer winBaseGold = 70;
@@ -31,8 +31,8 @@ public class CombatService
     public FightResultDTO fightSystem(FightResultDTO FightDto)
     {
         FightResultDTO fightDtoRes = FightDto;
-        PlayerDTOwTroops attacker = fightDtoRes.getAttacker();
-        PlayerDTOwTroops defender = fightDtoRes.getDefender();
+        PlayerDTOwAll attacker = fightDtoRes.getAttacker();
+        PlayerDTOwAll defender = fightDtoRes.getDefender();
 
         do
         {

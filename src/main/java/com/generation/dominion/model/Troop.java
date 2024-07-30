@@ -25,7 +25,7 @@ public class Troop
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id;                                         //NON TOCCARE
 
     public String className;
 
@@ -38,8 +38,10 @@ public class Troop
     @Column(name = "health")
     public Integer health;
 
+    public String status;
+
     @ManyToOne
-    @JoinColumn(name = "player_id",nullable = true)
+    @JoinColumn(name = "player_id", nullable = true)
     @JsonIgnore
     Player player;
 
@@ -63,6 +65,15 @@ public class Troop
         this.health = dto.getHealth();
     }
 
+    public Troop(TroopInShop troopShop) 
+    {
+        this.className = troopShop.getClassName();
+        this.minDamage = troopShop.minDamage();
+        this.maxDamage = troopShop.maxDamage();
+        this.health = troopShop.randomHealth();
+        this.price = troopShop.getPrice();
+    }
+
     public Troop(TroopDTO dto, Player player) 
     {
         this.className = dto.getClassName();
@@ -82,7 +93,4 @@ public class Troop
         this.health = health;
         this.price = price;
     }
-
-    
-
 }
