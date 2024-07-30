@@ -8,7 +8,6 @@ import com.generation.dominion.dto.PlayerDTOwTroops;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
-import com.generation.dominion.repository.PlayerRepository;
 
 import java.util.List;
 
@@ -18,9 +17,6 @@ public class ShopController
 {
     @Autowired
     private ShopService shopService;
-
-    @Autowired
-    private PlayerRepository playerRepo;
 
     @GetMapping("/gears")
     public List<Gear> getShopGears() 
