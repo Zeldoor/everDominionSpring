@@ -49,26 +49,22 @@ public class ShopService
         return shopTroops;
     }
 
-    public Player buyGear(PlayerDTO playerDto, String itemName) 
+    public PlayerDTOwAll buyGear(PlayerDTO playerDto, Integer itemID) 
     {
         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
+        Gear g = gearRepository.findById(itemID).get();
+        
         if (player == null) 
         {
             throw new RuntimeException("Player non trovato");
         }
 
-        for (Gear gear : shopGears) 
+        if (player.checkForBuy(g.getPrice())) 
         {
-            if (gear.getName().equalsIgnoreCase(itemName)) 
-            {
-                if (player.checkForBuy(gear.getPrice())) 
-                {
-                    player.buyGear(gear);
-                    playerRepository.save(player);
+            player.buyGear(g);
+            playerRepository.save(player);
 
-                    return player;
-                }
-            }
+            return new PlayerDTOwAll(player);
         }
 
         throw new RuntimeException("Oro insufficente");

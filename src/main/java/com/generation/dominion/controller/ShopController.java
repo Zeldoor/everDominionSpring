@@ -7,7 +7,6 @@ import com.generation.dominion.service.ShopService;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Gear;
-import com.generation.dominion.model.Player;
 import com.generation.dominion.model.TroopInShop;
 import java.util.List;
 
@@ -33,18 +32,16 @@ public class ShopController
     }
 
     // Compra Gear
-    @PostMapping("/buyGear")
-    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @RequestParam String itemName) 
+    @PostMapping("/gear")
+    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @RequestParam Integer GearShopId) 
     {
-        Player player = shopService.buyGear(playerDto, itemName);
-        
-        PlayerDTOwAll playerDtowTroops = new PlayerDTOwAll(player);
+        PlayerDTOwAll playerDtowTroops = shopService.buyGear(playerDto, GearShopId);
 
         return playerDtowTroops;
     }
 
     // Compra Troop
-    @PostMapping("/buy/troop")
+    @PostMapping("/troop")
     public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @RequestParam Integer TroopShopId) 
     {
         PlayerDTOwAll playerDto = shopService.buyTroop(player, TroopShopId);

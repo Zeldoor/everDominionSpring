@@ -5,7 +5,8 @@ import com.generation.dominion.model.Player;
 import lombok.Data;
 
 @Data
-public class AuthResponseDto {
+public class AuthResponseDto 
+{
     private String accessToken;
     private String role;
     private PlayerDTOwAll playerDto;

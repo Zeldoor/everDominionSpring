@@ -17,12 +17,8 @@ public class Gear
     private Integer id;
 
     private Integer price;
-
     private String name;
-
     private String description;
-
-    private String status;
 
     public Gear() {}
 
