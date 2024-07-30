@@ -32,6 +32,5 @@ public class TroopDTO
         this.minDamage = t.getMinDamage();
         this.maxDamage = t.getMaxDamage();
         this.health = t.getHealth();
-        this.playerId = t.getPlayer().getId();
     }
 }

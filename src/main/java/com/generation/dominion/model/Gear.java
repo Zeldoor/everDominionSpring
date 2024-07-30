@@ -22,6 +22,8 @@ public class Gear
 
     private String description;
 
+    private String status;
+
     public Gear() {}
 
     public Gear(Integer id, Integer price, String name, String description) 

@@ -8,13 +8,13 @@ import lombok.Data;
 public class AuthResponseDto {
     private String accessToken;
     private String role;
-    private PlayerDTOwTroops playerDto;
+    private PlayerDTOwAll playerDto;
     private String tokenType = "Bearer ";
 
     public AuthResponseDto(String accessToken, String role, Player player) 
     {
         this.accessToken = accessToken;
-        this.playerDto = new PlayerDTOwTroops(player);
+        this.playerDto = new PlayerDTOwAll(player);
         this.role = role;
     }
 }

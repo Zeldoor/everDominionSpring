@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.service.ShopService;
-import com.generation.dominion.dto.PlayerDTOwTroops;
+import com.generation.dominion.dto.PlayerDTO;
+import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
-import com.generation.dominion.model.Troop;
-import com.generation.dominion.repository.PlayerRepository;
-
+import com.generation.dominion.model.TroopInShop;
 import java.util.List;
 
 @RestController
@@ -18,10 +17,6 @@ public class ShopController
 {
     @Autowired
     private ShopService shopService;
-
-    @Autowired
-    private PlayerRepository playerRepo;
-
 
     // Mostra i Gear nello Shop
     @GetMapping("/gears")
@@ -32,38 +27,28 @@ public class ShopController
 
     // Ehm... si può cancellare?
     @GetMapping("/troops")
-    public List<Troop> getShopTroops() 
+    public List<TroopInShop> getShopTroops() 
     {
         return shopService.getShopTroops();
     }
 
     // Compra Gear
     @PostMapping("/buyGear")
-    public PlayerDTOwTroops buyGear(@RequestBody PlayerDTOwTroops player, @RequestParam String itemName) 
+    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @RequestParam String itemName) 
     {
-        Player p = shopService.buyGear(player, itemName);
+        Player player = shopService.buyGear(playerDto, itemName);
         
-        PlayerDTOwTroops playerDto = new PlayerDTOwTroops(p);
+        PlayerDTOwAll playerDtowTroops = new PlayerDTOwAll(player);
 
-        return playerDto;
+        return playerDtowTroops;
     }
-
 
     // Compra Troop
     @PostMapping("/buy/troop")
-    public PlayerDTOwTroops buyTroop(@RequestBody PlayerDTOwTroops player, @RequestParam String troopName, @RequestParam boolean addToActive) 
+    public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @RequestParam Integer TroopShopId) 
     {
-        boolean success = shopService.buyTroop(player, troopName, addToActive);
-        if (success) 
-        {
-            Player updatedPlayer = playerRepo.findById(player.getId()).orElse(null);
-            return new PlayerDTOwTroops(updatedPlayer);
-        } 
-        else 
-        {
-            throw new IllegalArgumentException("Failed to purchase troop. Not enough gold or invalid troop name.");
-        }
+        PlayerDTOwAll playerDto = shopService.buyTroop(player, TroopShopId);
+
+        return playerDto;
     }
-
-
 }

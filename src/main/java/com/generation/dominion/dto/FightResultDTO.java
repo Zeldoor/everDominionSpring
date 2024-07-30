@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class FightResultDTO 
 {
-    private PlayerDTOwTroops attacker;
-    private PlayerDTOwTroops defender;
+    private PlayerDTOwAll attacker;
+    private PlayerDTOwAll defender;
     private List<String> results;
 }
