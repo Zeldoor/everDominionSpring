@@ -69,6 +69,7 @@ public class PlayerDTOwTroops
         if(player.getGears().size() != 0) 
         {
             this.gears.addAll(player.getGears());
+            this.gears.addAll(player.getGears());
         }
     }
 
@@ -77,6 +78,7 @@ public class PlayerDTOwTroops
 
     public boolean addItemToInventory(Gear gear)  // Questi sono i gear attivi durante il fight
     {
+        return this.gears.add(gear);
         return this.gears.add(gear);
     }
 

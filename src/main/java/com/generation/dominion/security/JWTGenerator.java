@@ -58,7 +58,8 @@ public class JWTGenerator
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getRolesFromJWT(String token) {
+	public List<String> getRolesFromJWT(String token) 
+	{
         Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         return claims.get("roles", List.class);
     }
