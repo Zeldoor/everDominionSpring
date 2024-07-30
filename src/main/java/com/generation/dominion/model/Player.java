@@ -30,12 +30,6 @@ public class Player
     public int stamina;
     public int gold;
 
-    // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Troop> StorageTroops = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
-
-   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Gear> StorageGears = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva
-
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
 
@@ -47,9 +41,6 @@ public class Player
         inverseJoinColumns = @JoinColumn(name = "gear_id", referencedColumnName = "id")
     )
     private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
-
-    // private List<Troop> storageTroops = new ArrayList<>();
-    // private List<Gear> storageGears = new ArrayList<>();
 
     public Player()
     {
@@ -70,20 +61,17 @@ public class Player
 
         if(this.gears.size() < 6)
             this.gears.add(gear);
-    //     else
-    //         this.storageGears.add(gear);
     }
 
     public void buyTroop(Troop troop)
     {
         detractGold(troop.getPrice());
 
-        if(this.troops.size() < 6)
-            this.troops.add(troop);
-        // else
-        //     this.storageTroops.add(troop);
-        
+        troop.setPlayer(this);
+        troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
+        this.troops.add(troop);
     }
+    
 
     public boolean checkForBuy(Integer ammount)
     {

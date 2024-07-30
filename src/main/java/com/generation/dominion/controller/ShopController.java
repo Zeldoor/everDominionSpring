@@ -7,14 +7,7 @@ import com.generation.dominion.service.ShopService;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Gear;
-<<<<<<< HEAD
-import com.generation.dominion.model.Player;
-import com.generation.dominion.model.Troop;
-import com.generation.dominion.repository.PlayerRepository;
-
-=======
 import com.generation.dominion.model.TroopInShop;
->>>>>>> ec535bc97edc71f47b9e058259bfd2f9525ce495
 import java.util.List;
 
 @RestController
@@ -24,13 +17,6 @@ public class ShopController
     @Autowired
     private ShopService shopService;
 
-<<<<<<< HEAD
-    @Autowired
-    private PlayerRepository playerRepo;
-
-
-=======
->>>>>>> ec535bc97edc71f47b9e058259bfd2f9525ce495
     // Mostra i Gear nello Shop
     @GetMapping("/gears")
     public List<Gear> getShopGears() 
