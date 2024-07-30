@@ -79,7 +79,6 @@ public class PlayerDTOwTroops
     public boolean addItemToInventory(Gear gear)  // Questi sono i gear attivi durante il fight
     {
         return this.gears.add(gear);
-        return this.gears.add(gear);
     }
 
     public void buyGear(Gear gear)  // compra un gear
