@@ -22,18 +22,22 @@ public class ShopController
     @Autowired
     private PlayerRepository playerRepo;
 
+
+    // Mostra i Gear nello Shop
     @GetMapping("/gears")
     public List<Gear> getShopGears() 
     {
         return shopService.getShopGears();
     }
 
+    // Ehm... si può cancellare?
     @GetMapping("/troops")
     public List<Troop> getShopTroops() 
     {
         return shopService.getShopTroops();
     }
 
+    // Compra Gear
     @PostMapping("/buyGear")
     public PlayerDTOwTroops buyGear(@RequestBody PlayerDTOwTroops player, @RequestParam String itemName) 
     {
@@ -43,42 +47,23 @@ public class ShopController
 
         return playerDto;
     }
+
+
+    // Compra Troop
+    @PostMapping("/buy/troop")
+    public PlayerDTOwTroops buyTroop(@RequestBody PlayerDTOwTroops player, @RequestParam String troopName, @RequestParam boolean addToActive) 
+    {
+        boolean success = shopService.buyTroop(player, troopName, addToActive);
+        if (success) 
+        {
+            Player updatedPlayer = playerRepo.findById(player.getId()).orElse(null);
+            return new PlayerDTOwTroops(updatedPlayer);
+        } 
+        else 
+        {
+            throw new IllegalArgumentException("Failed to purchase troop. Not enough gold or invalid troop name.");
+        }
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
-    // @PostMapping("/buy/gear")
-    // public String buyGear(@RequestParam String playerName, @RequestParam String itemName) {
-    //     // metodo provvisorio per simulare fetch di un player dal nome
-    //     PlayerDTOwTroops player = fetchPlayerByName(playerName);
-
-    //     if (player == null)
-    //         return "Player not found.";
-
-    //     boolean success = shopService.buyGear(player, itemName);
-    //     return success ? "Purchase successful!" : "Purchase failed. Not enough gold or inventory full.";
-    // }
-
-    // @PostMapping("/buy/troop")
-    // public String buyTroop(@RequestParam String playerName, @RequestParam String troopName, @RequestParam boolean addToActive) {
-    //     // metodo provvisorio per simulare fetch di un player dal nome
-    //     PlayerDTOwTroops player = fetchPlayerByName(playerName);
-
-    //     if (player == null)
-    //         return "Player not found.";
-
-    //     boolean success = shopService.buyTroop(player, troopName, addToActive);
-    //     return success ? "Purchase successful!" : "Purchase failed. Not enough gold.";
-    // }
-
-    // // metodo provvisorio per simulare fetch di un player dal nome
-    // private PlayerDTOwTroops fetchPlayerByName(String playerName) {
-    //     // implementa fetch del player qua in futuro
-    //     return new PlayerDTOwTroops(); // Placeholder
-    // }

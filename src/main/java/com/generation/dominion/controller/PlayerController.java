@@ -24,6 +24,7 @@ public class PlayerController
     private CombatService combatServ;
 
 
+    // Crea un nuovo Player
     @PostMapping
     public Player createPlayer(@RequestBody PlayerDTOwTroops playerDto) 
     { 
@@ -32,6 +33,7 @@ public class PlayerController
     }
 
 
+    //Legge tutti i Player con tutte le loro Troop e tutti i loro Gear
     @GetMapping
     public List<PlayerDTOwTroops> getAllPlayers() 
     { 
@@ -45,6 +47,7 @@ public class PlayerController
     }
 
 
+    // Legge un Player con tutte le sue Troop e tutti i suoi Gear
     @GetMapping("/{id}")
     public PlayerDTOwTroops getPlayer(@PathVariable int id) 
     {
@@ -54,6 +57,7 @@ public class PlayerController
     }
 
 
+    // test di combattimento
     @PostMapping("/fight")
     public FightResultDTO getPlayer(@RequestBody FightResultDTO dto) 
     {

@@ -26,7 +26,7 @@ public class PlayerDTOwTroops
 
     //RISORSE 
     private List<TroopDTO> troops = new ArrayList<>();
-    private List<Gear> activeGears = new ArrayList<>();
+    private List<Gear> gears = new ArrayList<>();
 
     //COSTRUTTORI
 
@@ -62,16 +62,16 @@ public class PlayerDTOwTroops
         }
         if(player.getGears().size() != 0) 
         {
-            this.activeGears.addAll(player.getGears());
+            this.gears.addAll(player.getGears());
         }
     }
 
 
     //METODI
 
-    public boolean addItemToInventory(Gear gear)  //salva un gear
+    public boolean addItemToInventory(Gear gear)  // Questi sono i gear attivi durante il fight
     {
-        return this.activeGears.add(gear);
+        return this.gears.add(gear);
     }
 
     public void buyGear(Gear gear)  // compra un gear
@@ -79,7 +79,7 @@ public class PlayerDTOwTroops
         this.gold -= gear.getPrice();
     }
    
-    public boolean addActiveTroop(Troop troop) 
+    public boolean addActiveTroop(Troop troop) // Queste sono le troop attive durante il fight
     {
         return this.troops.add(new TroopDTO(troop));
     }
@@ -130,8 +130,4 @@ public class PlayerDTOwTroops
         return (int)(((Math.random() * diff)+1)+this.playerMinDmg);
     }
 
-
-
-    // AGGIUNGERE METODO CHE USI I GEAR ATTIVI DURANTE IL FIGTH
-    // Da riga 63 a riga 66 c'è scritto l'if per vedere i gear equipaggiati nell'inventario
 }
