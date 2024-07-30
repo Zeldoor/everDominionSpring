@@ -27,8 +27,8 @@ public class PlayerDTOwAll
 
     //RISORSE 
     private List<TroopDTO> activeTroops = new ArrayList<>();
-    private List<Gear> activeGears = new ArrayList<>();
     private List<TroopDTO> storageTroops = new ArrayList<>();
+    private List<Gear> activeGears = new ArrayList<>();
     private List<Gear> storageGears = new ArrayList<>();
 
     //COSTRUTTORI
@@ -136,7 +136,6 @@ public class PlayerDTOwAll
         return (int)(((Math.random() * diff)+1)+this.playerMinDmg);
     }
 
-    
     public void switchTroopStatus(Integer troopId) 
     {
         TroopDTO troop = activeTroops.stream().filter(t -> t.getId().equals(troopId)).findFirst().orElse(null);
@@ -169,4 +168,9 @@ public class PlayerDTOwAll
         activeTroops.add(troop);
     }
 
+    private List<TroopDTO> filterByStatus(List<Troop> troops, String status)
+    {
+        List<TroopDTO> res = troops.stream().filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
+        return res;
+    }
 }

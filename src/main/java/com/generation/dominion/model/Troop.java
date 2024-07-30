@@ -83,7 +83,6 @@ public class Troop
         this.player = player;
     }
 
-
     //costruttore per shop 
     public Troop(String className, Integer minDamage, Integer maxDamage, Integer health, Integer price) 
     {
@@ -92,5 +91,10 @@ public class Troop
         this.maxDamage = maxDamage;
         this.health = health;
         this.price = price;
+    }
+
+    public boolean isActive()
+    {
+        return this.status.equals("active");
     }
 }
