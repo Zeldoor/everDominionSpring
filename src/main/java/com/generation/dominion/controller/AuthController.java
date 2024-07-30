@@ -1,7 +1,6 @@
 package com.generation.dominion.controller;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,16 +52,14 @@ public class AuthController {
                 loginDto.getPassword()));
 
         Player player = playerRepository.findByNick(loginDto.getUsername()).get();
+        UserEntity userEntity = userRepository.findByUsername(loginDto.getUsername()).get();
 
         SecurityContextHolder.getContext().setAuthentication(user);
 
         String token = jwtGenerator.generateToken(user);
 
-        String role = user.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList()).get(0);
 
-        return new AuthResponseDto(token, role, player);
+        return new AuthResponseDto(token, userEntity, player);
     }
 
 
