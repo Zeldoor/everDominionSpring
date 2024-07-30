@@ -79,9 +79,9 @@ public class Player
 }
 
    // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Troop> troopsInStorage = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
+   // private List<Troop> StorageTroops = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
 
 
 
    // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Gear> gearInStorage = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva
+   // private List<Gear> StorageGears = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva

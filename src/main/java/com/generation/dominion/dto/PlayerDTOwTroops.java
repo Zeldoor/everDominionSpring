@@ -25,8 +25,14 @@ public class PlayerDTOwTroops
     private int lastDmg;
 
     //RISORSE 
-    private List<TroopDTO> troops = new ArrayList<>();
-    private List<Gear> activeGears = new ArrayList<>();
+    private List<TroopDTO> troops = new ArrayList<>(); //Troops attive
+    private List<Gear> gears = new ArrayList<>(); //Gears attivi
+
+    /*
+    private List<TroopDTO> StorageTroops = new ArrayList<>(); // Troops conservate
+    private List<Gear> StorageGears = new ArrayList<>(); // Gears conservati
+     */
+
 
     //COSTRUTTORI
 
@@ -62,7 +68,7 @@ public class PlayerDTOwTroops
         }
         if(player.getGears().size() != 0) 
         {
-            this.activeGears.addAll(player.getGears());
+            this.gears.addAll(player.getGears());
         }
     }
 
@@ -71,7 +77,7 @@ public class PlayerDTOwTroops
 
     public boolean addItemToInventory(Gear gear)  // Questi sono i gear attivi durante il fight
     {
-        return this.activeGears.add(gear);
+        return this.gears.add(gear);
     }
 
     public void buyGear(Gear gear)  // compra un gear
