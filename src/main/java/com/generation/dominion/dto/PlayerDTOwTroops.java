@@ -26,7 +26,7 @@ public class PlayerDTOwTroops
 
     //RISORSE 
     private List<TroopDTO> troops = new ArrayList<>();
-    private List<Gear> activeGears = new ArrayList<>();
+    private List<Gear> gears = new ArrayList<>();
 
     //COSTRUTTORI
 
@@ -62,7 +62,7 @@ public class PlayerDTOwTroops
         }
         if(player.getGears().size() != 0) 
         {
-            this.activeGears.addAll(player.getGears());
+            this.gears.addAll(player.getGears());
         }
     }
 
@@ -71,7 +71,7 @@ public class PlayerDTOwTroops
 
     public boolean addItemToInventory(Gear gear)  //salva un gear
     {
-        return this.activeGears.add(gear);
+        return this.gears.add(gear);
     }
 
     public void buyGear(Gear gear)  // compra un gear
