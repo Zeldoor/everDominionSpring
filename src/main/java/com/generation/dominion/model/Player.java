@@ -73,11 +73,9 @@ public class Player
     {
         detractGold(troop.getPrice());
 
-        if(this.troops.size() < 6)
-            this.troops.add(troop);
-        // else
-        //     this.storageTroops.add(troop);
-        
+        troop.setPlayer(this);
+        troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
+        this.troops.add(troop);
     }
 
     public boolean checkForBuy(Integer ammount)

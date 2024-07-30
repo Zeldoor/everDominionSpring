@@ -136,4 +136,37 @@ public class PlayerDTOwAll
         return (int)(((Math.random() * diff)+1)+this.playerMinDmg);
     }
 
+    
+    public void switchTroopStatus(Integer troopId) 
+    {
+        TroopDTO troop = activeTroops.stream().filter(t -> t.getId().equals(troopId)).findFirst().orElse(null);
+        if (troop != null) 
+        {
+            storageTroop(troop);
+        } 
+        else 
+        {
+            troop = storageTroops.stream().filter(t -> t.getId().equals(troopId)).findFirst().orElseThrow(() -> new RuntimeException("Troop not found"));
+
+            if (activeTroops.size() >= 6) 
+                throw new RuntimeException("Cannot have more than 6 active troops");
+
+            activeTroop(troop);
+        }
+    }
+
+    private void storageTroop(TroopDTO troop)
+    {
+        activeTroops.remove(troop);
+        troop.setStatus("storage");
+        storageTroops.add(troop);
+    }
+
+    private void activeTroop(TroopDTO troop)
+    {
+        storageTroops.remove(troop);
+        troop.setStatus("active");
+        activeTroops.add(troop);
+    }
+
 }
