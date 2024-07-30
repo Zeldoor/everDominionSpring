@@ -22,7 +22,7 @@ public class TroopController
     @Autowired
     private PlayerRepository playerRepo;
 
-
+    //Crea una Troop
     @PostMapping
     public Troop createTroop(@RequestBody TroopDTO troopDto) 
     { 
@@ -32,7 +32,7 @@ public class TroopController
         return troopRepository.save(troop); 
     }
 
-
+    //Mostra tutte le Troop
     @GetMapping
     public List<TroopDTO> getAllTroops() 
     { 
@@ -46,7 +46,7 @@ public class TroopController
         return res;
     }
 
-
+    // Mostra una Troop
     @GetMapping("/{id}")
     public TroopDTO getTroop(@PathVariable int id) 
     {
