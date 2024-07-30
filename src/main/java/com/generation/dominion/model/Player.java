@@ -4,7 +4,7 @@ package com.generation.dominion.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.generation.dominion.dto.PlayerDTOwTroops;
+import com.generation.dominion.dto.PlayerDTOwAll;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,14 +16,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 @Entity
-@Table(name = "player")
 public class Player 
 {
     
@@ -52,13 +48,16 @@ public class Player
     )
     private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
 
+    // private List<Troop> storageTroops = new ArrayList<>();
+    // private List<Gear> storageGears = new ArrayList<>();
+
     public Player()
     {
         this.gold = 100;
         this.stamina = 3;
     }
 
-    public Player(PlayerDTOwTroops playerDto)
+    public Player(PlayerDTOwAll playerDto)
     {
         this.nick = playerDto.getNick();
         this.gold = playerDto.getGold();
@@ -68,7 +67,22 @@ public class Player
     public void buyGear(Gear gear)
     {
         detractGold(gear.getPrice());
-        this.gears.add(gear);
+
+        if(this.gears.size() < 6)
+            this.gears.add(gear);
+    //     else
+    //         this.storageGears.add(gear);
+    }
+
+    public void buyTroop(Troop troop)
+    {
+        detractGold(troop.getPrice());
+
+        if(this.troops.size() < 6)
+            this.troops.add(troop);
+        // else
+        //     this.storageTroops.add(troop);
+        
     }
 
     public boolean checkForBuy(Integer ammount)

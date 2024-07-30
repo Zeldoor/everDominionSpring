@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.dto.FightResultDTO;
-import com.generation.dominion.dto.PlayerDTOwTroops;
+import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.service.CombatService;
@@ -26,7 +26,7 @@ public class PlayerController
 
     // Crea un nuovo Player
     @PostMapping
-    public Player createPlayer(@RequestBody PlayerDTOwTroops playerDto) 
+    public Player createPlayer(@RequestBody PlayerDTOwAll playerDto) 
     { 
         Player player = new Player(playerDto);
         return playerRepository.save(player); 
@@ -35,13 +35,13 @@ public class PlayerController
 
     //Legge tutti i Player con tutte le loro Troop e tutti i loro Gear
     @GetMapping
-    public List<PlayerDTOwTroops> getAllPlayers() 
+    public List<PlayerDTOwAll> getAllPlayers() 
     { 
-        List<PlayerDTOwTroops> res = new ArrayList<>();
+        List<PlayerDTOwAll> res = new ArrayList<>();
         List<Player> players = playerRepository.findAll();
 
         for (Player player : players)
-            res.add(new PlayerDTOwTroops(player));
+            res.add(new PlayerDTOwAll(player));
         
         return res;
     }
@@ -49,11 +49,11 @@ public class PlayerController
 
     // Legge un Player con tutte le sue Troop e tutti i suoi Gear
     @GetMapping("/{id}")
-    public PlayerDTOwTroops getPlayer(@PathVariable int id) 
+    public PlayerDTOwAll getPlayer(@PathVariable int id) 
     {
         Player player = playerRepository.findById(id)
                             .orElseThrow(() -> new IllegalArgumentException("Player not found"));
-        return new PlayerDTOwTroops(player);
+        return new PlayerDTOwAll(player);
     }
 
 
