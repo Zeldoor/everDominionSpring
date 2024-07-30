@@ -13,6 +13,7 @@ import com.generation.dominion.repository.TroopRepository;
 import jakarta.annotation.PostConstruct;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class ShopService 
@@ -29,6 +30,9 @@ public class ShopService
 
     private List<Gear> shopGears;
     private List<Troop> shopTroops;
+
+    private Random random = new Random(); // serve a randomizzare le stats delle troop
+
 
     @PostConstruct
     private void init() 
@@ -72,20 +76,42 @@ public class ShopService
         throw new RuntimeException("Oro insufficente");
     }
 
-    // public boolean buyTroop(PlayerDTOwTroops player, String troopName, boolean addToActive) {
-    //     for (Troop troop : shopTroops) {
-    //         if (troop.getClassName().equalsIgnoreCase(troopName)) {
-    //             if (player.getGold() >= troop.getPrice()) {
-    //                 if (addToActive) {
-    //                     player.addActiveTroop(troop);
-    //                 } else {
-    //                     player.addTroopToStorage(troop);
-    //                 }
-    //                 player.setGold(player.getGold() - troop.getPrice());
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    //     return false;
-    // }
+
+
+    public boolean buyTroop(PlayerDTOwTroops playerDto, String troopName, boolean addToActive) {
+        Player player = playerRepository.findById(playerDto.getId()).orElse(null);
+        if (player == null || player.getGold() < 300) {
+            return false; // Giocatore non trovato o non abbastanza oro
+        }
+
+        Troop troop = null;
+
+        if (troopName.equalsIgnoreCase("archer")) {
+            int minDamage = random.nextInt(4) + 6; // da 6 a 9
+            int maxDamage = random.nextInt(4) + 10; // da 10 a 13
+            int health = random.nextInt(3) + 7; // da 7 a 9
+            troop = new Troop("archer", minDamage, maxDamage, health, 300);
+        } else if (troopName.equalsIgnoreCase("tank")) {
+            int minDamage = random.nextInt(5) + 2; // da 2 a 6
+            int maxDamage = random.nextInt(3) + 7; // da 7 a 9
+            int health = random.nextInt(5) + 10; // da 10 a 14
+            troop = new Troop("tank", minDamage, maxDamage, health, 300);
+        } else {
+            return false; // Nome truppa non valido
+        }
+
+        troop.setPlayer(player); // Imposta il giocatore per la truppa
+
+        if (addToActive) {
+            player.getTroops().add(troop); // Aggiungi alle truppe attive del giocatore
+        } else {
+            System.out.println("acquisto fallito");
+        }
+
+        player.setGold(player.getGold() - 300);
+        troopRepository.save(troop);
+        playerRepository.save(player);
+
+        return true;
+    }
 }
