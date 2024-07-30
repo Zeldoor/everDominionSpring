@@ -66,7 +66,7 @@ public class Player
     public void buyTroop(Troop troop)
     {
         detractGold(troop.getPrice());
-
+        
         troop.setPlayer(this);
         troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
         this.troops.add(troop);

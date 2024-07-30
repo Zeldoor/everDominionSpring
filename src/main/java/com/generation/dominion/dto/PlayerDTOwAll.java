@@ -27,8 +27,8 @@ public class PlayerDTOwAll
 
     //RISORSE 
     private List<TroopDTO> activeTroops = new ArrayList<>();
-    private List<Gear> activeGears = new ArrayList<>();
     private List<TroopDTO> storageTroops = new ArrayList<>();
+    private List<Gear> activeGears = new ArrayList<>();
     private List<Gear> storageGears = new ArrayList<>();
 
     //COSTRUTTORI
@@ -43,6 +43,8 @@ public class PlayerDTOwAll
         this.gold = player.getGold();
         
         initDTO(player);
+        activeTroops = filterByStatus(player, "active");
+        storageTroops = filterByStatus(player, "storage");
     }
 
     private void initDTO(Player player)
@@ -50,9 +52,6 @@ public class PlayerDTOwAll
         if(player.troops.size()!= 0)
             for (Troop troop : player.troops) 
             {
-                TroopDTO dto = new TroopDTO(troop);
-                this.activeTroops.add(dto);
-
                 this.playerMinDmg += troop.minDamage;
                 this.playerMaxDmg += troop.maxDamage;
                 this.playerHealth += troop.health;
@@ -136,7 +135,6 @@ public class PlayerDTOwAll
         return (int)(((Math.random() * diff)+1)+this.playerMinDmg);
     }
 
-    //Metodo Switch:
     public void switchTroopStatus(Integer troopId) 
     {
         TroopDTO troop = activeTroops.stream().filter(t -> t.getId().equals(troopId)).findFirst().orElse(null);
@@ -146,9 +144,7 @@ public class PlayerDTOwAll
         } 
         else 
         {
-            troop = storageTroops.stream()
-                                    .filter(t -> t.getId().equals(troopId)).findFirst()
-                                    .orElseThrow(() -> new RuntimeException("Troop not found"));
+            troop = storageTroops.stream().filter(t -> t.getId().equals(troopId)).findFirst().orElseThrow(() -> new RuntimeException("Troop not found"));
 
             if (activeTroops.size() >= 6) 
                 throw new RuntimeException("Cannot have more than 6 active troops");
@@ -171,4 +167,9 @@ public class PlayerDTOwAll
         activeTroops.add(troop);
     }
 
+    private List<TroopDTO> filterByStatus(Player palyer, String status)
+    {
+        List<TroopDTO> res = palyer.troops.stream().filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
+        return res;
+    }
 }
