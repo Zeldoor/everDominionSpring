@@ -45,7 +45,8 @@ public class CombatService
                 );
 
 
-            ////
+            if(defender.isDead())
+                break;
 
 
             defender.attack(attacker);

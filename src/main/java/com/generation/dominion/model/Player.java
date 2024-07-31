@@ -43,9 +43,6 @@ public class Player
     )
     private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
 
-    // private List<Troop> storageTroops = new ArrayList<>();
-    // private List<Gear> storageGears = new ArrayList<>();
-
     public Player()
     {
         this.gold = 100;
@@ -73,13 +70,12 @@ public class Player
     {
         detractGold(troop.getPrice());
 
-        if(this.troops.size() < 6)
-            this.troops.add(troop);
-        // else
-        //     this.storageTroops.add(troop);
-        
+        troop.setPlayer(this);
+        troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
+        this.troops.add(troop);
     }
 
+    
     public boolean checkForBuy(Integer ammount)
     {
         return this.gold >= ammount;
@@ -91,11 +87,3 @@ public class Player
         this.gold -= ammount;
     }
 }
-
-   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Troop> troopsInStorage = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
-
-
-
-   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Gear> gearInStorage = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva
