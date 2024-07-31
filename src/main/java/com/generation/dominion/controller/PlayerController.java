@@ -62,7 +62,6 @@ public class PlayerController
     public FightResultDTO getPlayer(@RequestBody FightResultDTO dto) 
     {
         FightResultDTO fightRes = dto;
-        System.out.println(fightRes.getAttacker());
 
         fightRes = combatServ.fightSystem(fightRes);
 

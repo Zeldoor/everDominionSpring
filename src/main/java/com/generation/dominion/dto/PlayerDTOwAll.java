@@ -43,6 +43,8 @@ public class PlayerDTOwAll
         this.gold = player.getGold();
         
         initDTO(player);
+        activeTroops = filterByStatus(player, "active");
+        storageTroops = filterByStatus(player, "storage");
     }
 
     private void initDTO(Player player)
@@ -50,9 +52,6 @@ public class PlayerDTOwAll
         if(player.troops.size()!= 0)
             for (Troop troop : player.troops) 
             {
-                TroopDTO dto = new TroopDTO(troop);
-                this.activeTroops.add(dto);
-
                 this.playerMinDmg += troop.minDamage;
                 this.playerMaxDmg += troop.maxDamage;
                 this.playerHealth += troop.health;
@@ -168,9 +167,9 @@ public class PlayerDTOwAll
         activeTroops.add(troop);
     }
 
-    private List<TroopDTO> filterByStatus(List<Troop> troops, String status)
+    private List<TroopDTO> filterByStatus(Player palyer, String status)
     {
-        List<TroopDTO> res = troops.stream().filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
+        List<TroopDTO> res = palyer.troops.stream().filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
         return res;
     }
 }

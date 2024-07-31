@@ -43,9 +43,6 @@ public class Player
     )
     private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
 
-    // private List<Troop> storageTroops = new ArrayList<>();
-    // private List<Gear> storageGears = new ArrayList<>();
-
     public Player()
     {
         this.gold = 100;
@@ -72,12 +69,13 @@ public class Player
     public void buyTroop(Troop troop)
     {
         detractGold(troop.getPrice());
-        
+
         troop.setPlayer(this);
         troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
         this.troops.add(troop);
     }
 
+    
     public boolean checkForBuy(Integer ammount)
     {
         return this.gold >= ammount;
