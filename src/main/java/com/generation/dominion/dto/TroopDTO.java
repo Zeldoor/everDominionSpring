@@ -14,13 +14,15 @@ public class TroopDTO
     public Integer maxDamage;
     public Integer health; 
     public Integer playerId;
+    public String status;
 
-    public TroopDTO(String className, Integer minDamage, Integer maxDamage, Integer health) 
+    public TroopDTO(String className, Integer minDamage, Integer maxDamage, Integer health, String status) 
     {
         this.className = className;
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
         this.health = health;
+        this.status = status;
     }
 
     public TroopDTO(){}   
@@ -32,6 +34,6 @@ public class TroopDTO
         this.minDamage = t.getMinDamage();
         this.maxDamage = t.getMaxDamage();
         this.health = t.getHealth();
-        this.playerId = t.getPlayer().getId();
+        this.status = t.getStatus();
     }
 }

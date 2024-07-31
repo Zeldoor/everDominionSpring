@@ -4,7 +4,7 @@ package com.generation.dominion.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.generation.dominion.dto.PlayerDTOwTroops;
+import com.generation.dominion.dto.PlayerDTOwAll;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,14 +16,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 @Entity
-@Table(name = "player")
 public class Player 
 {
     
@@ -53,7 +49,7 @@ public class Player
         this.stamina = 3;
     }
 
-    public Player(PlayerDTOwTroops playerDto)
+    public Player(PlayerDTOwAll playerDto)
     {
         this.nick = playerDto.getNick();
         this.gold = playerDto.getGold();
@@ -63,9 +59,23 @@ public class Player
     public void buyGear(Gear gear)
     {
         detractGold(gear.getPrice());
-        this.gears.add(gear);
+
+        if(this.gears.size() < 6)
+            this.gears.add(gear);
+    //     else
+    //         this.storageGears.add(gear);
     }
 
+    public void buyTroop(Troop troop)
+    {
+        detractGold(troop.getPrice());
+
+        troop.setPlayer(this);
+        troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
+        this.troops.add(troop);
+    }
+
+    
     public boolean checkForBuy(Integer ammount)
     {
         return this.gold >= ammount;
@@ -77,11 +87,3 @@ public class Player
         this.gold -= ammount;
     }
 }
-
-   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Troop> troopsInStorage = new ArrayList<>(); // queste sono le troop non attive che il giocatore conserva
-
-
-
-   // @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   // private List<Gear> gearInStorage = new ArrayList<>(); // questi sono i gear non attivi che il giocatore conserva
