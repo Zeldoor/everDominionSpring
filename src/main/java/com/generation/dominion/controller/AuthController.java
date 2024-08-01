@@ -69,7 +69,7 @@ public class AuthController {
         if (userRepository.existsByUsername(registerDto.getUsername())) 
             return new ResponseEntity<>("Nickname is taken!", HttpStatus.BAD_REQUEST);
 
-        if (userRepository.existsByUsername(registerDto.getEmail())) 
+        if (userRepository.existsByEmail(registerDto.getEmail())) 
             return new ResponseEntity<>("Email alredy registered", HttpStatus.BAD_REQUEST);
 
         UserEntity user = new UserEntity();
