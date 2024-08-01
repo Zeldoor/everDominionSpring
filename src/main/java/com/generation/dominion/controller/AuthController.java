@@ -67,12 +67,15 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody CredentialsDto registerDto) 
     {
         if (userRepository.existsByUsername(registerDto.getUsername())) 
-        {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>("Nickname is taken!", HttpStatus.BAD_REQUEST);
+
+        if (userRepository.existsByUsername(registerDto.getEmail())) 
+            return new ResponseEntity<>("Email alredy registered", HttpStatus.BAD_REQUEST);
 
         UserEntity user = new UserEntity();
+
         user.setUsername(registerDto.getUsername());
+        user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
 
         Role roles = roleRepository.findByName("USER").get();
@@ -81,8 +84,8 @@ public class AuthController {
         Player player = new Player();
         player.setNick(registerDto.getUsername());
 
-        playerRepository.save(player);
         userRepository.save(user);
+        playerRepository.save(player);
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
