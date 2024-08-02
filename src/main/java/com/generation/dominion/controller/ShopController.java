@@ -17,14 +17,12 @@ public class ShopController
     @Autowired
     private ShopService shopService;
 
-    // Mostra i Gear nello Shop
     @GetMapping("/gears")
     public List<Gear> getShopGears() 
     {
         return shopService.getShopGears();
     }
 
-    // Ehm... si può cancellare?
     @GetMapping("/troops")
     public List<TroopInShop> getShopTroops() 
     {
