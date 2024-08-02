@@ -13,8 +13,6 @@ import com.generation.dominion.repository.GearRepository;
 import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.TroopInShopRepository;
 
-import jakarta.annotation.PostConstruct;
-
 import java.util.List;
 @Service
 public class ShopService 
@@ -29,24 +27,14 @@ public class ShopService
     @Autowired
     private PlayerRepository playerRepository;
 
-    private List<Gear> shopGears;
-    private List<TroopInShop> shopTroops;
-
-    @PostConstruct
-    private void init() 
-    {
-        shopGears = gearRepository.findAll();
-        shopTroops = troopRepository.findAll();
-    }
-
     public List<Gear> getShopGears() 
     {
-        return shopGears;
+        return gearRepository.findAll();
     }
 
     public List<TroopInShop> getShopTroops() 
     {
-        return shopTroops;
+        return troopRepository.findAll();
     }
 
     public PlayerDTOwAll buyGear(PlayerDTO playerDto, Integer itemID) 
@@ -95,10 +83,3 @@ public class ShopService
         throw new RuntimeException("Oro insufficente");
     }
 }
-/*
- * Le prossime cose da fare sono: 
- * Far si che Player possa avere massimo 6 Troop e 3 Gear durante il Fight
- * Creare uno Storage dove vengano salvate le Troop e i Gear che Player non ha equipaggiato
- * Salvere gli acquisti dello Shop nello Storage
- * Creare un metodo che faccia spostare al Player le Troop e i Gear dallo Storage al Player attivo e viceversa
- */

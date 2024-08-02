@@ -6,11 +6,17 @@ import org.springframework.web.bind.annotation.*;
 import com.generation.dominion.dto.FightResultDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Player;
+import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.PlayerRepository;
+import com.generation.dominion.repository.TroopRepository;
 import com.generation.dominion.service.CombatService;
+import com.generation.dominion.service.PlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/player")
@@ -19,9 +25,12 @@ public class PlayerController
 
     @Autowired
     private PlayerRepository playerRepository;
-
+    @Autowired
+    private PlayerService playerServ;
     @Autowired
     private CombatService combatServ;
+    @Autowired
+    private TroopRepository troopRepository;
 
 
     // Crea un nuovo Player
@@ -53,13 +62,14 @@ public class PlayerController
     {
         Player player = playerRepository.findById(id)
                             .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+
         return new PlayerDTOwAll(player);
     }
 
 
     // test di combattimento
     @PostMapping("/fight")
-    public FightResultDTO getPlayer(@RequestBody FightResultDTO dto) 
+    public FightResultDTO getfight(@RequestBody FightResultDTO dto) 
     {
         FightResultDTO fightRes = dto;
 
@@ -67,4 +77,19 @@ public class PlayerController
 
         return fightRes; 
     }
+
+    @PostMapping("/switch")
+    public PlayerDTOwAll switchTroopStatus(@RequestBody int troopId) 
+    {
+        Troop troop = troopRepository.findById(troopId).get();
+        
+        playerServ.switchSingleState(troop);
+        troopRepository.save(troop);
+
+        
+        Player player = playerRepository.findById(troop.getPlayer().getId()).get();
+
+        return new PlayerDTOwAll(player);
+    }
+    
 }

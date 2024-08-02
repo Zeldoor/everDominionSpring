@@ -63,6 +63,7 @@ public class Troop
         this.minDamage = dto.getMinDamage();
         this.maxDamage = dto.getMaxDamage();
         this.health = dto.getHealth();
+        this.status = dto.getStatus();
     }
 
     public Troop(TroopInShop troopShop) 
@@ -97,4 +98,23 @@ public class Troop
     {
         return this.status.equals("active");
     }
+
+    public void setActive()
+    {
+        status = "active";
+    }
+
+    public void setStorage()
+    {
+        status = "storage";
+    }
+
+    @Override
+    public String toString() {
+        return "Troop id=" + id + ", className=" + className + ", minDamage=" + minDamage + ", maxDamage=" + maxDamage
+                + ", health=" + health + ", status=" + status + ", Player id: "+ player.getId() ;
+    }
+
+
+    
 }
