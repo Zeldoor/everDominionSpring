@@ -66,11 +66,11 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody CredentialsDto registerDto) 
     {
-        if (userRepository.existsByUsername(registerDto.getUsername())) 
-            return new ResponseEntity<>("Nickname is taken!", HttpStatus.BAD_REQUEST);
-
         if (userRepository.existsByEmail(registerDto.getEmail())) 
             return new ResponseEntity<>("Email alredy registered", HttpStatus.BAD_REQUEST);
+
+        if (userRepository.existsByUsername(registerDto.getUsername())) 
+            return new ResponseEntity<>("Nickname is taken!", HttpStatus.BAD_REQUEST);
 
         UserEntity user = new UserEntity();
 
