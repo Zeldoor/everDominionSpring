@@ -9,14 +9,18 @@ import lombok.Data;
 public class AuthResponseDto 
 {
     private String accessToken;
+    private String tokenType = "Bearer ";
+
     private UserEntity user;
     private PlayerDTOwAll playerDto;
-    private String tokenType = "Bearer ";
+    private String role;
 
     public AuthResponseDto(String accessToken, UserEntity user, Player player) 
     {
         this.accessToken = accessToken;
-        this.playerDto = new PlayerDTOwAll(player);
+
         this.user = user;
+        this.playerDto = new PlayerDTOwAll(player);
+        this.role = user.getRoles().get(0).getName();
     }
 }

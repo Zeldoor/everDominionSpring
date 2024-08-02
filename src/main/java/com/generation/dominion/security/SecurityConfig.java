@@ -33,10 +33,9 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             authorize -> 
             authorize
-            .requestMatchers("/api/**","/swagger-ui/**","/api/v3/api-docs/**").permitAll()
+            .requestMatchers("api/auth/**","/swagger-ui/**","/api/v3/api-docs/**").permitAll()
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
-            // .requestMatchers(HttpMethod.GET,"/api/soloperandrea").hasRole("ANDREA")
-            .anyRequest().permitAll() // authenticated() // permitAll()
+            .anyRequest().authenticated() // authenticated() // permitAll()
         )
         .httpBasic(withDefaults());
 
