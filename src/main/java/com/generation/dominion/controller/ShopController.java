@@ -39,10 +39,10 @@ public class ShopController
     }
 
     // Compra Troop
-    @PostMapping("/troop")
-    public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @RequestParam Integer TroopShopId) 
+    @PostMapping("/troop/{id}")
+    public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDto = shopService.buyTroop(player, TroopShopId);
+        PlayerDTOwAll playerDto = shopService.buyTroop(player, id);
 
         return playerDto;
     }
