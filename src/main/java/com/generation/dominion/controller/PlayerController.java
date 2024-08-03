@@ -69,7 +69,7 @@ public class PlayerController
 
     // test di combattimento
     @PostMapping("/fight")
-    public FightResultDTO getfight(@RequestBody FightResultDTO dto) 
+    public FightResultDTO fight(@RequestBody FightResultDTO dto) 
     {
         FightResultDTO fightRes = dto;
 

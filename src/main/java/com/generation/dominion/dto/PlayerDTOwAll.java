@@ -96,6 +96,9 @@ public class PlayerDTOwAll
     {
         this.lastDmg = damage;
         this.playerHealth -= damage;
+
+        if(this.playerHealth < 0)
+            this.playerHealth = 0;
     }
 
     @JsonIgnore
@@ -113,6 +116,14 @@ public class PlayerDTOwAll
     public void addGold(int amount) 
     {
         this.gold += amount;
+    }
+
+    public void removeGold(int amount) 
+    {
+        this.gold -= amount;
+
+        if(this.gold < 0)
+            this.gold = 0;
     }
 
     public boolean loseStamina() 

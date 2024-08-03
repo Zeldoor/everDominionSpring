@@ -1,13 +1,18 @@
 package com.generation.dominion.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.FightResultDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
+import com.generation.dominion.model.Player;
+import com.generation.dominion.repository.PlayerRepository;
 
 @Service
 public class CombatService 
 {
+    @Autowired
+    private PlayerRepository playerRepository;
 
     public Integer[] rewardSystem(PlayerDTOwAll winner, PlayerDTOwAll loser) 
     {
@@ -20,29 +25,35 @@ public class CombatService
 
         loots[0] = winnerGold;
         loots[1] = loserGold;
-        winner.addGold(winnerGold); //chi vince, 70+(0-30)
-        loser.addGold(loserGold);  //chi perde, 40+(0-20) 
 
-        loser.loseStamina();
-        
+        winner.addGold(winnerGold);
+        loser.removeGold(loserGold);
+
         return loots;
     }
 
     public FightResultDTO fightSystem(FightResultDTO FightDto)
     {
         FightResultDTO fightDtoRes = FightDto;
-        PlayerDTOwAll attacker = fightDtoRes.getAttacker();
-        PlayerDTOwAll defender = fightDtoRes.getDefender();
+
+        Player pAttacker = playerRepository.findById(fightDtoRes.getAttacker().getId()).get();
+        Player pDefender = playerRepository.findById(fightDtoRes.getDefender().getId()).get();
+
+        PlayerDTOwAll attacker = new PlayerDTOwAll(pAttacker);
+        PlayerDTOwAll defender = new PlayerDTOwAll(pDefender);
 
         do
         {
             attacker.attack(defender);
+
             fightDtoRes.getResults().add(
                 attacker.getNick()+" ha inflitto "+defender.getLastDmg()+" danni a "+defender.getNick()
                 );
             fightDtoRes.getResults().add(
                 defender.getNick()+" ha "+defender.getPlayerHealth()+" HP"
                 );
+
+            fightDtoRes.addEnemyHealth(defender.getPlayerHealth());
 
 
             if(defender.isDead())
@@ -56,6 +67,8 @@ public class CombatService
             fightDtoRes.getResults().add(
             attacker.getNick()+" ha "+attacker.getPlayerHealth()+" HP"
             );
+
+            fightDtoRes.addPlayerHeath(attacker.getPlayerHealth());
         } 
         while (attacker.isAlive() && defender.isAlive());
 
@@ -85,6 +98,12 @@ public class CombatService
 
         fightDtoRes.setAttacker(attacker);
         fightDtoRes.setDefender(defender);
+
+        pAttacker.setGold(attacker.getGold());
+        pDefender.setGold(defender.getGold());
+
+        playerRepository.save(pAttacker);
+        playerRepository.save(pDefender);
 
         return fightDtoRes;
     }
