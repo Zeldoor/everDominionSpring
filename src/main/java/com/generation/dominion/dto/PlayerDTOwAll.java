@@ -31,6 +31,8 @@ public class PlayerDTOwAll
     private List<Gear> activeGears = new ArrayList<>();
     private List<Gear> storageGears = new ArrayList<>();
 
+    private List<PlayerDTO> friends = new ArrayList<>();
+
     //COSTRUTTORI
 
     public PlayerDTOwAll(){}
@@ -41,6 +43,7 @@ public class PlayerDTOwAll
         this.nick = player.getNick();
         this.stamina = player.getStamina();
         this.gold = player.getGold();
+        this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
         
         initDTO(player);
         activeTroops = filterByStatus(player, "active");

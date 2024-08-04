@@ -96,6 +96,11 @@ public class CombatService
                 );
         }
 
+        // if(attacker.hasShield())
+        //     attacker.removeShield()
+
+        // defender.activeShield()
+
         fightDtoRes.setAttacker(attacker);
         fightDtoRes.setDefender(defender);
 

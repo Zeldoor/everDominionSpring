@@ -1,9 +1,11 @@
 package com.generation.dominion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.dto.FightResultDTO;
+import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
@@ -14,8 +16,6 @@ import com.generation.dominion.service.PlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -72,7 +72,6 @@ public class PlayerController
     public FightResultDTO fight(@RequestBody FightResultDTO dto) 
     {
         FightResultDTO fightRes = dto;
-
         fightRes = combatServ.fightSystem(fightRes);
 
         return fightRes; 
@@ -91,5 +90,45 @@ public class PlayerController
 
         return new PlayerDTOwAll(player);
     }
-    
+
+
+    @PostMapping("/{id}/heartbeat")
+    public ResponseEntity<Void> updateLastActivity(@PathVariable int id) 
+    {
+        playerServ.updateLastActivity(id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/offline")
+    public void setPlayerOffline(@PathVariable int id) 
+    {
+        playerServ.playerOffline(id);
+    }
+
+
+    @GetMapping("/{id}/online-friends")
+    public List<PlayerDTO> getOnlineFriends(@PathVariable int id) 
+    {
+        return playerServ.getOnlineFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
+    }
+
+
+    @GetMapping("/{id}/friends")
+    public List<PlayerDTO> getFriends(@PathVariable int id) 
+    {
+        return playerServ.getFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
+    }
+
+
+    @PostMapping("/add/{id}")
+    public PlayerDTOwAll getOnlineFriends(@PathVariable int id, @RequestBody Integer playerId) 
+    {
+        Player player = playerServ.addFriend(id, playerId);
+
+        PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
+        playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).toList());
+
+        return playerDtoUpdated;
+    }
 }
