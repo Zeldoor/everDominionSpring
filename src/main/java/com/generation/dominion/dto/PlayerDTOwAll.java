@@ -144,7 +144,9 @@ public class PlayerDTOwAll
         } 
         else 
         {
-            troop = storageTroops.stream().filter(t -> t.getId().equals(troopId)).findFirst().orElseThrow(() -> new RuntimeException("Troop not found"));
+            troop = storageTroops.stream()
+                                    .filter(t -> t.getId().equals(troopId)).findFirst()
+                                    .orElseThrow(() -> new RuntimeException("Troop not found"));
 
             if (activeTroops.size() >= 6) 
                 throw new RuntimeException("Cannot have more than 6 active troops");
@@ -169,7 +171,8 @@ public class PlayerDTOwAll
 
     private List<TroopDTO> filterByStatus(Player palyer, String status)
     {
-        List<TroopDTO> res = palyer.troops.stream().filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
+        List<TroopDTO> res = palyer.troops.stream()
+                                            .filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
         return res;
     }
 }
