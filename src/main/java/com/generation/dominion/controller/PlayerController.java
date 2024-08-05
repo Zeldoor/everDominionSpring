@@ -1,16 +1,22 @@
 package com.generation.dominion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.dto.FightResultDTO;
+import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Player;
+import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.PlayerRepository;
+import com.generation.dominion.repository.TroopRepository;
 import com.generation.dominion.service.CombatService;
+import com.generation.dominion.service.PlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/player")
@@ -19,9 +25,12 @@ public class PlayerController
 
     @Autowired
     private PlayerRepository playerRepository;
-
+    @Autowired
+    private PlayerService playerServ;
     @Autowired
     private CombatService combatServ;
+    @Autowired
+    private TroopRepository troopRepository;
 
 
     // Crea un nuovo Player
@@ -53,19 +62,73 @@ public class PlayerController
     {
         Player player = playerRepository.findById(id)
                             .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+
         return new PlayerDTOwAll(player);
     }
 
 
     // test di combattimento
     @PostMapping("/fight")
-    public FightResultDTO getPlayer(@RequestBody FightResultDTO dto) 
+    public FightResultDTO fight(@RequestBody FightResultDTO dto) 
     {
         FightResultDTO fightRes = dto;
-        System.out.println(fightRes.getAttacker());
-
         fightRes = combatServ.fightSystem(fightRes);
 
         return fightRes; 
+    }
+
+    @PostMapping("/switch")
+    public PlayerDTOwAll switchTroopStatus(@RequestBody int troopId) 
+    {
+        Troop troop = troopRepository.findById(troopId).get();
+        
+        playerServ.switchSingleState(troop);
+        troopRepository.save(troop);
+
+        
+        Player player = playerRepository.findById(troop.getPlayer().getId()).get();
+
+        return new PlayerDTOwAll(player);
+    }
+
+
+    @PostMapping("/{id}/heartbeat")
+    public ResponseEntity<Void> updateLastActivity(@PathVariable int id) 
+    {
+        playerServ.updateLastActivity(id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/offline")
+    public void setPlayerOffline(@PathVariable int id) 
+    {
+        playerServ.playerOffline(id);
+    }
+
+
+    @GetMapping("/{id}/online-friends")
+    public List<PlayerDTO> getOnlineFriends(@PathVariable int id) 
+    {
+        return playerServ.getOnlineFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
+    }
+
+
+    @GetMapping("/{id}/friends")
+    public List<PlayerDTO> getFriends(@PathVariable int id) 
+    {
+        return playerServ.getFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
+    }
+
+
+    @PostMapping("/add/{id}")
+    public PlayerDTOwAll getOnlineFriends(@PathVariable int id, @RequestBody Integer playerId) 
+    {
+        Player player = playerServ.addFriend(id, playerId);
+
+        PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
+        playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).toList());
+
+        return playerDtoUpdated;
     }
 }

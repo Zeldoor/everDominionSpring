@@ -36,4 +36,14 @@ public class TroopDTO
         this.health = t.getHealth();
         this.status = t.getStatus();
     }
+
+    public void setActive()
+    {
+        status = "active";
+    }
+
+    public void setStorage()
+    {
+        status = "storage";
+    }
 }

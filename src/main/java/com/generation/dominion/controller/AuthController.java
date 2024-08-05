@@ -1,7 +1,6 @@
 package com.generation.dominion.controller;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,29 +52,30 @@ public class AuthController {
                 loginDto.getPassword()));
 
         Player player = playerRepository.findByNick(loginDto.getUsername()).get();
+        UserEntity userEntity = userRepository.findByUsername(loginDto.getUsername()).get();
 
         SecurityContextHolder.getContext().setAuthentication(user);
 
         String token = jwtGenerator.generateToken(user);
 
-        String role = user.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList()).get(0);
 
-        return new AuthResponseDto(token, role, player);
+        return new AuthResponseDto(token, userEntity, player);
     }
 
 
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody CredentialsDto registerDto) 
     {
+        if (userRepository.existsByEmail(registerDto.getEmail())) 
+            return new ResponseEntity<>("Email alredy registered", HttpStatus.BAD_REQUEST);
+
         if (userRepository.existsByUsername(registerDto.getUsername())) 
-        {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>("Nickname is taken!", HttpStatus.BAD_REQUEST);
 
         UserEntity user = new UserEntity();
+
         user.setUsername(registerDto.getUsername());
+        user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
 
         Role roles = roleRepository.findByName("USER").get();
@@ -85,8 +84,8 @@ public class AuthController {
         Player player = new Player();
         player.setNick(registerDto.getUsername());
 
-        playerRepository.save(player);
         userRepository.save(user);
+        playerRepository.save(player);
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }

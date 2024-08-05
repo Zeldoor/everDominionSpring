@@ -1,6 +1,7 @@
 package com.generation.dominion.dto;
 
 import com.generation.dominion.model.Player;
+import com.generation.dominion.model.UserEntity;
 
 import lombok.Data;
 
@@ -8,14 +9,18 @@ import lombok.Data;
 public class AuthResponseDto 
 {
     private String accessToken;
-    private String role;
-    private PlayerDTOwAll playerDto;
     private String tokenType = "Bearer ";
 
-    public AuthResponseDto(String accessToken, String role, Player player) 
+    private UserEntity user;
+    private PlayerDTOwAll playerDto;
+    private String role;
+
+    public AuthResponseDto(String accessToken, UserEntity user, Player player) 
     {
         this.accessToken = accessToken;
+
+        this.user = user;
         this.playerDto = new PlayerDTOwAll(player);
-        this.role = role;
+        this.role = user.getRoles().get(0).getName();
     }
 }

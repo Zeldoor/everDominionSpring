@@ -1,6 +1,7 @@
 package com.generation.dominion.model;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class Player
     public String nick;
     public int stamina;
     public int gold;
+    private String online; 
+    private LocalDateTime lastActivity;
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
@@ -42,18 +45,33 @@ public class Player
     )
     private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
 
-    public Player()
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable
+    (
+        name = "player_friends",
+        joinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id")
+    )
+    private List<Player> friends = new ArrayList<>();
+
+    public Player() 
     {
         this.gold = 100;
         this.stamina = 3;
+        this.online = "offline"; 
+        this.lastActivity = LocalDateTime.now();
     }
 
-    public Player(PlayerDTOwAll playerDto)
+    public Player(PlayerDTOwAll playerDto) 
     {
         this.nick = playerDto.getNick();
         this.gold = playerDto.getGold();
         this.stamina = playerDto.getStamina();
+        this.online = "offline"; 
+        this.lastActivity = LocalDateTime.now();
     }
+
+    //SHOP METHODS
 
     public void buyGear(Gear gear)
     {
@@ -66,13 +84,14 @@ public class Player
     public void buyTroop(Troop troop)
     {
         detractGold(troop.getPrice());
-        
+
         troop.setPlayer(this);
         troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
         this.troops.add(troop);
     }
     
 
+    
     public boolean checkForBuy(Integer ammount)
     {
         return this.gold >= ammount;
@@ -83,4 +102,58 @@ public class Player
     {
         this.gold -= ammount;
     }
+    
+
+    //FRIENDS + ACTIVITY METHODS
+
+
+    public void updateLastActivity() 
+    {
+        this.lastActivity = LocalDateTime.now();
+    }
+
+    public boolean isActive() 
+    {
+        return this.isOnline() && this.lastActivity.isAfter(LocalDateTime.now().minusMinutes(5));
+    }
+
+    public List<Player> getOnlineFriends() 
+    {
+        List<Player> onlineFriends = new ArrayList<>();
+
+        for (Player friend : this.friends) 
+            if (friend.isActive()) 
+                onlineFriends.add(friend);
+
+        return onlineFriends;
+    }
+
+    public void addFriend(Player player)
+    {
+        this.friends.add(player);
+        player.friends.add(this);
+    }
+    
+    public void setPlayerOnline()
+    {
+        System.out.println("SETTATO ONLINE");
+        this.online = "online";
+    }
+
+    public void setPlayerOffline()
+    {
+        System.out.println("SETTATO OFFLINE");
+        this.online = "offline";
+    }
+
+    public boolean isOnline()
+    {
+        return this.online.equals("online");
+    }
+
+    public boolean isOffline()
+    {
+        return this.online.equals("offline");
+    }
+
 }

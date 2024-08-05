@@ -17,14 +17,12 @@ public class ShopController
     @Autowired
     private ShopService shopService;
 
-    // Mostra i Gear nello Shop
     @GetMapping("/gears")
     public List<Gear> getShopGears() 
     {
         return shopService.getShopGears();
     }
 
-    // Ehm... si può cancellare?
     @GetMapping("/troops")
     public List<TroopInShop> getShopTroops() 
     {
@@ -41,10 +39,10 @@ public class ShopController
     }
 
     // Compra Troop
-    @PostMapping("/troop")
-    public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @RequestParam Integer TroopShopId) 
+    @PostMapping("/troop/{id}")
+    public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDto = shopService.buyTroop(player, TroopShopId);
+        PlayerDTOwAll playerDto = shopService.buyTroop(player, id);
 
         return playerDto;
     }

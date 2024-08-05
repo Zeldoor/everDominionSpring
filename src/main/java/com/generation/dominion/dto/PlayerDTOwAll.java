@@ -20,9 +20,9 @@ public class PlayerDTOwAll
     private int gold;
     
     //COMBAT INFO
-    private int playerMinDmg;
-    private int playerMaxDmg;
-    private int playerHealth;
+    private int playerMinDmg = 1;
+    private int playerMaxDmg = 1;
+    private int playerHealth = 1;
     private int lastDmg;
 
     //RISORSE 
@@ -30,6 +30,8 @@ public class PlayerDTOwAll
     private List<TroopDTO> storageTroops = new ArrayList<>();
     private List<Gear> activeGears = new ArrayList<>();
     private List<Gear> storageGears = new ArrayList<>();
+
+    private List<PlayerDTO> friends = new ArrayList<>();
 
     //COSTRUTTORI
 
@@ -41,6 +43,7 @@ public class PlayerDTOwAll
         this.nick = player.getNick();
         this.stamina = player.getStamina();
         this.gold = player.getGold();
+        this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
         
         initDTO(player);
         activeTroops = filterByStatus(player, "active");
@@ -50,7 +53,7 @@ public class PlayerDTOwAll
     private void initDTO(Player player)
     {
         if(player.troops.size()!= 0)
-            for (Troop troop : player.troops) 
+            for (Troop troop : player.troops.stream().filter(t -> t.isActive()).toList()) 
             {
                 this.playerMinDmg += troop.minDamage;
                 this.playerMaxDmg += troop.maxDamage;
@@ -96,6 +99,9 @@ public class PlayerDTOwAll
     {
         this.lastDmg = damage;
         this.playerHealth -= damage;
+
+        if(this.playerHealth < 0)
+            this.playerHealth = 0;
     }
 
     @JsonIgnore
@@ -113,6 +119,14 @@ public class PlayerDTOwAll
     public void addGold(int amount) 
     {
         this.gold += amount;
+    }
+
+    public void removeGold(int amount) 
+    {
+        this.gold -= amount;
+
+        if(this.gold < 0)
+            this.gold = 0;
     }
 
     public boolean loseStamina() 
@@ -133,40 +147,6 @@ public class PlayerDTOwAll
         Integer diff = this.playerMaxDmg - this.playerMinDmg;
 
         return (int)(((Math.random() * diff)+1)+this.playerMinDmg);
-    }
-
-    public void switchTroopStatus(Integer troopId) 
-    {
-        TroopDTO troop = activeTroops.stream().filter(t -> t.getId().equals(troopId)).findFirst().orElse(null);
-        if (troop != null) 
-        {
-            storageTroop(troop);
-        } 
-        else 
-        {
-            troop = storageTroops.stream()
-                                    .filter(t -> t.getId().equals(troopId)).findFirst()
-                                    .orElseThrow(() -> new RuntimeException("Troop not found"));
-
-            if (activeTroops.size() >= 6) 
-                throw new RuntimeException("Cannot have more than 6 active troops");
-
-            activeTroop(troop);
-        }
-    }
-
-    private void storageTroop(TroopDTO troop)
-    {
-        activeTroops.remove(troop);
-        troop.setStatus("storage");
-        storageTroops.add(troop);
-    }
-
-    private void activeTroop(TroopDTO troop)
-    {
-        storageTroops.remove(troop);
-        troop.setStatus("active");
-        activeTroops.add(troop);
     }
 
     private List<TroopDTO> filterByStatus(Player palyer, String status)
