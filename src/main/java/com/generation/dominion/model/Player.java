@@ -2,6 +2,7 @@ package com.generation.dominion.model;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class Player
     public int gold;
     private String online; 
     private LocalDateTime lastActivity;
+    private String shield;
+
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
@@ -60,6 +63,7 @@ public class Player
         this.stamina = 3;
         this.online = "offline"; 
         this.lastActivity = LocalDateTime.now();
+        this.shield = "none";
     }
 
     public Player(PlayerDTOwAll playerDto) 
@@ -69,6 +73,7 @@ public class Player
         this.stamina = playerDto.getStamina();
         this.online = "offline"; 
         this.lastActivity = LocalDateTime.now();
+        this.shield = "none";
     }
 
     //SHOP METHODS
@@ -156,4 +161,40 @@ public class Player
         return this.online.equals("offline");
     }
 
+    //Shield 
+    public boolean hasShield()
+    {
+        if (this.shield.equals("none")) 
+        {
+            return false;
+        }
+        LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return LocalDateTime.now().isBefore(shieldEndTime);
+    }
+
+    public String getShieldDate()
+    {
+        if (this.shield.equals("none")) 
+        {
+            return "none";
+        }
+        LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return shieldEndTime.toLocalDate().toString();
+    }
+
+    public String getShieldTime()
+    {
+        if (this.shield.equals("none")) 
+        {
+            return "none";
+        }
+        LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return shieldEndTime.toLocalTime().toString();
+    }
+
+    public void activateShield() 
+    {
+        LocalDateTime shieldEndTime = LocalDateTime.now().plusHours(3); //qui dico che lo scudo dura tre ore
+        this.shield = shieldEndTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
 }

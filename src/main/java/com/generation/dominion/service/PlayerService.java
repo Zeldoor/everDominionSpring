@@ -1,6 +1,7 @@
 package com.generation.dominion.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class PlayerService
     @Autowired
     PlayerRepository playerRepository;
 
+    //Metodo gestionale
     public Troop switchSingleState(Troop troop)
     {
         if(troop.isActive())
@@ -25,6 +27,8 @@ public class PlayerService
         return troop;
     }
 
+
+    //Metodi attività
     public void updateLastActivity(int playerId) 
     {
         Player player = playerRepository.findById(playerId).get();
@@ -45,6 +49,8 @@ public class PlayerService
         playerRepository.save(player);
     }
 
+
+    //Metodi amici
     public List<Player> getOnlineFriends(int playerId) 
     {
         Player player = playerRepository.findById(playerId).get();
@@ -70,5 +76,14 @@ public class PlayerService
         playerRepository.save(friend);
 
         return player;
+    }
+
+    
+    //Metodo scudo
+    public List<Player> getPlayersWithoutShield() 
+    {
+        return playerRepository.findAll().stream()
+                .filter(player -> player.getShield() == null || player.getShield().equals("none"))
+                .collect(Collectors.toList());
     }
 }

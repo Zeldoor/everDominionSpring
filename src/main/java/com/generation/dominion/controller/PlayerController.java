@@ -16,6 +16,7 @@ import com.generation.dominion.service.PlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -77,6 +78,7 @@ public class PlayerController
         return fightRes; 
     }
 
+    //Gestione
     @PostMapping("/switch")
     public PlayerDTOwAll switchTroopStatus(@RequestBody int troopId) 
     {
@@ -91,7 +93,7 @@ public class PlayerController
         return new PlayerDTOwAll(player);
     }
 
-
+    //Attività
     @PostMapping("/{id}/heartbeat")
     public ResponseEntity<Void> updateLastActivity(@PathVariable int id) 
     {
@@ -100,27 +102,28 @@ public class PlayerController
         return ResponseEntity.ok().build();
     }
 
+    //Offline
     @GetMapping("/{id}/offline")
     public void setPlayerOffline(@PathVariable int id) 
     {
         playerServ.playerOffline(id);
     }
 
-
+    //Online
     @GetMapping("/{id}/online-friends")
     public List<PlayerDTO> getOnlineFriends(@PathVariable int id) 
     {
         return playerServ.getOnlineFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
     }
 
-
+    //Amici online
     @GetMapping("/{id}/friends")
     public List<PlayerDTO> getFriends(@PathVariable int id) 
     {
         return playerServ.getFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
     }
 
-
+    //Aggiungi amici
     @PostMapping("/add/{id}")
     public PlayerDTOwAll getOnlineFriends(@PathVariable int id, @RequestBody Integer playerId) 
     {
@@ -131,4 +134,13 @@ public class PlayerController
 
         return playerDtoUpdated;
     }
+
+    //Tutti quelli senza scudo e che quindi possono essere attaccati
+    @GetMapping("/without-shield")
+    public List<PlayerDTOwAll> getPlayersWithoutShield() 
+    {
+        List<Player> playersWithoutShield = playerServ.getPlayersWithoutShield();
+        return playersWithoutShield.stream().map(PlayerDTOwAll::new).collect(Collectors.toList());
+    }
+
 }

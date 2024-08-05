@@ -18,7 +18,10 @@ public class PlayerDTOwAll
     private String nick;
     private int stamina;
     private int gold;
-    
+       
+    // SCUDO
+    private String shield;
+
     //COMBAT INFO
     private int playerMinDmg = 1;
     private int playerMaxDmg = 1;
@@ -43,6 +46,7 @@ public class PlayerDTOwAll
         this.nick = player.getNick();
         this.stamina = player.getStamina();
         this.gold = player.getGold();
+        this.shield = player.getShield();
         this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
         
         initDTO(player);
@@ -155,4 +159,5 @@ public class PlayerDTOwAll
                                             .filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
         return res;
     }
+
 }
