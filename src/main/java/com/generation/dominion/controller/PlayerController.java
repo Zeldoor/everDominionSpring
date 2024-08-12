@@ -1,6 +1,7 @@
 package com.generation.dominion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +67,6 @@ public class PlayerController
         return new PlayerDTOwAll(player);
     }
 
-
     // test di combattimento
     @PostMapping("/fight")
     public FightResultDTO fight(@RequestBody FightResultDTO dto) 
@@ -100,10 +100,13 @@ public class PlayerController
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/offline")
-    public void setPlayerOffline(@PathVariable int id) 
+    @PostMapping("/{id}/offline")
+    public ResponseEntity<String> setPlayerOffline(@PathVariable int id) 
     {
+        System.out.println("API OFFLINE");
         playerServ.playerOffline(id);
+        
+        return new ResponseEntity<>("Player offline", HttpStatus.OK);
     }
 
 
@@ -115,9 +118,9 @@ public class PlayerController
 
 
     @GetMapping("/{id}/friends")
-    public List<PlayerDTO> getFriends(@PathVariable int id) 
+    public List<PlayerDTOwAll> getFriends(@PathVariable int id) 
     {
-        return playerServ.getFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
+        return playerServ.getFriends(id).stream().map(p -> new PlayerDTOwAll(p)).toList();
     }
 
 
