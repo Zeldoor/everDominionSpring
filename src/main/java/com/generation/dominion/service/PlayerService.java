@@ -86,4 +86,6 @@ public class PlayerService
                 .filter(player -> player.getShield() == null || player.getShield().equals("none") || !player.hasShield())
                 .collect(Collectors.toList());
     }
+
+    
 }

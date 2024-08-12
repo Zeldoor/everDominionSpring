@@ -143,4 +143,24 @@ public class PlayerController
         return playersWithoutShield.stream().map(PlayerDTOwAll::new).collect(Collectors.toList());
     }
 
+
 }
+
+    //test
+    // @GetMapping("/testino/{id}")
+    // public void testino(@PathVariable int id) 
+    // {
+    //     Player p = playerRepository.findById(id).get();
+    //     p.applyShield();
+    //     playerRepository.save(p);
+    // }
+
+
+    
+    // @GetMapping("/removino/{id}")
+    // public void removino(@PathVariable int id) 
+    // {
+    //     Player p = playerRepository.findById(id).get();
+    //     p.removeShield();
+    //     playerRepository.save(p);
+    // }
