@@ -83,7 +83,7 @@ public class PlayerService
     public List<Player> getPlayersWithoutShield() 
     {
         return playerRepository.findAll().stream()
-                .filter(player -> player.getShield() == null || player.getShield().equals("none"))
+                .filter(player -> player.getShield() == null || player.getShield().equals("none") || !player.hasShield())
                 .collect(Collectors.toList());
     }
 }

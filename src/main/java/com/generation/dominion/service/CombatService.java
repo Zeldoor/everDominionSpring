@@ -96,10 +96,10 @@ public class CombatService
                 );
         }
 
-        // if(attacker.hasShield())
-        //     attacker.removeShield()
+        if(pAttacker.hasShield())
+            pAttacker.removeShield();
 
-        // defender.activeShield()
+        pDefender.applyShield();
 
         fightDtoRes.setAttacker(attacker);
         fightDtoRes.setDefender(defender);

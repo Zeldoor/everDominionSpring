@@ -103,8 +103,6 @@ public class PlayerController
     }
 
     //Offline
-    @GetMapping("/{id}/offline")
-    public void setPlayerOffline(@PathVariable int id) 
     @PostMapping("/{id}/offline")
     public ResponseEntity<String> setPlayerOffline(@PathVariable int id) 
     {
@@ -141,10 +139,11 @@ public class PlayerController
     }
 
     //Tutti quelli senza scudo e che quindi possono essere attaccati
-    @GetMapping("/without-shield")
+    @GetMapping("/noShield")
     public List<PlayerDTOwAll> getPlayersWithoutShield() 
     {
         List<Player> playersWithoutShield = playerServ.getPlayersWithoutShield();
+        
         return playersWithoutShield.stream().map(PlayerDTOwAll::new).collect(Collectors.toList());
     }
 
