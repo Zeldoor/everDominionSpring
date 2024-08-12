@@ -1,6 +1,7 @@
 package com.generation.dominion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,7 +68,6 @@ public class PlayerController
         return new PlayerDTOwAll(player);
     }
 
-
     // test di combattimento
     @PostMapping("/fight")
     public FightResultDTO fight(@RequestBody FightResultDTO dto) 
@@ -103,10 +103,13 @@ public class PlayerController
     }
 
     //Offline
-    @GetMapping("/{id}/offline")
-    public void setPlayerOffline(@PathVariable int id) 
+    @PostMapping("/{id}/offline")
+    public ResponseEntity<String> setPlayerOffline(@PathVariable int id) 
     {
+        System.out.println("API OFFLINE");
         playerServ.playerOffline(id);
+        
+        return new ResponseEntity<>("Player offline", HttpStatus.OK);
     }
 
     //Online
@@ -118,9 +121,9 @@ public class PlayerController
 
     //Amici online
     @GetMapping("/{id}/friends")
-    public List<PlayerDTO> getFriends(@PathVariable int id) 
+    public List<PlayerDTOwAll> getFriends(@PathVariable int id) 
     {
-        return playerServ.getFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
+        return playerServ.getFriends(id).stream().map(p -> new PlayerDTOwAll(p)).toList();
     }
 
     //Aggiungi amici
@@ -136,10 +139,11 @@ public class PlayerController
     }
 
     //Tutti quelli senza scudo e che quindi possono essere attaccati
-    @GetMapping("/without-shield")
+    @GetMapping("/noShield")
     public List<PlayerDTOwAll> getPlayersWithoutShield() 
     {
         List<Player> playersWithoutShield = playerServ.getPlayersWithoutShield();
+        
         return playersWithoutShield.stream().map(PlayerDTOwAll::new).collect(Collectors.toList());
     }
 

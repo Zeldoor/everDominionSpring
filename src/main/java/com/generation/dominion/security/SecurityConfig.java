@@ -33,7 +33,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             authorize -> 
             authorize
-            .requestMatchers("api/auth/**","/swagger-ui/**","/api/v3/api-docs/**").permitAll()
+            .requestMatchers("api/auth/**","/swagger-ui/**","/api/v3/api-docs/**", "/websocket/**").permitAll()
             // .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
             .anyRequest().permitAll() // authenticated() // permitAll()
         )

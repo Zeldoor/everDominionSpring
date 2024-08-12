@@ -73,7 +73,7 @@ public class Player
         this.stamina = playerDto.getStamina();
         this.online = "offline"; 
         this.lastActivity = LocalDateTime.now();
-        this.shield = "none";
+        this.shield = playerDto.getShield();
     }
 
     //SHOP METHODS
@@ -164,31 +164,43 @@ public class Player
     //Shield 
     public boolean hasShield()
     {
-        if (this.shield.equals("none")) 
-        {
+        if (this.shield == null || this.shield.equals("none")) 
             return false;
-        }
+
         LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         return LocalDateTime.now().isBefore(shieldEndTime);
+    }
+
+    //AddShield 
+    public void applyShield()
+    {
+        this.shield = LocalDateTime.now().plusHours(3).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME).toString();
+    }
+
+    //removeShiedl
+    public void  removeShield()
+    {
+        this.shield = "none";
     }
 
     public String getShieldDate()
     {
         if (this.shield.equals("none")) 
-        {
-            return "none";
-        }
+            return this.shield;
+
         LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         return shieldEndTime.toLocalDate().toString();
     }
 
     public String getShieldTime()
     {
         if (this.shield.equals("none")) 
-        {
-            return "none";
-        }
+            return this.shield;
+
         LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
         return shieldEndTime.toLocalTime().toString();
     }
 
