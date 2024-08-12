@@ -210,14 +210,4 @@ public class Player
         this.shield = shieldEndTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
-
-    public void applyShield()
-    {
-        this.shield = LocalDateTime.now().plusHours(3).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME).toString();
-    }
-
-    public void  removeShield()
-    {
-        this.shield = "none";
-    }
 }
