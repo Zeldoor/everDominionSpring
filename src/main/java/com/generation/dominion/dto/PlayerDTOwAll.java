@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.generation.dominion.enums.E_Status;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
@@ -50,8 +51,8 @@ public class PlayerDTOwAll
         this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
         
         initDTO(player);
-        activeTroops = filterByStatus(player, "active");
-        storageTroops = filterByStatus(player, "storage");
+        activeTroops = filterByStatus(player, E_Status.ACTIVE.toString());
+        storageTroops = filterByStatus(player, E_Status.STORAGE.toString());
     }
 
     private void initDTO(Player player)
@@ -72,7 +73,8 @@ public class PlayerDTOwAll
 
         if(player.getGears().size() != 0) 
         {
-            this.activeGears.addAll(player.getGears());
+            this.activeGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.ACTIVE.toString())).map(g -> g.getGear()).toList();
+            this.storageGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.STORAGE.toString())).map(g -> g.getGear()).toList();
         }
     }
 
@@ -156,7 +158,7 @@ public class PlayerDTOwAll
     private List<TroopDTO> filterByStatus(Player palyer, String status)
     {
         List<TroopDTO> res = palyer.troops.stream()
-                                            .filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
+                                            .filter(t -> t.getStatus().equalsIgnoreCase(status)).map(t -> new TroopDTO(t)).toList();
         return res;
     }
 

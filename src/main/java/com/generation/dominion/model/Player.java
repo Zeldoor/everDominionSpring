@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.generation.dominion.dto.PlayerDTOwAll;
+import com.generation.dominion.enums.E_Player;
+import com.generation.dominion.enums.E_Status;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -39,14 +41,8 @@ public class Player
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Troop> troops; // queste sono le troop attive che il giocatore usa nel figth
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable
-    (
-        name = "player_gears",
-        joinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "gear_id", referencedColumnName = "id")
-    )
-    private List<Gear> gears = new ArrayList<>(); // questi sono i gear attivi durante il figth
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Player_Gear> gears = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable
@@ -61,9 +57,9 @@ public class Player
     {
         this.gold = 100;
         this.stamina = 3;
-        this.online = "offline"; 
+        this.online = E_Player.OFFLINE.toString(); 
         this.lastActivity = LocalDateTime.now();
-        this.shield = "none";
+        this.shield = E_Player.NONE.toString();
     }
 
     public Player(PlayerDTOwAll playerDto) 
@@ -71,19 +67,17 @@ public class Player
         this.nick = playerDto.getNick();
         this.gold = playerDto.getGold();
         this.stamina = playerDto.getStamina();
-        this.online = "offline"; 
+        this.online = E_Player.OFFLINE.toString(); 
         this.lastActivity = LocalDateTime.now();
         this.shield = playerDto.getShield();
     }
 
     //SHOP METHODS
 
-    public void buyGear(Gear gear)
+    public void buyGear(Player_Gear gear)
     {
-        detractGold(gear.getPrice());
-
-        if(this.gears.size() < 6)
-            this.gears.add(gear);
+        detractGold(gear.getGear().getPrice());
+        this.gears.add(gear);
     }
 
     public void buyTroop(Troop troop)
@@ -91,7 +85,7 @@ public class Player
         detractGold(troop.getPrice());
 
         troop.setPlayer(this);
-        troop.setStatus(this.troops.size() < 6 ? "active" : "storage");
+        troop.setStatus(this.troops.size() < 6 ? E_Status.ACTIVE.toString() : E_Status.STORAGE.toString());
         this.troops.add(troop);
     }
     
@@ -141,30 +135,28 @@ public class Player
     
     public void setPlayerOnline()
     {
-        System.out.println("SETTATO ONLINE");
-        this.online = "online";
+        this.online = E_Player.ONLINE.toString();
     }
 
     public void setPlayerOffline()
     {
-        System.out.println("SETTATO OFFLINE");
-        this.online = "offline";
+        this.online = E_Player.OFFLINE.toString();
     }
 
     public boolean isOnline()
     {
-        return this.online.equals("online");
+        return this.online.equalsIgnoreCase(E_Player.ONLINE.toString());
     }
 
     public boolean isOffline()
     {
-        return this.online.equals("offline");
+        return this.online.equalsIgnoreCase(E_Player.OFFLINE.toString());
     }
 
     //Shield 
     public boolean hasShield()
     {
-        if (this.shield == null || this.shield.equals("none")) 
+        if (this.shield == null || this.shield.equalsIgnoreCase(E_Player.NONE.toString())) 
             return false;
 
         LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -181,12 +173,12 @@ public class Player
     //removeShiedl
     public void  removeShield()
     {
-        this.shield = "none";
+        this.shield = E_Player.NONE.toString();
     }
 
     public String getShieldDate()
     {
-        if (this.shield.equals("none")) 
+        if (this.shield.equalsIgnoreCase(E_Player.NONE.toString())) 
             return this.shield;
 
         LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -196,7 +188,7 @@ public class Player
 
     public String getShieldTime()
     {
-        if (this.shield.equals("none")) 
+        if (this.shield.equalsIgnoreCase(E_Player.NONE.toString())) 
             return this.shield;
 
         LocalDateTime shieldEndTime = LocalDateTime.parse(this.shield, DateTimeFormatter.ISO_LOCAL_DATE_TIME);

@@ -1,9 +1,15 @@
 package com.generation.dominion.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 
@@ -16,9 +22,13 @@ public class Gear
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String icon = "";
     private Integer price;
     private String name;
     private String description;
+
+    @OneToMany(mappedBy = "gear", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Player_Gear> players = new ArrayList<>();
 
     public Gear() {}
 
@@ -37,4 +47,17 @@ public class Gear
         this.description = description;
     }
 
+    public void getEffect(Player player)
+    {
+        switch (name) 
+        {
+            case "anello":
+                
+
+                break;
+        
+            default:
+                break;
+        }
+    }
 }

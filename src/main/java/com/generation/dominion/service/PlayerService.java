@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.generation.dominion.enums.E_Player;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.PlayerRepository;
@@ -83,7 +84,7 @@ public class PlayerService
     public List<Player> getPlayersWithoutShield() 
     {
         return playerRepository.findAll().stream()
-                .filter(player -> player.getShield() == null || player.getShield().equals("none") || !player.hasShield())
+                .filter(player -> player.getShield() == null || player.getShield().equalsIgnoreCase(E_Player.NONE.toString()) || !player.hasShield())
                 .collect(Collectors.toList());
     }
 }
