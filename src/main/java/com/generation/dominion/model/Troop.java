@@ -3,6 +3,7 @@ package com.generation.dominion.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.dto.TroopDTO;
+import com.generation.dominion.enums.E_Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -96,17 +97,17 @@ public class Troop
 
     public boolean isActive()
     {
-        return this.status.equals("active");
+        return this.status.equalsIgnoreCase(E_Status.ACTIVE.toString());
     }
 
     public void setActive()
     {
-        status = "active";
+        status = E_Status.ACTIVE.toString();
     }
 
     public void setStorage()
     {
-        status = "storage";
+        status = E_Status.STORAGE.toString();
     }
 
     @Override

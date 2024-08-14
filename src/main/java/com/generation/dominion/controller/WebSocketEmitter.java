@@ -36,6 +36,15 @@ public class WebSocketEmitter
 
         service.sendLeadMessage(res);
     }
+
+    @Scheduled(fixedRate = 2000)
+    public void refreshPlayers()
+    {
+        List<Player> players = playerServ.getAllPlayers();
+        List<PlayerDTOwAll> res = players.stream().map(p -> new PlayerDTOwAll(p)).toList();
+
+        service.sendLeadMessage(res);
+    }
     
 
     // @MessageMapping("/receiveId")

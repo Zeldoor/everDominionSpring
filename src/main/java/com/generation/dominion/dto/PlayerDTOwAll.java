@@ -51,6 +51,7 @@ public class PlayerDTOwAll
         this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
         
         initDTO(player);
+
         activeTroops = filterByStatus(player, E_Status.ACTIVE.toString());
         storageTroops = filterByStatus(player, E_Status.STORAGE.toString());
     }

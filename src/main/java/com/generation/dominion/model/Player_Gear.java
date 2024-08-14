@@ -1,6 +1,7 @@
 package com.generation.dominion.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.generation.dominion.enums.E_Status;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,13 +29,27 @@ public class Player_Gear
     @JsonIgnore
     Gear gear;
 
+    Integer tier = 1;
     String status;
 
     public void setPlayerGear(Player p, Gear g)
     {
         player = p;
         gear = g;
-        
-        p.getGears().add(this);
+    }
+
+    public boolean isActive()
+    {
+        return this.status.equalsIgnoreCase(E_Status.ACTIVE.toString());
+    }
+
+    public void setActive()
+    {
+        status = E_Status.ACTIVE.toString();
+    }
+
+    public void setStorage()
+    {
+        status = E_Status.STORAGE.toString();
     }
 }
