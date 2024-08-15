@@ -1,13 +1,19 @@
 package com.generation.dominion.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.generation.dominion.enums.E_Player;
+import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
+import com.generation.dominion.model.Player_Gear;
 import com.generation.dominion.model.Troop;
+import com.generation.dominion.repository.GearRepository;
 import com.generation.dominion.repository.PlayerRepository;
+import com.generation.dominion.repository.Player_GearRepository;
 
 @Service
 public class PlayerService 
@@ -15,7 +21,19 @@ public class PlayerService
     @Autowired
     PlayerRepository playerRepository;
 
-    public Troop switchSingleState(Troop troop)
+    @Autowired
+    GearRepository gearRepository;
+
+    @Autowired
+    Player_GearRepository playerGearRepository;
+
+    public List<Player> getAllPlayers()
+    {
+        return playerRepository.findAll();
+    }
+
+    //Metodo gestionale
+    public Troop switchSingleTroopState(Troop troop)
     {
         if(troop.isActive())
             troop.setStorage();
@@ -25,6 +43,19 @@ public class PlayerService
         return troop;
     }
 
+    public Player_Gear switchSingleGearState(Player player, Gear gear) 
+    {
+        Player_Gear playerGear = player.getGears().stream().filter(pg -> pg.getGear().getName().equals(gear.getName())).toList().get(0);
+
+        if(playerGear.isActive())
+            playerGear.setStorage();
+        else
+            playerGear.setActive();
+
+        return playerGear;
+    }
+
+    //Metodi attività
     public void updateLastActivity(int playerId) 
     {
         Player player = playerRepository.findById(playerId).get();
@@ -45,6 +76,8 @@ public class PlayerService
         playerRepository.save(player);
     }
 
+
+    //Metodi amici
     public List<Player> getOnlineFriends(int playerId) 
     {
         Player player = playerRepository.findById(playerId).get();
@@ -70,5 +103,13 @@ public class PlayerService
         playerRepository.save(friend);
 
         return player;
+    }
+    
+    //Metodo scudo
+    public List<Player> getPlayersWithoutShield() 
+    {
+        return playerRepository.findAll().stream()
+                .filter(player -> player.getShield() == null || player.getShield().equalsIgnoreCase(E_Player.NONE.toString()) || !player.hasShield())
+                .collect(Collectors.toList());
     }
 }

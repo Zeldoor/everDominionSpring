@@ -30,20 +30,16 @@ public class ShopController
     }
 
     // Compra Gear
-    @PostMapping("/gear")
-    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @RequestParam Integer GearShopId) 
+    @PostMapping("/gear/{id}")
+    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDtowTroops = shopService.buyGear(playerDto, GearShopId);
-
-        return playerDtowTroops;
+        return shopService.buyGear(playerDto, id);
     }
 
     // Compra Troop
     @PostMapping("/troop/{id}")
     public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDto = shopService.buyTroop(player, id);
-
-        return playerDto;
+        return shopService.buyTroop(player, id);
     }
 }
