@@ -45,7 +45,7 @@ public class PlayerService
 
     public Player_Gear switchSingleGearState(Player player, Gear gear) 
     {
-        Player_Gear playerGear = player.getGears().stream().filter(pg -> pg.getGear().getName().equals(gear.getName())).toList().get(0);
+        Player_Gear playerGear = player.getGears().stream().filter(pg -> pg.getGear().getId() == gear.getId()).toList().get(0);
 
         if(playerGear.isActive())
             playerGear.setStorage();
