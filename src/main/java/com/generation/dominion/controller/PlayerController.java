@@ -21,6 +21,8 @@ import com.generation.dominion.service.PlayerService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 
 @RestController
@@ -165,4 +167,18 @@ public class PlayerController
         return playersWithoutShield.stream().map(PlayerDTOwAll::new).collect(Collectors.toList());
     }
 
+    @PostMapping("{id}/icon")
+    public void switchIcon(@RequestBody String newIcon, @PathVariable int id) 
+    {
+        Player player = playerRepository.findById(id).get();
+        player.setIcon(newIcon);
+        playerRepository.save(player);
+    }
+
+    @GetMapping("test")
+    public void sad() 
+    {
+        System.out.println("FUNZIONA");
+    }
+    
 }

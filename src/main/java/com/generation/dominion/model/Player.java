@@ -36,6 +36,7 @@ public class Player
     private String online; 
     private LocalDateTime lastActivity;
     private String shield;
+    private String icon;
 
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
