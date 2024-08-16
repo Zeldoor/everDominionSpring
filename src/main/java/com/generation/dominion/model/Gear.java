@@ -3,6 +3,8 @@ package com.generation.dominion.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringExclude;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.enums.E_Gear;
@@ -31,6 +33,7 @@ public class Gear
     private String name;
     private String description;
 
+    @ToStringExclude
     @JsonIgnore
     @OneToMany(mappedBy = "gear", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Player_Gear> players = new ArrayList<>();

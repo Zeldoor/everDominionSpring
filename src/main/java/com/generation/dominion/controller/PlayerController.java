@@ -109,7 +109,7 @@ public class PlayerController
         player = playerRepository.findById(id).get();
 
         return new PlayerDTOwAll(player);
-    }
+    } 
 
     //Attività
     @PostMapping("/{id}/heartbeat")

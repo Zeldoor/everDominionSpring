@@ -19,6 +19,7 @@ public class PlayerDTOwAll
     private String nick;
     private int stamina;
     private int gold;
+    private String online;
        
     // SCUDO
     private String shield;
@@ -49,6 +50,7 @@ public class PlayerDTOwAll
         this.gold = player.getGold();
         this.shield = player.getShield();
         this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
+        this.online = player.getOnline();
         
         initDTO(player);
 
