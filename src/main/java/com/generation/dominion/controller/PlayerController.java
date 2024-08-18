@@ -21,7 +21,6 @@ import com.generation.dominion.service.PlayerService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 
@@ -81,8 +80,12 @@ public class PlayerController
     @PostMapping("/fight")
     public FightResultDTO fight(@RequestBody FightResultDTO dto) 
     {
-        FightResultDTO fightRes = dto;
-        fightRes = combatServ.fightSystem(fightRes);
+        Player enemy = playerRepository.findById(dto.getDefender().getId()).get();
+
+        if(enemy.hasShield())
+            throw new IllegalArgumentException(enemy.getNick()+" ha lo scudo, non può essere attaccato");
+
+        FightResultDTO fightRes = combatServ.fightSystem(dto);
 
         return fightRes; 
     }
