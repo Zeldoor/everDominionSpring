@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +20,11 @@ import com.generation.dominion.dto.AuthResponseDto;
 import com.generation.dominion.dto.CredentialsDto;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Role;
+import com.generation.dominion.model.Troop;
 import com.generation.dominion.model.UserEntity;
 import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.RoleRepository;
+import com.generation.dominion.repository.TroopInShopRepository;
 import com.generation.dominion.repository.UserRepository;
 import com.generation.dominion.security.JWTGenerator;
 
@@ -41,25 +44,61 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JWTGenerator jwtGenerator;
+    @Autowired
+    private TroopInShopRepository troopInShopRepository;
 
+
+    // @PostMapping("login")
+    // public AuthResponseDto login(@RequestBody CredentialsDto loginDto)
+    // {
+    //     try 
+    //     {
+    //         Authentication user = authenticationManager.authenticate(
+    //             new UsernamePasswordAuthenticationToken(
+    //             loginDto.getUsername(),
+    //             loginDto.getPassword()));
+
+    //         Player player = playerRepository.findByNick(loginDto.getUsername()).get();
+    //         UserEntity userEntity = userRepository.findByUsername(loginDto.getUsername()).get();
+
+    //         SecurityContextHolder.getContext().setAuthentication(user);
+
+    //         String token = jwtGenerator.generateToken(user);
+
+
+    //         return new AuthResponseDto(token, userEntity, player);
+            
+    //     } catch (AuthenticationException e) 
+    //     {
+    //         return new ResponseEntity<>("Email alredy registered", HttpStatus.BAD_REQUEST);
+    //     }
+    // }
 
     @PostMapping("login")
-    public AuthResponseDto login(@RequestBody CredentialsDto loginDto)
-    {
-        Authentication user = authenticationManager.authenticate(
+    public ResponseEntity<?> login(@RequestBody CredentialsDto loginDto) {
+        try 
+        {
+            Authentication user = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                loginDto.getUsername(),
-                loginDto.getPassword()));
+                    loginDto.getUsername(),
+                    loginDto.getPassword()
+                )
+            );
 
-        Player player = playerRepository.findByNick(loginDto.getUsername()).get();
-        UserEntity userEntity = userRepository.findByUsername(loginDto.getUsername()).get();
+            Player player = playerRepository.findByNick(loginDto.getUsername()).get();
+            UserEntity userEntity = userRepository.findByUsername(loginDto.getUsername()).get();
+            
+            SecurityContextHolder.getContext().setAuthentication(user);
 
-        SecurityContextHolder.getContext().setAuthentication(user);
+            String token = jwtGenerator.generateToken(user);
 
-        String token = jwtGenerator.generateToken(user);
-
-
-        return new AuthResponseDto(token, userEntity, player);
+            return ResponseEntity.ok(new AuthResponseDto(token, userEntity, player));
+            
+        } 
+        catch (AuthenticationException e) 
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        } 
     }
 
 
@@ -83,6 +122,8 @@ public class AuthController {
 
         Player player = new Player();
         player.setNick(registerDto.getUsername());
+        player.randomIcon();
+        player.buyTroop(new Troop(troopInShopRepository.findById(1).get()));
 
         userRepository.save(user);
         playerRepository.save(player);

@@ -126,7 +126,6 @@ public class PlayerController
     @PostMapping("/{id}/offline")
     public ResponseEntity<String> setPlayerOffline(@PathVariable int id) 
     {
-        System.out.println("API OFFLINE");
         playerServ.playerOffline(id);
         
         return new ResponseEntity<>("Player offline", HttpStatus.OK);
@@ -174,11 +173,4 @@ public class PlayerController
         player.setIcon(newIcon);
         playerRepository.save(player);
     }
-
-    @GetMapping("test")
-    public void sad() 
-    {
-        System.out.println("FUNZIONA");
-    }
-    
 }
