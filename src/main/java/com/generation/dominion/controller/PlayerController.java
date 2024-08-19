@@ -78,16 +78,16 @@ public class PlayerController
 
     // test di combattimento
     @PostMapping("/fight")
-    public FightResultDTO fight(@RequestBody FightResultDTO dto) 
+    public ResponseEntity<?> fight(@RequestBody FightResultDTO dto) 
     {
         Player enemy = playerRepository.findById(dto.getDefender().getId()).get();
 
         if(enemy.hasShield())
-            throw new IllegalArgumentException(enemy.getNick()+" ha lo scudo, non può essere attaccato");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(enemy.getNick() + " ha uno scudo, non può essere attaccato");
 
         FightResultDTO fightRes = combatServ.fightSystem(dto);
 
-        return fightRes; 
+        return ResponseEntity.ok(fightRes);
     }
 
     //Gestione
@@ -166,7 +166,7 @@ public class PlayerController
     {
         List<Player> playersWithoutShield = playerServ.getPlayersWithoutShield();
         
-        return playersWithoutShield.stream().map(PlayerDTOwAll::new).collect(Collectors.toList());
+        return playersWithoutShield.stream().map(p -> new PlayerDTOwAll(p)).collect(Collectors.toList());
     }
 
     @PostMapping("{id}/icon")

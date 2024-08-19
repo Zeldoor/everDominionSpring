@@ -32,9 +32,9 @@ public class Player
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    public String nick;
-    public int stamina;
-    public int gold;
+    private String nick;
+    private int stamina;
+    private int gold;
     private String online; 
     private LocalDateTime lastActivity;
     private String shield;
@@ -218,7 +218,7 @@ public class Player
             icons.add("https://i.imgur.com/jhU6ZL7.png");
             icons.add("https://i.imgur.com/a3cD05e.png");
 
-            this.icon = icons.get((int)(Math.random()*6)+1);
+            this.icon = icons.get((int)(Math.random()*6));
         }
     }
 }
