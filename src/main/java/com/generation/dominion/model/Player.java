@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringExclude;
+
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.enums.E_Player;
 import com.generation.dominion.enums.E_Status;
@@ -30,12 +32,13 @@ public class Player
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    public String nick;
-    public int stamina;
-    public int gold;
+    private String nick;
+    private int stamina;
+    private int gold;
     private String online; 
     private LocalDateTime lastActivity;
     private String shield;
+    private String icon;
 
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -44,6 +47,7 @@ public class Player
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Player_Gear> gears = new ArrayList<>();
 
+    @ToStringExclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable
     (
@@ -55,11 +59,12 @@ public class Player
 
     public Player() 
     {
-        this.gold = 100;
+        this.gold = 130;
         this.stamina = 3;
         this.online = E_Player.OFFLINE.toString(); 
         this.lastActivity = LocalDateTime.now();
         this.shield = E_Player.NONE.toString();
+        this.troops = new ArrayList<>();
     }
 
     public Player(PlayerDTOwAll playerDto) 
@@ -88,8 +93,6 @@ public class Player
         troop.setStatus(this.troops.size() < 6 ? E_Status.ACTIVE.toString() : E_Status.STORAGE.toString());
         this.troops.add(troop);
     }
-    
-
     
     public boolean checkForBuy(Integer ammount)
     {
@@ -200,5 +203,22 @@ public class Player
     {
         LocalDateTime shieldEndTime = LocalDateTime.now().plusHours(3); //qui dico che lo scudo dura tre ore
         this.shield = shieldEndTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    public void randomIcon()
+    {
+        if(this.icon == null || this.icon.isEmpty())
+        {
+            List<String> icons = new ArrayList<>();
+
+            icons.add("https://i.imgur.com/ezI6Q1G.png");
+            icons.add("https://i.imgur.com/9SosBgT.png");
+            icons.add("https://i.imgur.com/8XwnPsO.png");
+            icons.add("https://i.imgur.com/Zt90JBD.png");
+            icons.add("https://i.imgur.com/jhU6ZL7.png");
+            icons.add("https://i.imgur.com/a3cD05e.png");
+
+            this.icon = icons.get((int)(Math.random()*6));
+        }
     }
 }

@@ -43,7 +43,7 @@ public class WebSocketEmitter
         List<Player> players = playerServ.getAllPlayers();
         List<PlayerDTOwAll> res = players.stream().map(p -> new PlayerDTOwAll(p)).toList();
 
-        service.sendLeadMessage(res);
+        service.sendPlayersMessage(res);
     }
     
 

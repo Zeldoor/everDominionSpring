@@ -18,9 +18,11 @@ public class PlayerDTOwAll
     private int id;
     private String nick;
     private int stamina;
+    private String icon;
+    
+    // PLAYER
     private int gold;
-       
-    // SCUDO
+    private String online;
     private String shield;
 
     //COMBAT INFO
@@ -49,6 +51,8 @@ public class PlayerDTOwAll
         this.gold = player.getGold();
         this.shield = player.getShield();
         this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
+        this.online = player.getOnline();
+        this.icon = player.getIcon();
         
         initDTO(player);
 
