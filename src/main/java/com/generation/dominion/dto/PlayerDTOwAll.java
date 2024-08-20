@@ -34,9 +34,10 @@ public class PlayerDTOwAll
     //RISORSE 
     private List<TroopDTO> activeTroops = new ArrayList<>();
     private List<TroopDTO> storageTroops = new ArrayList<>();
-    private List<Gear> activeGears = new ArrayList<>();
-    private List<Gear> storageGears = new ArrayList<>();
+    private List<GearDto> activeGears = new ArrayList<>();
+    private List<GearDto> storageGears = new ArrayList<>();
 
+    //AMICI
     private List<PlayerDTO> friends = new ArrayList<>();
 
     //COSTRUTTORI
@@ -78,8 +79,8 @@ public class PlayerDTOwAll
 
         if(player.getGears().size() != 0) 
         {
-            this.activeGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.ACTIVE.toString())).map(g -> g.getGear()).toList();
-            this.storageGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.STORAGE.toString())).map(g -> g.getGear()).toList();
+            this.activeGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.ACTIVE.toString())).map(g -> new GearDto(g)).toList();
+            this.storageGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.STORAGE.toString())).map(g -> new GearDto(g)).toList();
         }
     }
 
@@ -88,7 +89,7 @@ public class PlayerDTOwAll
 
     public boolean addItemToInventory(Gear gear)  // Questi sono i gear attivi durante il fight
     {
-        return this.activeGears.add(gear);
+        return this.activeGears.add(new GearDto(gear));
     }
 
     public void buyGear(Gear gear)  // compra un gear

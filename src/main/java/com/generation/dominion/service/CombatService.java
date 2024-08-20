@@ -141,13 +141,13 @@ public class CombatService
             case ANELLO:
                 playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (pg.getTier() * 10)); // Aumenta la salute in base al tier
                 break;
-            case BRACCIALE:
+            case PUGNALE:
+                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (pg.getTier() * 4)); // Aumenta il danno massimo
+                break;
+            case PIUMA:
                 playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (pg.getTier() * 2)); // Aumenta il danno minimo
                 break;
-            case TIARA:
-                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (pg.getTier() * 3)); // Aumenta il danno massimo
-                break;
-            case COLLANA: 
+            case GETTONE: 
                 playerDto.setGold(playerDto.getGold() + (pg.getTier() * 5)); // Aumenta l'oro ottenuto
                 break;
         }

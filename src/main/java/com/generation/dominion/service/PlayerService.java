@@ -92,13 +92,20 @@ public class PlayerService
         return player.getFriends();
     }
 
-    public Player addFriend(Integer id, Integer playerId)
+    public Player addFriend(Player player, Player friend)
     {
-        Player player = playerRepository.findById(playerId).get();
-        Player friend = playerRepository.findById(id).get();
-
         player.addFriend(friend);
 
+        playerRepository.save(player);
+        playerRepository.save(friend);
+
+        return player;
+    }
+
+    public Player removePlayer(Player player, Player friend) 
+    {
+        player.removeFriend(friend);
+        
         playerRepository.save(player);
         playerRepository.save(friend);
 

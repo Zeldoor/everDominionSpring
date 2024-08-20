@@ -1,9 +1,7 @@
 package com.generation.dominion.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.enums.E_Status;
-import com.generation.dominion.enums.E_Gear;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,36 +38,12 @@ public class Player_Gear
         gear = g;
     }
 
-    public void upgradeGearTier() {
-        if (this.tier < 3) {
+    public void upgradeGearTier() 
+    {
+        if (this.tier < 3)
             this.tier++;
-        } else {
-            System.out.println("Upgrade massimo raggiunto.");
-        }
     }
     
-    public void applyGearEffect(PlayerDTOwAll playerDto) 
-    {
-        if (this.isActive()) 
-        {
-            switch (E_Gear.valueOf(gear.getName())) 
-            { 
-                case ANELLO:
-                    playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (tier * 10)); // Aumenta la salute in base al tier
-                    break;
-                case BRACCIALE:
-                    playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (tier * 2)); // Aumenta il danno minimo
-                    break;
-                case TIARA:
-                    playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (tier * 3)); // Aumenta il danno massimo
-                    break;
-                case COLLANA: 
-                    playerDto.setGold(playerDto.getGold() + (tier * 5)); // Aumenta l'oro ottenuto
-                    break;
-            }
-        }
-    }
-
     public boolean isActive()
     {
         return this.status.equalsIgnoreCase(E_Status.ACTIVE.toString());

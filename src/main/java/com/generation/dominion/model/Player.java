@@ -85,6 +85,13 @@ public class Player
         this.gears.add(gear);
     }
 
+    public void upgradeTier(Player_Gear pg)
+    {
+        detractGold(pg.getGear().getPrice()*pg.getTier());
+        pg.upgradeGearTier();
+        this.gears.add(pg);
+    }
+
     public void buyTroop(Troop troop)
     {
         detractGold(troop.getPrice());
@@ -135,7 +142,13 @@ public class Player
         this.friends.add(player);
         player.friends.add(this);
     }
-    
+
+    public void removeFriend(Player player)
+    {
+        this.friends = this.friends.stream().filter(p -> p.getId() != player.getId()).toList();
+        player.friends = player.friends.stream().filter(p -> p.getId() != this.id).toList();
+    }
+
     public void setPlayerOnline()
     {
         this.online = E_Player.ONLINE.toString();
