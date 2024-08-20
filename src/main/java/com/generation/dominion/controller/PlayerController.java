@@ -68,12 +68,21 @@ public class PlayerController
 
     // Legge un Player con tutte le sue Troop e tutti i suoi Gear
     @GetMapping("/{id}")
-    public PlayerDTOwAll getPlayer(@PathVariable int id) 
+    public ResponseEntity<?> getPlayer(@PathVariable Integer id) 
     {
-        Player player = playerRepository.findById(id)
-                            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+        if(id != null)
+        {
+            Player player = playerRepository.findById(id).get();
 
-        return new PlayerDTOwAll(player);
+            if(player == null)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player "+id+" non trovato");
+
+            return ResponseEntity.ok(new PlayerDTOwAll(player));
+        }
+        else
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore");
+        }
     }
 
     // test di combattimento
