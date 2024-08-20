@@ -16,6 +16,8 @@ public class GearDto
     private String description;
     private int tier;
 
+    public GearDto(){}
+
 
     public GearDto(Player_Gear pg) 
     {

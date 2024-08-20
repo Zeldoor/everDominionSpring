@@ -46,8 +46,8 @@ public class CombatService
         PlayerDTOwAll attacker = new PlayerDTOwAll(pAttacker);
         PlayerDTOwAll defender = new PlayerDTOwAll(pDefender);
 
-        attacker = gearEffects(attacker, pAttacker);
-        defender = gearEffects(defender, pDefender);
+        // attacker = gearEffects(attacker, pAttacker);
+        // defender = gearEffects(defender, pDefender);
 
         do
         {
