@@ -10,14 +10,13 @@ import org.springframework.http.ResponseEntity;
 import com.generation.dominion.repository.PvePlayerRepository;
 import com.generation.dominion.service.PveService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
-import com.generation.dominion.dto.FightResultDTO;
+import com.generation.dominion.dto.PveFightResultDTO;
 import com.generation.dominion.model.PvePlayer;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,14 +49,15 @@ public class PveController
     }
 
     //testo figth pve
-    @PostMapping("/fightPve")
-    public ResponseEntity<?> fightPve(@RequestBody FightResultDTO dto) 
+    @PostMapping("/fight/{id}")
+    public ResponseEntity<?> fightPve(@PathVariable Integer id, @RequestBody Integer playerId) 
     {
-        Optional<PvePlayer> pvePlayerOpt = pveRepo.findById(dto.getDefender().getId());
+        Optional<PvePlayer> pvePlayerOpt = pveRepo.findById(id);
 
         if (pvePlayerOpt.isPresent()) 
         {
-            FightResultDTO fightRes = pveService.fightSystem(dto);
+            PveFightResultDTO fightRes = pveService.fightSystem(id, playerId);
+            
             return ResponseEntity.ok(fightRes);
         } 
         else 
@@ -65,5 +65,4 @@ public class PveController
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("PvePlayer not found");
         }
     }
-
 }

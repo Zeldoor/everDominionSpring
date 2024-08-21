@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.enums.E_Status;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
+import com.generation.dominion.model.PvePlayer;
 import com.generation.dominion.model.Troop;
 
 @Data
@@ -108,6 +109,11 @@ public class PlayerDTOwAll
     }
     
     public void attack(PlayerDTOwAll enemy) 
+    {
+        enemy.takeDamage(randomAttackInRange());
+    }
+
+    public void attack(PvePlayer enemy) 
     {
         enemy.takeDamage(randomAttackInRange());
     }

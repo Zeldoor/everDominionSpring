@@ -10,16 +10,13 @@ import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
-import com.generation.dominion.model.PvePlayer;
 import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.GearRepository;
 import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.Player_GearRepository;
-import com.generation.dominion.repository.PvePlayerRepository;
 import com.generation.dominion.repository.TroopRepository;
 import com.generation.dominion.service.CombatService;
 import com.generation.dominion.service.PlayerService;
-import com.generation.dominion.service.PveService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +42,6 @@ public class PlayerController
     private GearRepository gearRepository;
     @Autowired
     private Player_GearRepository playerGearRepository;
-        @Autowired
-    private PvePlayerRepository pveRepo;
-    @Autowired
-    private PveService pveService;
 
     // Crea un nuovo Player
     @PostMapping
@@ -91,7 +84,7 @@ public class PlayerController
         }
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore");
-        }
+    }
         
     
 
@@ -223,23 +216,4 @@ public class PlayerController
         player.setIcon(newIcon);
         playerRepository.save(player);
     }
-
-
-    //boooooooooooooooooooooooooooooooooooooooh
-    @PostMapping("/fightPve")
-    public ResponseEntity<?> fightPve(@RequestBody FightResultDTO dto) 
-    {
-        Optional<PvePlayer> pvePlayerOpt = pveRepo.findById(dto.getDefender().getId());
-
-        if (pvePlayerOpt.isPresent()) 
-        {
-            FightResultDTO fightRes = pveService.fightSystem(dto);
-            return ResponseEntity.ok(fightRes);
-        } 
-        else 
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("PvePlayer not found");
-        }
-    }
-
 }
