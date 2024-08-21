@@ -11,10 +11,6 @@ import com.generation.dominion.model.PvePlayer;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.http.ResponseEntity;
-
-import com.generation.dominion.repository.PvePlayerRepository;
-import com.generation.dominion.model.PvePlayer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
