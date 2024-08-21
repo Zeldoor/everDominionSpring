@@ -26,7 +26,7 @@ public class PvePlayer
     private String icon;
 
 
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pvePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<PveTroop> troops = new ArrayList<>();
 
 
