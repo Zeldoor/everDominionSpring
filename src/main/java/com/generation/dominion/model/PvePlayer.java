@@ -22,13 +22,13 @@ public class PvePlayer
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nick;
-    private int gold;
-    private String icon;
 
 
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<PveTroop> troops = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "pvePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    public List<PveTroop> pveTroops = new ArrayList<>();
     
 }
+
+    // private int gold;
+    // private String icon;

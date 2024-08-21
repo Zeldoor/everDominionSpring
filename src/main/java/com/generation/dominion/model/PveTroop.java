@@ -34,10 +34,9 @@ public class PveTroop
     @Column(name = "health")
     public Integer health;
 
-    public String status;
 
     @ManyToOne
-    @JoinColumn(name = "player_id", nullable = true)
+    @JoinColumn(name = "pve_player_id", nullable = true)
     @JsonIgnore
     PvePlayer pvePlayer;
 
@@ -54,12 +53,10 @@ public class PveTroop
 
 
 
-
-
     @Override
     public String toString() {
         return "Troop id=" + id + ", className=" + className + ", minDamage=" + minDamage + ", maxDamage=" + maxDamage
-                + ", health=" + health + ", status=" + status + ", Player id: "+ pvePlayer.getId() ;
+                + ", health=" + health + ", pvePlayer id: "+ pvePlayer.getId() ;
     }
 
 
