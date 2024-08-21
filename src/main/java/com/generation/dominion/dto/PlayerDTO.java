@@ -11,6 +11,7 @@ public class PlayerDTO
     private String nick;
     private int stamina;
     private int gold;
+    private String icon;
 
     public PlayerDTO(){}
 
@@ -20,5 +21,6 @@ public class PlayerDTO
         this.nick = player.getNick();
         this.stamina = player.getStamina();
         this.gold = player.getGold();
+        this.icon = player.getIcon();
     }
 }

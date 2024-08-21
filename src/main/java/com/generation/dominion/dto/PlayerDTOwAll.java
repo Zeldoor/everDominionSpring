@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.generation.dominion.enums.E_Status;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.model.Troop;
@@ -17,9 +18,11 @@ public class PlayerDTOwAll
     private int id;
     private String nick;
     private int stamina;
+    private String icon;
+    
+    // PLAYER
     private int gold;
-       
-    // SCUDO
+    private String online;
     private String shield;
 
     //COMBAT INFO
@@ -31,9 +34,10 @@ public class PlayerDTOwAll
     //RISORSE 
     private List<TroopDTO> activeTroops = new ArrayList<>();
     private List<TroopDTO> storageTroops = new ArrayList<>();
-    private List<Gear> activeGears = new ArrayList<>();
-    private List<Gear> storageGears = new ArrayList<>();
+    private List<GearDto> activeGears = new ArrayList<>();
+    private List<GearDto> storageGears = new ArrayList<>();
 
+    //AMICI
     private List<PlayerDTO> friends = new ArrayList<>();
 
     //COSTRUTTORI
@@ -48,10 +52,13 @@ public class PlayerDTOwAll
         this.gold = player.getGold();
         this.shield = player.getShield();
         this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
+        this.online = player.getOnline();
+        this.icon = player.getIcon();
         
         initDTO(player);
-        activeTroops = filterByStatus(player, "active");
-        storageTroops = filterByStatus(player, "storage");
+
+        activeTroops = filterByStatus(player, E_Status.ACTIVE.toString());
+        storageTroops = filterByStatus(player, E_Status.STORAGE.toString());
     }
 
     private void initDTO(Player player)
@@ -72,7 +79,8 @@ public class PlayerDTOwAll
 
         if(player.getGears().size() != 0) 
         {
-            this.activeGears.addAll(player.getGears());
+            this.activeGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.ACTIVE.toString())).map(g -> new GearDto(g)).toList();
+            this.storageGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.STORAGE.toString())).map(g -> new GearDto(g)).toList();
         }
     }
 
@@ -81,7 +89,7 @@ public class PlayerDTOwAll
 
     public boolean addItemToInventory(Gear gear)  // Questi sono i gear attivi durante il fight
     {
-        return this.activeGears.add(gear);
+        return this.activeGears.add(new GearDto(gear));
     }
 
     public void buyGear(Gear gear)  // compra un gear
@@ -156,7 +164,7 @@ public class PlayerDTOwAll
     private List<TroopDTO> filterByStatus(Player palyer, String status)
     {
         List<TroopDTO> res = palyer.troops.stream()
-                                            .filter(t -> t.getStatus().equals(status)).map(t -> new TroopDTO(t)).toList();
+                                            .filter(t -> t.getStatus().equalsIgnoreCase(status)).map(t -> new TroopDTO(t)).toList();
         return res;
     }
 

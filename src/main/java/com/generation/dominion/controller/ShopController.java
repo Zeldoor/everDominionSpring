@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.service.ShopService;
+import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
-import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.TroopInShop;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class ShopController
     private ShopService shopService;
 
     @GetMapping("/gears")
-    public List<Gear> getShopGears() 
+    public List<GearDto> getShopGears() 
     {
         return shopService.getShopGears();
     }
@@ -30,20 +30,22 @@ public class ShopController
     }
 
     // Compra Gear
-    @PostMapping("/gear")
-    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @RequestParam Integer GearShopId) 
+    @PostMapping("/gear/{id}")
+    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDtowTroops = shopService.buyGear(playerDto, GearShopId);
+        return shopService.buyGear(playerDto, id);
+    }
 
-        return playerDtowTroops;
+    @PostMapping("/gear/upgrade/{id}")
+    public PlayerDTOwAll upGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
+    {
+        return shopService.upgradeGear(playerDto, id);
     }
 
     // Compra Troop
     @PostMapping("/troop/{id}")
     public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDto = shopService.buyTroop(player, id);
-
-        return playerDto;
+        return shopService.buyTroop(player, id);
     }
 }
