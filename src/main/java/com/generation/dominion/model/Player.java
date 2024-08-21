@@ -58,7 +58,7 @@ public class Player
     )
     private List<Player> friends = new ArrayList<>();
 
-    public Player() 
+    public Player()
     {
         this.gold = 130;
         this.stamina = 3;
