@@ -20,6 +20,7 @@ import com.generation.dominion.service.PlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -72,17 +73,18 @@ public class PlayerController
     {
         if(id != null)
         {
-            Player player = playerRepository.findById(id).get();
+            Optional<Player> playerOtp = playerRepository.findById(id);
 
-            if(player == null)
+            if(playerOtp.isPresent())
+            {
+                Player player = playerOtp.get();
+                return ResponseEntity.ok(new PlayerDTOwAll(player));
+            }
+            else
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player "+id+" non trovato");
-
-            return ResponseEntity.ok(new PlayerDTOwAll(player));
         }
         else
-        {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore");
-        }
     }
 
     // test di combattimento
