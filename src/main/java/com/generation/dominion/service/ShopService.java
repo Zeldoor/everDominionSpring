@@ -3,6 +3,7 @@ package com.generation.dominion.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.enums.E_Status;
@@ -33,9 +34,9 @@ public class ShopService
     @Autowired
     private Player_GearRepository p_gRepository;
 
-    public List<Gear> getShopGears() 
+    public List<GearDto> getShopGears() 
     {
-        return gearRepository.findAll();
+        return gearRepository.findAll().stream().map(g -> new GearDto(g)).toList();
     }
 
     public List<TroopInShop> getShopTroops() 
@@ -43,12 +44,12 @@ public class ShopService
         return troopRepository.findAll();
     }
 
-    public PlayerDTOwAll buyGear(PlayerDTO playerDto, Integer itemID) 
+    public PlayerDTOwAll buyGear(PlayerDTO playerDto, Integer gearId) 
     {
         Player_Gear p_g = new Player_Gear();
 
         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
-        Gear gear = gearRepository.findById(itemID).get();
+        Gear gear = gearRepository.findById(gearId).get();
 
         if (player == null || gear == null) 
             throw new RuntimeException("Player o Gear non trovato");
@@ -75,6 +76,25 @@ public class ShopService
 
         throw new RuntimeException("Oro insufficente");
     }
+
+    public PlayerDTOwAll upgradeGear(PlayerDTO playerDto, Integer gearId)
+    {
+        Player player = playerRepository.findById(playerDto.getId()).orElse(null);
+        Player_Gear pg = player.getGears().stream().filter(g -> g.getGear().getId().equals(gearId)).toList().get(0);
+
+        if (player == null || pg == null) 
+            throw new RuntimeException("Player o Gear non trovato");
+
+        if (player.checkForBuy(pg.getGear().getPrice()*pg.getTier())) 
+        {
+            player.upgradeTier(pg);
+            playerRepository.save(player);
+            return new PlayerDTOwAll(player);
+        }
+
+        throw new RuntimeException("Oro insufficente");
+    }
+
 
 
 

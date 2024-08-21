@@ -20,6 +20,7 @@ import com.generation.dominion.service.PlayerService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -41,7 +42,6 @@ public class PlayerController
     private GearRepository gearRepository;
     @Autowired
     private Player_GearRepository playerGearRepository;
-
 
     // Crea un nuovo Player
     @PostMapping
@@ -68,13 +68,25 @@ public class PlayerController
 
     // Legge un Player con tutte le sue Troop e tutti i suoi Gear
     @GetMapping("/{id}")
-    public PlayerDTOwAll getPlayer(@PathVariable int id) 
+    public ResponseEntity<?> getPlayer(@PathVariable Integer id) 
     {
-        Player player = playerRepository.findById(id)
-                            .orElseThrow(() -> new IllegalArgumentException("Player not found"));
+        if(id != null)
+        {
+            Optional<Player> playerOtp = playerRepository.findById(id);
 
-        return new PlayerDTOwAll(player);
+            if(playerOtp.isPresent())
+            {
+                Player player = playerOtp.get();
+                return ResponseEntity.ok(new PlayerDTOwAll(player));
+            }
+            else
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player "+id+" non trovato");
+        }
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore");
     }
+        
+    
 
     // test di combattimento
     @PostMapping("/fight")
@@ -150,14 +162,42 @@ public class PlayerController
 
     //Aggiungi amici
     @PostMapping("/add/{id}")
-    public PlayerDTOwAll getOnlineFriends(@PathVariable int id, @RequestBody Integer playerId) 
+    public ResponseEntity<?> addFriend(@PathVariable int id, @RequestBody Integer playerId) 
     {
-        Player player = playerServ.addFriend(id, playerId);
+        Player player = playerRepository.findById(playerId).get();
+        Player friend = playerRepository.findById(id).get();
 
-        PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
-        playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).toList());
+        if(player.getFriends().stream().filter(f -> f.getId() == id).toList().size() == 0)
+        {
+            player = playerServ.addFriend(player, friend);
 
-        return playerDtoUpdated;
+            PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
+            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).collect(Collectors.toSet()));
+
+            return ResponseEntity.ok(playerDtoUpdated);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("This player is already friend");
+    }
+
+    //Rimuovi amici
+    @PostMapping("/remove/{id}")
+    public ResponseEntity<?> removeFriend(@PathVariable int id, @RequestBody Integer playerId) 
+    {
+        Player player = playerRepository.findById(playerId) .orElseThrow(() -> new RuntimeException("Player not found"));
+        Player friend = playerRepository.findById(id).orElseThrow(() -> new RuntimeException("Friend not found"));
+
+        if (player.getFriends() != null && player.getFriends().stream().anyMatch(f -> f.getId() == id)) 
+        {
+            player = playerServ.removePlayer(player, friend);
+
+            PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
+            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).collect(Collectors.toSet()));
+
+            return ResponseEntity.ok(playerDtoUpdated);
+        }
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend not found in player's friend list");
     }
 
     //Tutti quelli senza scudo e che quindi possono essere attaccati

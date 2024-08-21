@@ -6,8 +6,6 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringExclude;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.generation.dominion.dto.PlayerDTOwAll;
-import com.generation.dominion.enums.E_Gear;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -53,35 +51,5 @@ public class Gear
         this.price = price;
         this.name = name;
         this.description = description;
-    }
-
-    public void getEffect(PlayerDTOwAll player)
-    {
-        switch (E_Gear.valueOf(name)) 
-        {
-            case ANELLO:
-
-                player.setPlayerMinDmg(player.getPlayerMinDmg() + 5);
-                player.setPlayerMaxDmg(player.getPlayerMaxDmg() + 5);
-                
-                break;
-
-            case BRACCIALE:
-
-                player.setPlayerHealth(player.getPlayerHealth() + 15);
-                
-                break;
-
-            case COLLANA:
-                
-                break;
-
-            case TIARA:
-                
-                break;
-        
-            default:
-                break;
-        }
     }
 }

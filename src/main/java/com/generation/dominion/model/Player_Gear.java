@@ -38,6 +38,12 @@ public class Player_Gear
         gear = g;
     }
 
+    public void upgradeGearTier() 
+    {
+        if (this.tier < 3)
+            this.tier++;
+    }
+    
     public boolean isActive()
     {
         return this.status.equalsIgnoreCase(E_Status.ACTIVE.toString());
