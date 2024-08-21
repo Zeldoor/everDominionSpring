@@ -171,7 +171,7 @@ public class PlayerController
             player = playerServ.addFriend(player, friend);
 
             PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
-            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).toList());
+            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).collect(Collectors.toSet()));
 
             return ResponseEntity.ok(playerDtoUpdated);
         }
@@ -191,20 +191,13 @@ public class PlayerController
             player = playerServ.removePlayer(player, friend);
 
             PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
-            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).toList());
+            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).collect(Collectors.toSet()));
 
             return ResponseEntity.ok(playerDtoUpdated);
         }
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend not found in player's friend list");
-}
-
-public Player removePlayer(Player player, Player friend) {
-    player.removeFriend(friend);
-    playerRepository.save(player);
-    playerRepository.save(friend);
-    return player;
-}
+    }
 
     //Tutti quelli senza scudo e che quindi possono essere attaccati
     @GetMapping("/noShield")

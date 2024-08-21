@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
 
@@ -145,8 +146,8 @@ public class Player
 
     public void removeFriend(Player player)
     {
-        this.friends = this.friends.stream().filter(p -> p.getId() != player.getId()).toList();
-        player.friends = player.friends.stream().filter(p -> p.getId() != this.id).toList();
+        this.friends = this.friends.stream().filter(p -> p.getId() != player.getId()).collect(Collectors.toList());
+        player.friends = player.friends.stream().filter(p -> p.getId() != this.id).collect(Collectors.toList());
     }
 
     public void setPlayerOnline()
