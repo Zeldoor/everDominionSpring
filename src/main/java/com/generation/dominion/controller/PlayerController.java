@@ -115,9 +115,9 @@ public class PlayerController
 
 
     @GetMapping("/{id}/friends")
-    public List<PlayerDTO> getFriends(@PathVariable int id) 
+    public List<PlayerDTOwAll> getFriends(@PathVariable int id) 
     {
-        return playerServ.getFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
+        return playerServ.getFriends(id).stream().map(p -> new PlayerDTOwAll(p)).toList();
     }
 
 
