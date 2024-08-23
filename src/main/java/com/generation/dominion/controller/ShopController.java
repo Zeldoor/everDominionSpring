@@ -1,6 +1,9 @@
 package com.generation.dominion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.service.ShopService;
@@ -36,16 +39,31 @@ public class ShopController
         return shopService.buyGear(playerDto, id);
     }
 
-    @PostMapping("/gear/upgrade/{id}")
-    public PlayerDTOwAll upGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
+    @PostMapping("/upgrade/{id}")
+    public ResponseEntity<?> upGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
     {
-        return shopService.upgradeGear(playerDto, id);
+        try 
+        {
+            return ResponseEntity.ok(shopService.upgradeGear(playerDto, id));
+        } 
+        catch (RuntimeException e) 
+        {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // Compra Troop
     @PostMapping("/troop/{id}")
-    public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
+    public ResponseEntity<?> buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        return shopService.buyTroop(player, id);
+        try 
+        {
+            return ResponseEntity.ok(shopService.buyTroop(player, id));
+        } 
+        catch (RuntimeException e) 
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

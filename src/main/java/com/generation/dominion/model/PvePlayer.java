@@ -4,7 +4,6 @@ package com.generation.dominion.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.dto.PlayerDTOwAll;
@@ -16,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -29,6 +29,7 @@ public class PvePlayer
     private String nick;
     private int gold;
     private String icon;
+    private String description;
 
     @Transient
     private Integer lastDmg;
@@ -36,7 +37,7 @@ public class PvePlayer
     private Integer lastHealth;
 
     @OneToMany(mappedBy = "pvePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<PveTroop> pveTroops = new ArrayList<>();
+    private List<PveTroop> pveTroops = new ArrayList<>();
 
     public PvePlayer()
     {

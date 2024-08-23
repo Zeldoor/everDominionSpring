@@ -75,8 +75,6 @@ public class PveService
                 );
         }
 
-
-
         fightDtoRes.setPlayer(playerDto);
 
         player.setGold(playerDto.getGold());
