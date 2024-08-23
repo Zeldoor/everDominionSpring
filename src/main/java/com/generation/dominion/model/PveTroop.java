@@ -21,7 +21,7 @@ public class PveTroop
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;                                         //NON TOCCARE
+    private int id;                                        
 
     public String className;
 
@@ -34,31 +34,14 @@ public class PveTroop
     @Column(name = "health")
     public Integer health;
 
-
     @ManyToOne
     @JoinColumn(name = "pve_player_id", nullable = true)
     @JsonIgnore
     PvePlayer pvePlayer;
-
-
-    public PveTroop(){}
-
-    public PveTroop(Integer damage, Integer health) 
-    {
-        this.minDamage = damage - 2;
-        this.maxDamage = damage + 2;
-        this.health = health;
-    }
-
-
-
 
     @Override
     public String toString() {
         return "Troop id=" + id + ", className=" + className + ", minDamage=" + minDamage + ", maxDamage=" + maxDamage
                 + ", health=" + health + ", pvePlayer id: "+ pvePlayer.getId() ;
     }
-
-
-    
 }

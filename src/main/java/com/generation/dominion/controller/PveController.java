@@ -11,6 +11,7 @@ import com.generation.dominion.repository.PvePlayerRepository;
 import com.generation.dominion.service.PveService;
 
 import com.generation.dominion.dto.PveFightResultDTO;
+import com.generation.dominion.dto.PvePlayerDto;
 import com.generation.dominion.model.PvePlayer;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,11 +31,11 @@ public class PveController
     private PveService pveService;
 
     @GetMapping
-    public List<PvePlayer> getAllPvePlayers() 
+    public List<PvePlayerDto> getAllPvePlayers() 
     { 
         List<PvePlayer> pvePlayers = pveRepo.findAll();
 
-        return pvePlayers;
+        return pvePlayers.stream().map(pve -> new PvePlayerDto(pve)).toList();
     }
 
     
@@ -45,7 +46,7 @@ public class PveController
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("PvePlayer");
 
         PvePlayer pvePlayer = pveRepo.findById(id).get();
-        return ResponseEntity.ok(pvePlayer);
+        return ResponseEntity.ok(new PvePlayerDto(pvePlayer));
     }
 
     //testo figth pve
