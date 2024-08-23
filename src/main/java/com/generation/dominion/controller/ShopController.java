@@ -1,12 +1,15 @@
 package com.generation.dominion.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.generation.dominion.service.ShopService;
+import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
-import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.TroopInShop;
 import java.util.List;
 
@@ -18,7 +21,7 @@ public class ShopController
     private ShopService shopService;
 
     @GetMapping("/gears")
-    public List<Gear> getShopGears() 
+    public List<GearDto> getShopGears() 
     {
         return shopService.getShopGears();
     }
@@ -30,20 +33,37 @@ public class ShopController
     }
 
     // Compra Gear
-    @PostMapping("/gear")
-    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @RequestParam Integer GearShopId) 
+    @PostMapping("/gear/{id}")
+    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDtowTroops = shopService.buyGear(playerDto, GearShopId);
+        return shopService.buyGear(playerDto, id);
+    }
 
-        return playerDtowTroops;
+    @PostMapping("/upgrade/{id}")
+    public ResponseEntity<?> upGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
+    {
+        try 
+        {
+            return ResponseEntity.ok(shopService.upgradeGear(playerDto, id));
+        } 
+        catch (RuntimeException e) 
+        {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // Compra Troop
     @PostMapping("/troop/{id}")
-    public PlayerDTOwAll buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
+    public ResponseEntity<?> buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        PlayerDTOwAll playerDto = shopService.buyTroop(player, id);
-
-        return playerDto;
+        try 
+        {
+            return ResponseEntity.ok(shopService.buyTroop(player, id));
+        } 
+        catch (RuntimeException e) 
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

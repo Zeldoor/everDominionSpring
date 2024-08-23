@@ -1,11 +1,15 @@
 package com.generation.dominion.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.FightResultDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
+import com.generation.dominion.enums.E_Gear;
 import com.generation.dominion.model.Player;
+import com.generation.dominion.model.Player_Gear;
 import com.generation.dominion.repository.PlayerRepository;
 
 @Service
@@ -14,7 +18,7 @@ public class CombatService
     @Autowired
     private PlayerRepository playerRepository;
 
-    public Integer[] rewardSystem(PlayerDTOwAll winner, PlayerDTOwAll loser) 
+    private Integer[] rewardSystem(PlayerDTOwAll winner, PlayerDTOwAll loser) 
     {
         Integer[] loots = new Integer[2];
         Integer winBaseGold = 70;
@@ -96,10 +100,10 @@ public class CombatService
                 );
         }
 
-        // if(attacker.hasShield())
-        //     attacker.removeShield()
+        if(pAttacker.hasShield())
+            pAttacker.removeShield();
 
-        // defender.activeShield()
+        pDefender.applyShield();
 
         fightDtoRes.setAttacker(attacker);
         fightDtoRes.setDefender(defender);
@@ -111,5 +115,40 @@ public class CombatService
         playerRepository.save(pDefender);
 
         return fightDtoRes;
+    }
+
+    private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto, Player player)
+    {
+        PlayerDTOwAll playerDtoUpgraded = playerDto;
+
+        List<Player_Gear> activePG = player.getGears().stream().filter(g -> g.isActive()).toList();
+
+        for (Player_Gear pg : activePG) 
+        {
+            playerDtoUpgraded = applyGearEffect(playerDtoUpgraded, pg);
+        }
+
+        return playerDtoUpgraded;
+    }
+
+    public PlayerDTOwAll applyGearEffect(PlayerDTOwAll playerDto, Player_Gear pg) 
+    {
+        switch (E_Gear.valueOf(pg.getGear().getName())) 
+        { 
+            case ANELLO:
+                playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (pg.getTier() * 10)); // Aumenta la salute in base al tier
+                break;
+            case PUGNALE:
+                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (pg.getTier() * 4)); // Aumenta il danno massimo
+                break;
+            case PIUMA:
+                playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (pg.getTier() * 2)); // Aumenta il danno minimo
+                break;
+            case GETTONE: 
+                playerDto.setGold(playerDto.getGold() + (pg.getTier() * 5)); // Aumenta l'oro ottenuto
+                break;
+        }
+
+        return playerDto;
     }
 }
