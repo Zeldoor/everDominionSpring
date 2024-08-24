@@ -90,7 +90,6 @@ public class Player
     {
         detractGold(pg.getGear().getPrice()*pg.getTier());
         pg.upgradeGearTier();
-        this.gears.add(pg);
     }
 
     public void buyTroop(Troop troop)
