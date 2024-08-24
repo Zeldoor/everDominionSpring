@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PostLoad;
 import jakarta.persistence.Transient;
 import lombok.Data;
 
@@ -32,16 +33,17 @@ public class PvePlayer
     private String description;
 
     @Transient
-    private Integer lastDmg;
+    private Integer lastDmg = 0;
     @Transient
-    private Integer lastHealth;
+    private Integer pveHealth = 1;
 
     @OneToMany(mappedBy = "pvePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PveTroop> pveTroops = new ArrayList<>();
 
-    public PvePlayer()
+    @PostLoad
+    public void calculateStats() 
     {
-        this.lastHealth = totalHealth();
+        this.pveHealth = totalHealth();
     }
 
     public Integer maxDamage()
@@ -74,11 +76,10 @@ public class PvePlayer
     {
         Integer res = 0;
 
-        if(pveTroops.size()!= 0)
+        if(pveTroops.size() != 0 )
             for (PveTroop troop : pveTroops) 
             {
                 res += troop.health;
-                System.out.println(res);
             }
 
         return res;
@@ -93,13 +94,13 @@ public class PvePlayer
     {
         this.lastDmg = damage;
 
-        if(this.lastHealth == null)
-            this.lastHealth = totalHealth();
+        if(this.pveHealth == null)
+            this.pveHealth = totalHealth();
 
-        this.lastHealth -= damage;
+        this.pveHealth -= damage;
 
-        if(this.lastHealth < 0)
-        this.lastHealth= 0;
+        if(this.pveHealth < 0)
+        this.pveHealth= 0;
     }
 
     public int randomAttackInRange() 
@@ -115,13 +116,13 @@ public class PvePlayer
     @JsonIgnore
     public boolean isAlive() 
     {
-        return this.lastHealth > 0;
+        return this.pveHealth > 0;
     }
 
     @JsonIgnore
     public boolean isDead() 
     {
-        return this.lastHealth <= 0;
+        return this.pveHealth <= 0;
     }
     
 }

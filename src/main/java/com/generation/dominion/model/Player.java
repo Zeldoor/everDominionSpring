@@ -234,4 +234,17 @@ public class Player
             this.icon = icons.get((int)(Math.random()*6));
         }
     }
+
+    public void addGold(int amount) 
+    {
+        this.gold += amount;
+    }
+
+    public void removeGold(int amount) 
+    {
+        this.gold -= amount;
+
+        if(this.gold < 0)
+            this.gold = 0;
+    }
 }

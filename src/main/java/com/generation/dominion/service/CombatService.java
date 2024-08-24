@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.FightResultDTO;
+import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.enums.E_Gear;
 import com.generation.dominion.model.Player;
-import com.generation.dominion.model.Player_Gear;
 import com.generation.dominion.repository.PlayerRepository;
 
 @Service
@@ -25,10 +25,16 @@ public class CombatService
         Integer loseBaseGold = 20;
 
         Integer winnerGold = (int)(Math.random()*30)+winBaseGold;
-        Integer loserGold = (int)(Math.random()*20)+loseBaseGold;
+        Integer loserGold = (int)(Math.random()*15)+loseBaseGold;
 
         loots[0] = winnerGold;
         loots[1] = loserGold;
+
+        if(winner.getActiveGears().stream().filter(g -> g.getName().equals(E_Gear.GETTONE.toString())).toList().size() > 0)
+        {
+            GearDto coin = winner.getActiveGears().stream().filter(g -> g.getName().equals(E_Gear.GETTONE.toString())).toList().get(0);
+            winnerGold += coin.getTier() * 5;
+        }
 
         winner.addGold(winnerGold);
         loser.removeGold(loserGold);
@@ -40,90 +46,93 @@ public class CombatService
     {
         FightResultDTO fightDtoRes = FightDto;
 
-        Player pAttacker = playerRepository.findById(fightDtoRes.getAttacker().getId()).get();
-        Player pDefender = playerRepository.findById(fightDtoRes.getDefender().getId()).get();
+        Player attackerP = playerRepository.findById(fightDtoRes.getAttacker().getId()).get();
+        Player defenderP = playerRepository.findById(fightDtoRes.getDefender().getId()).get();
 
-        PlayerDTOwAll attacker = new PlayerDTOwAll(pAttacker);
-        PlayerDTOwAll defender = new PlayerDTOwAll(pDefender);
+        PlayerDTOwAll attackerDto = new PlayerDTOwAll(attackerP);
+        PlayerDTOwAll defenderDto = gearEffects(new PlayerDTOwAll(defenderP));
+
+        PlayerDTOwAll attackerDtoUpgraded = gearEffects(attackerDto);
+        PlayerDTOwAll defenderDtoUpgraded = gearEffects(defenderDto);
 
         do
         {
-            attacker.attack(defender);
+            attackerDtoUpgraded.attack(defenderDtoUpgraded);
 
             fightDtoRes.getResults().add(
-                attacker.getNick()+" ha inflitto "+defender.getLastDmg()+" danni a "+defender.getNick()
+                attackerDtoUpgraded.getNick()+" ha inflitto "+defenderDtoUpgraded.getLastDmg()+" danni a "+defenderDtoUpgraded.getNick()
                 );
             fightDtoRes.getResults().add(
-                defender.getNick()+" ha "+defender.getPlayerHealth()+" HP"
+                defenderDtoUpgraded.getNick()+" ha "+defenderDtoUpgraded.getPlayerHealth()+" HP"
                 );
 
-            fightDtoRes.addEnemyHealth(defender.getPlayerHealth());
+            fightDtoRes.addEnemyHealth(defenderDtoUpgraded.getPlayerHealth());
 
 
-            if(defender.isDead())
+            if(defenderDtoUpgraded.isDead())
                 break;
 
 
-            defender.attack(attacker);
+            defenderDtoUpgraded.attack(attackerDtoUpgraded);
             fightDtoRes.getResults().add(
-                defender.getNick()+" ha inflitto "+attacker.getLastDmg()+" danni a "+attacker.getNick()
+                defenderDtoUpgraded.getNick()+" ha inflitto "+attackerDtoUpgraded.getLastDmg()+" danni a "+attackerDtoUpgraded.getNick()
                 );
             fightDtoRes.getResults().add(
-            attacker.getNick()+" ha "+attacker.getPlayerHealth()+" HP"
+            attackerDtoUpgraded.getNick()+" ha "+attackerDtoUpgraded.getPlayerHealth()+" HP"
             );
 
-            fightDtoRes.addPlayerHeath(attacker.getPlayerHealth());
+            fightDtoRes.addPlayerHeath(attackerDtoUpgraded.getPlayerHealth());
         } 
-        while (attacker.isAlive() && defender.isAlive());
+        while (attackerDtoUpgraded.isAlive() && defenderDtoUpgraded.isAlive());
 
 
-        if(attacker.isDead())
+        if(attackerDtoUpgraded.isDead())
         {
-            Integer[] loots = rewardSystem(defender, attacker);
+            Integer[] loots = rewardSystem(defenderDto, attackerDto);
 
             fightDtoRes.getResults().add(
-                defender.getNick()+" ha VINTO "+loots[0]+" oro"
+                defenderDto.getNick()+" ha VINTO "+loots[0]+" oro"
                 );
             fightDtoRes.getResults().add(
-                attacker.getNick()+" ha PERSO "+loots[1]+" oro"
+                attackerDtoUpgraded.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
         }
         else
         {
-            Integer[] loots = rewardSystem(attacker, defender);
+            Integer[] loots = rewardSystem(attackerDto, defenderDto);
 
             fightDtoRes.getResults().add(
-                attacker.getNick()+" ha VINTO "+loots[0]+" oro"
+                attackerDtoUpgraded.getNick()+" ha VINTO "+loots[0]+" oro"
                 );
             fightDtoRes.getResults().add(
-                defender.getNick()+" ha PERSO "+loots[1]+" oro"
+                defenderDto.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
         }
 
-        if(pAttacker.hasShield())
-            pAttacker.removeShield();
+        if(attackerP.hasShield())
+            attackerP.removeShield();
 
-        pDefender.applyShield();
+        defenderP.applyShield();
 
-        fightDtoRes.setAttacker(attacker);
-        fightDtoRes.setDefender(defender);
+        fightDtoRes.setAttacker(attackerDto);
+        fightDtoRes.setDefender(defenderDto);
 
-        pAttacker.setGold(attacker.getGold());
-        pDefender.setGold(defender.getGold());
+        attackerP.setGold(attackerDto.getGold());
+        defenderP.setGold(defenderDto.getGold());
 
-        playerRepository.save(pAttacker);
-        playerRepository.save(pDefender);
+        playerRepository.save(attackerP);
+        playerRepository.save(defenderP);
 
         return fightDtoRes;
     }
 
-    private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto, Player player)
+    private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto)
     {
         PlayerDTOwAll playerDtoUpgraded = playerDto;
 
-        List<Player_Gear> activePG = player.getGears().stream().filter(g -> g.isActive()).toList();
+        List<GearDto> activePG = playerDto.getActiveGears();
 
-        for (Player_Gear pg : activePG) 
+        for (GearDto pg : activePG) 
         {
             playerDtoUpgraded = applyGearEffect(playerDtoUpgraded, pg);
         }
@@ -131,21 +140,20 @@ public class CombatService
         return playerDtoUpgraded;
     }
 
-    public PlayerDTOwAll applyGearEffect(PlayerDTOwAll playerDto, Player_Gear pg) 
+    public PlayerDTOwAll applyGearEffect(PlayerDTOwAll playerDto, GearDto gearDto) 
     {
-        switch (E_Gear.valueOf(pg.getGear().getName())) 
+        switch (E_Gear.valueOf(gearDto.getName())) 
         { 
             case ANELLO:
-                playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (pg.getTier() * 10)); // Aumenta la salute in base al tier
+                playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (gearDto.getTier() * 10)); // Aumenta la salute in base al tier
                 break;
             case PUGNALE:
-                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (pg.getTier() * 4)); // Aumenta il danno massimo
+                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (gearDto.getTier() * 4)); // Aumenta il danno massimo
                 break;
             case PIUMA:
-                playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (pg.getTier() * 2)); // Aumenta il danno minimo
+                playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (gearDto.getTier() * 2)); // Aumenta il danno minimo
                 break;
-            case GETTONE: 
-                playerDto.setGold(playerDto.getGold() + (pg.getTier() * 5)); // Aumenta l'oro ottenuto
+            default:
                 break;
         }
 
