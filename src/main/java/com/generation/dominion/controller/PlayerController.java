@@ -184,8 +184,11 @@ public class PlayerController
     @PostMapping("/remove/{id}")
     public ResponseEntity<?> removeFriend(@PathVariable int id, @RequestBody Integer playerId) 
     {
-        Player player = playerRepository.findById(playerId) .orElseThrow(() -> new RuntimeException("Player not found"));
-        Player friend = playerRepository.findById(id).orElseThrow(() -> new RuntimeException("Friend not found"));
+        Player player = playerRepository.findById(playerId).get();
+        Player friend = playerRepository.findById(id).get();
+
+        if(player == null || friend == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player or friend not found");
 
         if (player.getFriends() != null && player.getFriends().stream().anyMatch(f -> f.getId() == id)) 
         {
@@ -197,7 +200,7 @@ public class PlayerController
             return ResponseEntity.ok(playerDtoUpdated);
         }
 
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend not found in player's friend list");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend not found in player's friend list");
     }
 
     //Tutti quelli senza scudo e che quindi possono essere attaccati
