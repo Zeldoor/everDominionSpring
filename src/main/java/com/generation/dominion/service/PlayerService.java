@@ -119,4 +119,6 @@ public class PlayerService
                 .filter(player -> player.getShield() == null || player.getShield().equalsIgnoreCase(E_Player.NONE.toString()) || !player.hasShield())
                 .collect(Collectors.toList());
     }
+
+    
 }
