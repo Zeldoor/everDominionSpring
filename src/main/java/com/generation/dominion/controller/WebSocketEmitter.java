@@ -28,16 +28,7 @@ public class WebSocketEmitter
     //     this.id = id;
     // }
 
-    @Scheduled(fixedRate = 2000)
-    public void refreshLead()
-    {
-        List<Player> players = playerServ.getPlayersWithoutShield();
-        List<PlayerDTOwAll> res = players.stream().map(p -> new PlayerDTOwAll(p)).toList();
-
-        service.sendLeadMessage(res);
-    }
-
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 1000)
     public void refreshPlayers()
     {
         List<Player> players = playerServ.getAllPlayers();

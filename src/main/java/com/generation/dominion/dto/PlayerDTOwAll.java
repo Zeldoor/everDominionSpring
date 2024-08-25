@@ -164,8 +164,8 @@ public class PlayerDTOwAll
 
     public int randomAttackInRange() 
     {
-        if (this.playerMinDmg > this.playerMaxDmg) 
-            throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
+        if (this.playerMinDmg > this.playerMaxDmg)
+            this.playerMaxDmg = this.playerMinDmg;
 
         Integer diff = this.playerMaxDmg - this.playerMinDmg;
 
