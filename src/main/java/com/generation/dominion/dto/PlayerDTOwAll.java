@@ -3,12 +3,16 @@ package com.generation.dominion.dto;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.enums.E_Status;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
+import com.generation.dominion.model.PvePlayer;
 import com.generation.dominion.model.Troop;
 
 @Data
@@ -24,6 +28,7 @@ public class PlayerDTOwAll
     private int gold;
     private String online;
     private String shield;
+    private Boolean hasShield;
 
     //COMBAT INFO
     private int playerMinDmg = 1;
@@ -38,7 +43,7 @@ public class PlayerDTOwAll
     private List<GearDto> storageGears = new ArrayList<>();
 
     //AMICI
-    private List<PlayerDTO> friends = new ArrayList<>();
+    private Set<PlayerDTO> friends = new HashSet<>();
 
     //COSTRUTTORI
 
@@ -51,9 +56,10 @@ public class PlayerDTOwAll
         this.stamina = player.getStamina();
         this.gold = player.getGold();
         this.shield = player.getShield();
-        this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).toList();
+        this.friends = player.getFriends().stream().map(f -> new PlayerDTO(f)).collect(Collectors.toSet());
         this.online = player.getOnline();
         this.icon = player.getIcon();
+        this.hasShield = player.hasShield();
         
         initDTO(player);
 
@@ -103,6 +109,11 @@ public class PlayerDTOwAll
     }
     
     public void attack(PlayerDTOwAll enemy) 
+    {
+        enemy.takeDamage(randomAttackInRange());
+    }
+
+    public void attack(PvePlayer enemy) 
     {
         enemy.takeDamage(randomAttackInRange());
     }
@@ -168,4 +179,19 @@ public class PlayerDTOwAll
         return res;
     }
 
+    //Metodi per far riconoscere i duplicati al Set()
+
+    @Override
+    public int hashCode()
+    {
+        return id;
+    }
+
+    public boolean equals(Object object)
+    {
+        if(!(object instanceof PlayerDTOwAll))
+            return false;
+
+        return ((PlayerDTOwAll)object).id == this.id;   //cast in linea
+    }
 }

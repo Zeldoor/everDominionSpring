@@ -85,6 +85,9 @@ public class ShopService
         if (player == null || pg == null) 
             throw new RuntimeException("Player o Gear non trovato");
 
+        if(pg.getTier() == 3)
+            throw new RuntimeException("Gear già al massimo");
+
         if (player.checkForBuy(pg.getGear().getPrice()*pg.getTier())) 
         {
             player.upgradeTier(pg);

@@ -10,16 +10,13 @@ import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
-import com.generation.dominion.model.PvePlayer;
 import com.generation.dominion.model.Troop;
 import com.generation.dominion.repository.GearRepository;
 import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.Player_GearRepository;
-import com.generation.dominion.repository.PvePlayerRepository;
 import com.generation.dominion.repository.TroopRepository;
 import com.generation.dominion.service.CombatService;
 import com.generation.dominion.service.PlayerService;
-import com.generation.dominion.service.PveService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +42,6 @@ public class PlayerController
     private GearRepository gearRepository;
     @Autowired
     private Player_GearRepository playerGearRepository;
-        @Autowired
-    private PvePlayerRepository pveRepo;
-    @Autowired
-    private PveService pveService;
 
     // Crea un nuovo Player
     @PostMapping
@@ -91,7 +84,7 @@ public class PlayerController
         }
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore");
-        }
+    }
         
     
 
@@ -179,7 +172,7 @@ public class PlayerController
             player = playerServ.addFriend(player, friend);
 
             PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
-            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).toList());
+            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).collect(Collectors.toSet()));
 
             return ResponseEntity.ok(playerDtoUpdated);
         }
@@ -191,28 +184,24 @@ public class PlayerController
     @PostMapping("/remove/{id}")
     public ResponseEntity<?> removeFriend(@PathVariable int id, @RequestBody Integer playerId) 
     {
-        Player player = playerRepository.findById(playerId) .orElseThrow(() -> new RuntimeException("Player not found"));
-        Player friend = playerRepository.findById(id).orElseThrow(() -> new RuntimeException("Friend not found"));
+        Player player = playerRepository.findById(playerId).get();
+        Player friend = playerRepository.findById(id).get();
+
+        if(player == null || friend == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player or friend not found");
 
         if (player.getFriends() != null && player.getFriends().stream().anyMatch(f -> f.getId() == id)) 
         {
             player = playerServ.removePlayer(player, friend);
 
             PlayerDTOwAll playerDtoUpdated = new PlayerDTOwAll(player);
-            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).toList());
+            playerDtoUpdated.setFriends(player.getFriends().stream().map(f -> new PlayerDTO(f)).collect(Collectors.toSet()));
 
             return ResponseEntity.ok(playerDtoUpdated);
         }
 
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend not found in player's friend list");
-}
-
-public Player removePlayer(Player player, Player friend) {
-    player.removeFriend(friend);
-    playerRepository.save(player);
-    playerRepository.save(friend);
-    return player;
-}
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend not found in player's friend list");
+    }
 
     //Tutti quelli senza scudo e che quindi possono essere attaccati
     @GetMapping("/noShield")
@@ -230,23 +219,4 @@ public Player removePlayer(Player player, Player friend) {
         player.setIcon(newIcon);
         playerRepository.save(player);
     }
-
-
-    //boooooooooooooooooooooooooooooooooooooooh
-    @PostMapping("/fightPve")
-    public ResponseEntity<?> fightPve(@RequestBody FightResultDTO dto) 
-    {
-        Optional<PvePlayer> pvePlayerOpt = pveRepo.findById(dto.getDefender().getId());
-
-        if (pvePlayerOpt.isPresent()) 
-        {
-            FightResultDTO fightRes = pveService.fightSystem(dto);
-            return ResponseEntity.ok(fightRes);
-        } 
-        else 
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("PvePlayer not found");
-        }
-    }
-
 }

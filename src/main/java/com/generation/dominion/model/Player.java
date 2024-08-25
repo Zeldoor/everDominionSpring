@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.ToStringExclude;
 
@@ -57,7 +58,7 @@ public class Player
     )
     private List<Player> friends = new ArrayList<>();
 
-    public Player() 
+    public Player()
     {
         this.gold = 130;
         this.stamina = 3;
@@ -89,7 +90,6 @@ public class Player
     {
         detractGold(pg.getGear().getPrice()*pg.getTier());
         pg.upgradeGearTier();
-        this.gears.add(pg);
     }
 
     public void buyTroop(Troop troop)
@@ -145,8 +145,8 @@ public class Player
 
     public void removeFriend(Player player)
     {
-        this.friends = this.friends.stream().filter(p -> p.getId() != player.getId()).toList();
-        player.friends = player.friends.stream().filter(p -> p.getId() != this.id).toList();
+        this.friends = this.friends.stream().filter(p -> p.getId() != player.getId()).collect(Collectors.toList());
+        player.friends = player.friends.stream().filter(p -> p.getId() != this.id).collect(Collectors.toList());
     }
 
     public void setPlayerOnline()
@@ -233,5 +233,18 @@ public class Player
 
             this.icon = icons.get((int)(Math.random()*6));
         }
+    }
+
+    public void addGold(int amount) 
+    {
+        this.gold += amount;
+    }
+
+    public void removeGold(int amount) 
+    {
+        this.gold -= amount;
+
+        if(this.gold < 0)
+            this.gold = 0;
     }
 }
