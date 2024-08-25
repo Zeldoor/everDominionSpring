@@ -35,10 +35,10 @@ public class PveService
                 playerDto.getNick()+" ha inflitto "+pvePlayer.getLastDmg()+" danni a "+pvePlayer.getNick()
                 );
             fightDtoRes.getResults().add(
-                pvePlayer.getNick()+" ha "+pvePlayer.getLastHealth()+" HP"
+                pvePlayer.getNick()+" ha "+pvePlayer.getPveHealth()+" HP"
                 );
 
-            fightDtoRes.addEnemyHealth(pvePlayer.getLastHealth());
+            fightDtoRes.addEnemyHealth(pvePlayer.getPveHealth());
 
 
             if(pvePlayer.isDead())
