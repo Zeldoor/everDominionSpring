@@ -88,7 +88,7 @@ public class Player
 
     public void upgradeTier(Player_Gear pg)
     {
-        detractGold(pg.getGear().getPrice()*pg.getTier());
+        detractGold((pg.getGear().getPrice()*pg.getTier())+pg.getGear().getPrice());
         pg.upgradeGearTier();
     }
 
