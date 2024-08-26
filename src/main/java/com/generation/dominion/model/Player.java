@@ -111,6 +111,24 @@ public class Player
     {
         this.gold -= ammount;
     }
+
+    public boolean checkStamina()
+    {
+        return this.stamina > 0;
+    }
+
+    public void useStamina()
+    {
+        if(this.stamina <= 0)
+        {
+            this.stamina = 0;
+        }
+
+        if(this.stamina > 0)
+        {
+            this.stamina--;
+        }
+    }
     
 
     //FRIENDS + ACTIVITY METHODS

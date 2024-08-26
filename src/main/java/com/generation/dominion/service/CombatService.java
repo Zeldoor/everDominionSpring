@@ -59,6 +59,8 @@ public class CombatService
         PlayerDTOwAll attackerDtoUpgraded = gearEffects(attackerDto);
         PlayerDTOwAll defenderDtoUpgraded = gearEffects(defenderDto);
 
+        attackerP.useStamina();
+
         do
         {
             attackerDtoUpgraded.attack(defenderDtoUpgraded);
@@ -137,8 +139,8 @@ public class CombatService
     
     private void sendCombatNotificationToDefender(int i, FightResultDTO fightResult) 
     {
-    String destination = "/queue/combat-result/" + i;
-    messagingTemplate.convertAndSend(destination, fightResult);
+        String destination = "/queue/combat-result/" + i;
+        messagingTemplate.convertAndSend(destination, fightResult);
     }
 
     private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto)

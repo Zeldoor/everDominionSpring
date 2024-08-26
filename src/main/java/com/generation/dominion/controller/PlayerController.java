@@ -92,7 +92,11 @@ public class PlayerController
     @PostMapping("/fight")
     public ResponseEntity<?> fight(@RequestBody FightResultDTO dto) 
     {
+        Player player = playerRepository.findById(dto.getAttacker().getId()).get();
         Player enemy = playerRepository.findById(dto.getDefender().getId()).get();
+
+        if(!player.checkStamina())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Non hai stamina per attaccare");
 
         if(enemy.hasShield())
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(enemy.getNick() + " ha uno scudo, non può essere attaccato");
