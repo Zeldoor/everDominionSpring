@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.dto.PlayerDTOwAll;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,8 @@ public class PvePlayer
     private String nick;
     private int gold;
     private String icon;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Transient
