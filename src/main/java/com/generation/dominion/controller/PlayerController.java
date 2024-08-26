@@ -17,11 +17,13 @@ import com.generation.dominion.repository.Player_GearRepository;
 import com.generation.dominion.repository.TroopRepository;
 import com.generation.dominion.service.CombatService;
 import com.generation.dominion.service.PlayerService;
+import com.generation.dominion.websocket.WebSocketService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 
 
@@ -42,6 +44,8 @@ public class PlayerController
     private GearRepository gearRepository;
     @Autowired
     private Player_GearRepository playerGearRepository;
+    @Autowired
+    private WebSocketService socket;
 
     // Crea un nuovo Player
     @PostMapping
@@ -105,6 +109,13 @@ public class PlayerController
 
         return ResponseEntity.ok(fightRes);
     }
+
+    @GetMapping("test/{id}")
+    public void getMethodName(@PathVariable Integer id) 
+    {
+        socket.sendPlayerNotify(id);
+    }
+    
 
     //Gestione
     @PostMapping("/switch")

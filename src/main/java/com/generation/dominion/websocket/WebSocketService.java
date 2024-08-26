@@ -23,4 +23,9 @@ public class WebSocketService
     {
         messagingTemplate.convertAndSend("/topic/players", payload);
     }
+
+    public void sendPlayerNotify(Integer id)
+    {
+        messagingTemplate.convertAndSend("/topic/notify/"+id, "Sei stato attaccato");
+    }
 }
