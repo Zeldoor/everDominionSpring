@@ -66,8 +66,8 @@ public class CombatService
         PlayerDTOwAll defenderDtoUpgraded = gearEffects(defenderDto);
 
         NotifyDto notify = new NotifyDto();
-        notify.setAttackerDto(new PlayerDTO(attackerDto));
-        notify.setDefenderDto(new PlayerDTO(defenderDto));
+        notify.setAttacker(new PlayerDTO(attackerDto));
+        notify.setDefender(new PlayerDTO(defenderDto));
 
         attackerP.useStamina();
 
