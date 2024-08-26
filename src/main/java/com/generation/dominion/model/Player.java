@@ -258,6 +258,11 @@ public class Player
         this.gold += amount;
     }
 
+    public void addStamina(int amount) 
+    {
+        this.stamina += amount;
+    }
+    
     public void removeGold(int amount) 
     {
         this.gold -= amount;
