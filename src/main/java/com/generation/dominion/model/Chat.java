@@ -1,5 +1,6 @@
 package com.generation.dominion.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Chat
     @JsonIgnore
     private Player player;
 
+    @Column(columnDefinition = "TEXT")
     private String message;
 
     private LocalDateTime date;
