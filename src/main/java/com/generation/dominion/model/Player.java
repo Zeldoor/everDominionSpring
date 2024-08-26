@@ -48,6 +48,9 @@ public class Player
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Player_Gear> gears = new ArrayList<>();
 
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Chat> chats = new ArrayList<>();
+
     @ToStringExclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable
