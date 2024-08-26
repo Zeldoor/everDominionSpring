@@ -51,7 +51,7 @@ public class ShopController
         }
     }
 
-    //compra ciccia
+    //compra stamina
     @PostMapping("/add-stamina")
     public void addStamina(@RequestParam int playerId, @RequestParam int staminaAmount) 
     {
