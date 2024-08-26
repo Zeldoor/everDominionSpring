@@ -3,6 +3,7 @@ package com.generation.dominion.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.FightResultDTO;
@@ -17,6 +18,9 @@ public class CombatService
 {
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     private Integer[] rewardSystem(PlayerDTOwAll winner, PlayerDTOwAll loser) 
     {
@@ -123,7 +127,18 @@ public class CombatService
         playerRepository.save(attackerP);
         playerRepository.save(defenderP);
 
+        // Invia la notifica al difensore con il risultato del combattimento
+        sendCombatNotificationToDefender(defenderP.getId(), fightDtoRes);
+        
         return fightDtoRes;
+    }
+
+    // Metodo helper per inviare la notifica
+    
+    private void sendCombatNotificationToDefender(int i, FightResultDTO fightResult) 
+    {
+    String destination = "/queue/combat-result/" + i;
+    messagingTemplate.convertAndSend(destination, fightResult);
     }
 
     private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto)
