@@ -50,14 +50,7 @@ public class ShopController
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
-    //compra stamina
-    @PostMapping("/add-stamina")
-    public void addStamina(@RequestParam int playerId, @RequestParam int staminaAmount) 
-    {
-        shopService.addStaminaToPlayer(playerId, staminaAmount);
-    }
-
+    
     // Compra Troop
     @PostMapping("/troop/{id}")
     public ResponseEntity<?> buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
@@ -70,5 +63,21 @@ public class ShopController
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    //compra stamina
+    @PostMapping("/{id}/stamina")
+    public ResponseEntity<?> addStamina(@PathVariable int id) 
+    {
+        try 
+        {
+            shopService.addStaminaToPlayer(id);
+            return ResponseEntity.ok("");
+        } 
+        catch (Exception e) 
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        
     }
 }
