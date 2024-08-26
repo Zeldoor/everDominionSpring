@@ -51,6 +51,13 @@ public class ShopController
         }
     }
 
+    //compra stamina
+    @PostMapping("/add-stamina")
+    public void addStamina(@RequestParam int playerId, @RequestParam int staminaAmount) 
+    {
+        shopService.addStaminaToPlayer(playerId, staminaAmount);
+    }
+
     // Compra Troop
     @PostMapping("/troop/{id}")
     public ResponseEntity<?> buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 

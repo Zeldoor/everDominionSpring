@@ -100,6 +100,13 @@ public class ShopService
 
 
 
+    public void addStaminaToPlayer(int playerId, int staminaAmount) 
+    {
+        Player player = playerRepository.findById(playerId).orElseThrow(() -> new RuntimeException("Player not found"));
+        player.addStamina(staminaAmount);
+        playerRepository.save(player);
+    }
+
 
     public PlayerDTOwAll buyTroop(PlayerDTO playerDto, Integer TroopShopid) 
     {
