@@ -23,4 +23,13 @@ public class PlayerDTO
         this.gold = player.getGold();
         this.icon = player.getIcon();
     }
+
+    public PlayerDTO(PlayerDTOwAll player) 
+    {
+        this.id = player.getId();
+        this.nick = player.getNick();
+        this.stamina = player.getStamina();
+        this.gold = player.getGold();
+        this.icon = player.getIcon();
+    }
 }
