@@ -45,8 +45,8 @@ public class WebSocketEmitter
         service.sendPlayersMessage(res);
     }
 
-    @Scheduled(fixedRate = 1000)
-    public void allChats()
+    @Scheduled(fixedRate = 500)
+    public void fullChat()
     {
         List<ChatDto> res = new ArrayList<>();
         List<Player> players = playerRepo.findAll();
@@ -65,7 +65,7 @@ public class WebSocketEmitter
         res.sort((chat1, chat2) -> chat2.dateAsTime().compareTo(chat1.dateAsTime()));
         
 
-        // service.sendPlayersMessage(res);
+        service.sendFullChat(res);
     }
     
 
