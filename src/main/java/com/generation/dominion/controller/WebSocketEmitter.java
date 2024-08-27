@@ -64,7 +64,6 @@ public class WebSocketEmitter
 
         res.sort((chat1, chat2) -> chat2.dateAsTime().compareTo(chat1.dateAsTime()));
         
-
         service.sendFullChat(res);
     }
     
