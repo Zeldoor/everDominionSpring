@@ -26,7 +26,7 @@ public class Troop
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;                                         //NON TOCCARE
+    private Integer id;                                         //NON TOCCARE
 
     public String className;
 
