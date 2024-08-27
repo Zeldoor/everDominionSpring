@@ -64,4 +64,19 @@ public class ShopController
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+        // Vende Troop
+    @PostMapping("/sellTroop/{id}")
+    public ResponseEntity<?> sellTroop(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
+    {
+        try 
+        {
+            return ResponseEntity.ok(shopService.sellTroop(playerDto, id));
+        } 
+        catch (RuntimeException e) 
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }

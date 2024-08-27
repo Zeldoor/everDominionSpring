@@ -16,6 +16,7 @@ import com.generation.dominion.repository.GearRepository;
 import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.Player_GearRepository;
 import com.generation.dominion.repository.TroopInShopRepository;
+import com.generation.dominion.repository.TroopRepository;
 
 import java.util.List;
 @Service
@@ -33,6 +34,10 @@ public class ShopService
 
     @Autowired
     private Player_GearRepository p_gRepository;
+
+    //nuova repo
+    @Autowired
+    private TroopRepository troopToSellRepository;
 
     public List<GearDto> getShopGears() 
     {
@@ -123,4 +128,40 @@ public class ShopService
 
         throw new RuntimeException("Oro insufficente");
     }
+
+
+
+    //vendita di calzini usati
+    public PlayerDTOwAll sellTroop(PlayerDTO playerDto, Integer troopId) 
+    {
+         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
+         
+         if (player == null) 
+         {
+             throw new RuntimeException("Player non esistente");
+         }
+    
+         Troop troopToSell = player.getTroops().stream()
+                                   .filter(t -> t.getId().equals(troopId))
+                                   .findFirst()
+                                   .orElse(null);
+    
+         if (troopToSell == null) 
+         {
+             throw new RuntimeException("Troop non trovata per questo player");
+         }
+    
+         int sellPrice = troopToSell.getPrice() / 2;
+    
+         player.setGold(player.getGold() + sellPrice);
+    
+         player.getTroops().remove(troopToSell);
+    
+         troopToSellRepository.deleteById(troopToSell.getId());
+    
+         playerRepository.save(player);
+    
+         return new PlayerDTOwAll(player);
+    }
+
 }
