@@ -187,6 +187,7 @@ public class PlayerDTOwAll
         return id;
     }
 
+    @Override
     public boolean equals(Object object)
     {
         if(!(object instanceof PlayerDTOwAll))

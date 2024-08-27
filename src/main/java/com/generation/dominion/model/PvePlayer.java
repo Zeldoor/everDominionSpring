@@ -24,7 +24,6 @@ import lombok.Data;
 @Entity
 public class PvePlayer 
 {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
