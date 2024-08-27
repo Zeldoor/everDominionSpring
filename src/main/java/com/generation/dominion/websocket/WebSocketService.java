@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import com.generation.dominion.dto.ChatDto;
+import com.generation.dominion.dto.NotifyDto;
 import com.generation.dominion.dto.PlayerDTOwAll;
 
 @Service
@@ -22,5 +24,15 @@ public class WebSocketService
     public void sendPlayersMessage(List<PlayerDTOwAll> payload)
     {
         messagingTemplate.convertAndSend("/topic/players", payload);
+    }
+
+    public void sendPlayerNotify(NotifyDto payload)
+    {
+        messagingTemplate.convertAndSend("/topic/notify/"+payload.getDefender().getId(), payload);
+    }
+
+    public void sendFullChat(List<ChatDto> payload)
+    {
+        messagingTemplate.convertAndSend("/topic/chat", payload);
     }
 }

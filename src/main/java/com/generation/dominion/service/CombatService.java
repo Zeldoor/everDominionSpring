@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.FightResultDTO;
 import com.generation.dominion.dto.GearDto;
+import com.generation.dominion.dto.NotifyDto;
+import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.enums.E_Gear;
 import com.generation.dominion.model.Player;
 import com.generation.dominion.repository.PlayerRepository;
+import com.generation.dominion.websocket.WebSocketService;
 
 @Service
 public class CombatService 
@@ -21,6 +24,9 @@ public class CombatService
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    private WebSocketService socket;
 
     private Integer[] rewardSystem(PlayerDTOwAll winner, PlayerDTOwAll loser) 
     {
@@ -58,6 +64,12 @@ public class CombatService
 
         PlayerDTOwAll attackerDtoUpgraded = gearEffects(attackerDto);
         PlayerDTOwAll defenderDtoUpgraded = gearEffects(defenderDto);
+
+        NotifyDto notify = new NotifyDto();
+        notify.setAttacker(new PlayerDTO(attackerDto));
+        notify.setDefender(new PlayerDTO(defenderDto));
+
+        attackerP.useStamina();
 
         do
         {
@@ -100,6 +112,8 @@ public class CombatService
             fightDtoRes.getResults().add(
                 attackerDtoUpgraded.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
+
+            notify.setResult("Hai vinto "+loots[0]+" oro");
         }
         else
         {
@@ -111,12 +125,15 @@ public class CombatService
             fightDtoRes.getResults().add(
                 defenderDto.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
+                
+            notify.setResult("Hai perso "+loots[1]+" oro");
         }
 
         if(attackerP.hasShield())
             attackerP.removeShield();
 
         defenderP.applyShield();
+        socket.sendPlayerNotify(notify);
 
         fightDtoRes.setAttacker(attackerDto);
         fightDtoRes.setDefender(defenderDto);
@@ -137,8 +154,8 @@ public class CombatService
     
     private void sendCombatNotificationToDefender(int i, FightResultDTO fightResult) 
     {
-    String destination = "/queue/combat-result/" + i;
-    messagingTemplate.convertAndSend(destination, fightResult);
+        String destination = "/queue/combat-result/" + i;
+        messagingTemplate.convertAndSend(destination, fightResult);
     }
 
     private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto)

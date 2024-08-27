@@ -47,33 +47,6 @@ public class AuthController {
     @Autowired
     private TroopInShopRepository troopInShopRepository;
 
-
-    // @PostMapping("login")
-    // public AuthResponseDto login(@RequestBody CredentialsDto loginDto)
-    // {
-    //     try 
-    //     {
-    //         Authentication user = authenticationManager.authenticate(
-    //             new UsernamePasswordAuthenticationToken(
-    //             loginDto.getUsername(),
-    //             loginDto.getPassword()));
-
-    //         Player player = playerRepository.findByNick(loginDto.getUsername()).get();
-    //         UserEntity userEntity = userRepository.findByUsername(loginDto.getUsername()).get();
-
-    //         SecurityContextHolder.getContext().setAuthentication(user);
-
-    //         String token = jwtGenerator.generateToken(user);
-
-
-    //         return new AuthResponseDto(token, userEntity, player);
-            
-    //     } catch (AuthenticationException e) 
-    //     {
-    //         return new ResponseEntity<>("Email alredy registered", HttpStatus.BAD_REQUEST);
-    //     }
-    // }
-
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody CredentialsDto loginDto) {
         try 

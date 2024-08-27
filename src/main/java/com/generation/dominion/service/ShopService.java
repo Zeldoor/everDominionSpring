@@ -83,7 +83,7 @@ public class ShopService
         Player_Gear pg = player.getGears().stream().filter(g -> g.getGear().getId().equals(gearId)).toList().get(0);
 
         if (player == null || pg == null) 
-            throw new RuntimeException("Player o Gear non trovato");
+            throw new RuntimeException("Giocatore o Gear non trovato");
 
         if(pg.getTier() == 3)
             throw new RuntimeException("Gear già al massimo");
@@ -99,6 +99,24 @@ public class ShopService
     }
 
 
+
+    public void addStaminaToPlayer(int playerId) 
+    {
+        Player player = playerRepository.findById(playerId).orElseThrow(() -> new RuntimeException("Giocatore non trovato"));
+
+        if(player.getStamina() >= 3)
+            throw new RuntimeException("Stamina al massimo");
+
+        if(player.getGold() >= 20)
+        {
+            player.addStamina(1);
+            playerRepository.save(player);
+        }
+        else
+        {
+            throw new RuntimeException("Oro insufficente");
+        }
+    }
 
 
     public PlayerDTOwAll buyTroop(PlayerDTO playerDto, Integer TroopShopid) 

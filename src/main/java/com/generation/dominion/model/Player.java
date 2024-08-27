@@ -48,6 +48,9 @@ public class Player
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Player_Gear> gears = new ArrayList<>();
 
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Chat> chats = new ArrayList<>();
+
     @ToStringExclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable
@@ -76,6 +79,12 @@ public class Player
         this.online = E_Player.OFFLINE.toString(); 
         this.lastActivity = LocalDateTime.now();
         this.shield = playerDto.getShield();
+    }
+
+    public void addChat(Chat c)
+    {
+        chats.add(c);
+        c.setPlayer(this);
     }
 
     //SHOP METHODS
@@ -110,6 +119,24 @@ public class Player
     private void detractGold(Integer ammount)
     {
         this.gold -= ammount;
+    }
+
+    public boolean checkStamina()
+    {
+        return this.stamina > 0;
+    }
+
+    public void useStamina()
+    {
+        if(this.stamina <= 0)
+        {
+            this.stamina = 0;
+        }
+
+        if(this.stamina > 0)
+        {
+            this.stamina--;
+        }
     }
     
 
@@ -240,6 +267,12 @@ public class Player
         this.gold += amount;
     }
 
+    public void addStamina(int amount) 
+    {
+        this.gold -= 20;
+        this.stamina += amount;
+    }
+    
     public void removeGold(int amount) 
     {
         this.gold -= amount;
