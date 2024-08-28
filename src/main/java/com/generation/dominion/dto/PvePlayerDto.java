@@ -12,13 +12,13 @@ import lombok.Data;
 @Data
 public class PvePlayerDto 
 {
-    private Integer id;
+    private int id;
     private String nick;
-    private Integer gold;
+    private int gold;
     private String icon;
-    private Integer pveMinDmg;
-    private Integer pveMaxDmg;
-    private Integer pveHealth;
+    private int pveMinDmg;
+    private int pveMaxDmg;
+    private int pveHealth;
 
     private String description;
 
