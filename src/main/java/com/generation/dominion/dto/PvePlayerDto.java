@@ -12,13 +12,13 @@ import lombok.Data;
 @Data
 public class PvePlayerDto 
 {
-    private Integer id;
+    private int id;
     private String nick;
-    private Integer gold;
+    private int gold;
     private String icon;
-    private Integer pveMinDmg;
-    private Integer pveMaxDmg;
-    private Integer pveHealth;
+    private int pveMinDmg;
+    private int pveMaxDmg;
+    private int pveHealth;
 
     private String description;
 
@@ -47,6 +47,8 @@ public class PvePlayerDto
                 this.pveMinDmg += troop.minDamage;
                 this.pveMaxDmg += troop.maxDamage;
                 this.pveHealth += troop.health;
+                System.out.println(pveMinDmg);
+                System.out.println(pveMaxDmg);
             }
         else
         {
@@ -54,45 +56,6 @@ public class PvePlayerDto
             this.pveMaxDmg = 1;
             this.pveHealth = 1;
         }
-    }
-
-    public Integer maxDamage()
-    {
-        Integer res = 1;
-
-        if(pveTroops.size() != 0)
-            for (PveTroop troop : pveTroops) 
-            {
-                res += troop.maxDamage;
-            }
-
-        return res;
-    }
-
-    public Integer minDamage()
-    {
-        Integer res = 0;
-
-        if(pveTroops.size()!= 0)
-        for (PveTroop troop : pveTroops) 
-        {
-            res += troop.minDamage;
-        }
-
-        return res;
-    }
-
-    public Integer totalHealth()
-    {
-        Integer res = 0;
-
-        if(pveTroops.size() != 0 )
-            for (PveTroop troop : pveTroops) 
-            {
-                res += troop.health;
-            }
-
-        return res;
     }
 
     public void attack(PlayerDTOwAll enemy) 
@@ -103,10 +66,6 @@ public class PvePlayerDto
     public void takeDamage(Integer damage) 
     {
         this.lastDmg = damage;
-
-        if(this.pveHealth == null)
-            this.pveHealth = totalHealth();
-
         this.pveHealth -= damage;
 
         if(this.pveHealth < 0)
@@ -115,12 +74,12 @@ public class PvePlayerDto
 
     public Integer randomAttackInRange() 
     {
-        if (minDamage() > maxDamage()) 
+        if (this.pveMinDmg > this.pveMaxDmg) 
             throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
 
-        Integer diff = minDamage() - maxDamage();
+        Integer diff = this.pveMaxDmg - this.pveMinDmg;
 
-        return (int)(((Math.random() * diff)+1)+minDamage());
+        return (int)(((Math.random() * diff)+1)+this.pveMinDmg);
     }
 
     @JsonIgnore
