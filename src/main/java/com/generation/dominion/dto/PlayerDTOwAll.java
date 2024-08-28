@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.enums.E_Status;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
-import com.generation.dominion.model.PvePlayer;
 import com.generation.dominion.model.Troop;
 
 @Data
@@ -92,6 +91,9 @@ public class PlayerDTOwAll
             {
                 gearDto.upgradePlayerDto(this);
             }
+
+            if(this.playerMinDmg > this.playerMaxDmg)
+                this.playerMaxDmg = this.playerMinDmg;
         }
     }
 
@@ -118,7 +120,7 @@ public class PlayerDTOwAll
         enemy.takeDamage(randomAttackInRange());
     }
 
-    public void attack(PvePlayer enemy) 
+    public void attack(PvePlayerDto enemy) 
     {
         enemy.takeDamage(randomAttackInRange());
     }

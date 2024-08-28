@@ -1,16 +1,14 @@
 package com.generation.dominion.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.dto.PveFightResultDTO;
+import com.generation.dominion.dto.PvePlayerDto;
 import com.generation.dominion.enums.E_Gear;
 import com.generation.dominion.model.Player;
-import com.generation.dominion.model.PvePlayer;
 import com.generation.dominion.repository.PvePlayerRepository;
 import com.generation.dominion.repository.PlayerRepository;
 
@@ -30,16 +28,14 @@ public class PveService
         Player player = playerRepository.findById(playerId).get();
 
         PlayerDTOwAll playerDto = new PlayerDTOwAll(player);
-        PvePlayer pvePlayer = pvePlayerRepository.findById(pveId).get();
-
-        PlayerDTOwAll playerDtoUpgraded = gearEffects(playerDto);
+        PvePlayerDto pvePlayer = new PvePlayerDto(pvePlayerRepository.findById(pveId).get());
 
         do
         {
-            playerDtoUpgraded.attack(pvePlayer);
+            playerDto.attack(pvePlayer);
 
             fightDtoRes.getResults().add(
-                playerDtoUpgraded.getNick()+" ha inflitto "+pvePlayer.getLastDmg()+" danni a "+pvePlayer.getNick()
+                playerDto.getNick()+" ha inflitto "+pvePlayer.getLastDmg()+" danni a "+pvePlayer.getNick()
                 );
             fightDtoRes.getResults().add(
                 pvePlayer.getNick()+" ha "+pvePlayer.getPveHealth()+" HP"
@@ -52,20 +48,20 @@ public class PveService
                 break;
 
 
-            pvePlayer.attack(playerDtoUpgraded);
+            pvePlayer.attack(playerDto);
             fightDtoRes.getResults().add(
-                pvePlayer.getNick()+" ha inflitto "+playerDtoUpgraded.getLastDmg()+" danni a "+playerDtoUpgraded.getNick()
+                pvePlayer.getNick()+" ha inflitto "+playerDto.getLastDmg()+" danni a "+playerDto.getNick()
                 );
             fightDtoRes.getResults().add(
-            playerDtoUpgraded.getNick()+" ha "+playerDtoUpgraded.getPlayerHealth()+" HP"
+                playerDto.getNick()+" ha "+playerDto.getPlayerHealth()+" HP"
             );
 
-            fightDtoRes.addPlayerHeath(playerDtoUpgraded.getPlayerHealth());
+            fightDtoRes.addPlayerHeath(playerDto.getPlayerHealth());
         } 
-        while (playerDtoUpgraded.isAlive() && pvePlayer.isAlive());
+        while (playerDto.isAlive() && pvePlayer.isAlive());
 
 
-        if(playerDtoUpgraded.isAlive())
+        if(playerDto.isAlive())
         {
             Integer gold = pvePlayer.getGold();
 
@@ -97,39 +93,5 @@ public class PveService
         playerRepository.save(player);
 
         return fightDtoRes;
-    }
-
-    private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto)
-    {
-        PlayerDTOwAll playerDtoUpgraded = playerDto;
-
-        List<GearDto> activePG = playerDto.getActiveGears();
-
-        for (GearDto pg : activePG) 
-        {
-            playerDtoUpgraded = applyGearEffect(playerDtoUpgraded, pg);
-        }
-
-        return playerDtoUpgraded;
-    }
-
-    public PlayerDTOwAll applyGearEffect(PlayerDTOwAll playerDto, GearDto gearDto) 
-    {
-        switch (E_Gear.valueOf(gearDto.getName())) 
-        { 
-            case ANELLO:
-                playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (gearDto.getTier() * 10)); // Aumenta la salute in base al tier
-                break;
-            case PUGNALE:
-                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (gearDto.getTier() * 4)); // Aumenta il danno massimo
-                break;
-            case PIUMA:
-                playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (gearDto.getTier() * 2)); // Aumenta il danno minimo
-                break;
-            default:
-                break;
-        }
-
-        return playerDto;
     }
 }
