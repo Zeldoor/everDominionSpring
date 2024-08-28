@@ -26,6 +26,7 @@ public class PlayerService
 
     @Autowired
     Player_GearRepository playerGearRepository;
+    
 
     public List<Player> getAllPlayers()
     {

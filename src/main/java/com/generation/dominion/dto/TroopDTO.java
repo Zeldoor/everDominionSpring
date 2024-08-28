@@ -8,24 +8,16 @@ import lombok.Data;
 public class TroopDTO 
 
 {
-    public Integer id;
-    public String className;
-    public Integer minDamage;
-    public Integer maxDamage;
-    public Integer health; 
-    public Integer playerId;
-    public String status;
+    private Integer id;
+    private String className;
+    private Integer minDamage;
+    private Integer maxDamage;
+    private Integer health; 
+    private Integer playerId;
+    private String status;
+    private Integer price;
 
-    public TroopDTO(String className, Integer minDamage, Integer maxDamage, Integer health, String status) 
-    {
-        this.className = className;
-        this.minDamage = minDamage;
-        this.maxDamage = maxDamage;
-        this.health = health;
-        this.status = status;
-    }
-
-    public TroopDTO(){}   
+    public TroopDTO(){}
 
     public TroopDTO(Troop t)
     {
@@ -35,6 +27,7 @@ public class TroopDTO
         this.maxDamage = t.getMaxDamage();
         this.health = t.getHealth();
         this.status = t.getStatus();
+        this.price = t.getPrice();
     }
 
     public void setActive()

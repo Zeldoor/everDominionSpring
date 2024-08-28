@@ -26,7 +26,7 @@ public class TroopController
     @PostMapping
     public Troop createTroop(@RequestBody TroopDTO troopDto) 
     { 
-        Player player =  playerRepo.findById(troopDto.playerId).get();
+        Player player =  playerRepo.findById(troopDto.getPlayerId()).get();
 
         Troop troop = new Troop(troopDto, player);       
         return troopRepository.save(troop); 
