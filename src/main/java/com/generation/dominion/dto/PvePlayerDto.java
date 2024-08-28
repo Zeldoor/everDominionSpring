@@ -47,6 +47,8 @@ public class PvePlayerDto
                 this.pveMinDmg += troop.minDamage;
                 this.pveMaxDmg += troop.maxDamage;
                 this.pveHealth += troop.health;
+                System.out.println(pveMinDmg);
+                System.out.println(pveMaxDmg);
             }
         else
         {
@@ -75,7 +77,7 @@ public class PvePlayerDto
         if (this.pveMinDmg > this.pveMaxDmg) 
             throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
 
-        Integer diff = this.pveMinDmg - this.pveMaxDmg;
+        Integer diff = this.pveMaxDmg - this.pveMinDmg;
 
         return (int)(((Math.random() * diff)+1)+this.pveMinDmg);
     }
