@@ -81,4 +81,23 @@ public class GearDto
                 return "NaN";
         }
     }
+
+    public void upgradePlayerDto(PlayerDTOwAll playerDto)
+    {
+        switch (E_Gear.valueOf(this.name)) 
+        { 
+            case ANELLO:
+                playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (this.tier * 10)); // Aumenta la salute in base al tier
+                break;
+            case PUGNALE:
+                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (this.tier * 4)); // Aumenta il danno massimo
+                break;
+            case PIUMA:
+                playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (this.tier * 2)); // Aumenta il danno minimo
+                break;
+            default:
+                break;
+        }
+    }
+
 }
