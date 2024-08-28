@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
+import com.generation.dominion.dto.TroopDTO;
 import com.generation.dominion.enums.E_Status;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
@@ -27,7 +28,7 @@ public class ShopService
     private GearRepository gearRepository;
 
     @Autowired
-    private TroopInShopRepository troopRepository;
+    private TroopInShopRepository troopShopRepository;
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -37,7 +38,7 @@ public class ShopService
 
     //nuova repo
     @Autowired
-    private TroopRepository troopToSellRepository;
+    private TroopRepository troopRepository;
 
     public List<GearDto> getShopGears() 
     {
@@ -46,7 +47,7 @@ public class ShopService
 
     public List<TroopInShop> getShopTroops() 
     {
-        return troopRepository.findAll();
+        return troopShopRepository.findAll();
     }
 
     public PlayerDTOwAll buyGear(PlayerDTO playerDto, Integer gearId) 
@@ -127,7 +128,7 @@ public class ShopService
     public PlayerDTOwAll buyTroop(PlayerDTO playerDto, Integer TroopShopid) 
     {
         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
-        TroopInShop troopShop = troopRepository.findById(TroopShopid).get();
+        TroopInShop troopShop = troopShopRepository.findById(TroopShopid).get();
 
         if (player == null) 
         {
@@ -150,36 +151,18 @@ public class ShopService
 
 
     //vendita di calzini usati
-    public PlayerDTOwAll sellTroop(PlayerDTO playerDto, Integer troopId) 
+    public PlayerDTOwAll sellTroop(TroopDTO troopDto) 
     {
-         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
-         
-         if (player == null) 
-         {
-             throw new RuntimeException("Player non esistente");
-         }
-    
-         Troop troopToSell = player.getTroops().stream()
-                                   .filter(t -> t.getId().equals(troopId))
-                                   .findFirst()
-                                   .orElse(null);
-    
-         if (troopToSell == null) 
-         {
-             throw new RuntimeException("Troop non trovata per questo player");
-         }
-    
-         int sellPrice = troopToSell.getPrice() / 2;
-    
-         player.setGold(player.getGold() + sellPrice);
-    
-         player.getTroops().remove(troopToSell);
-    
-         troopToSellRepository.deleteById(troopToSell.getId());
-    
-         playerRepository.save(player);
-    
-         return new PlayerDTOwAll(player);
+        Player player = playerRepository.findById(troopDto.getPlayerId()).orElseThrow(() -> new RuntimeException("Troop non trovata per questo player"));
+        Troop troopToSell = player.getTroops().stream().filter(t -> t.getId().equals(troopDto.getId())).findFirst().orElseThrow(() -> new RuntimeException("Troop non trovata per questo player"));
+
+        Integer sellPrice = (Integer) troopToSell.getPrice()/3;
+        player.setGold(player.getGold() + sellPrice);
+        player.getTroops().remove(troopToSell);
+        troopRepository.deleteById(troopToSell.getId());
+        playerRepository.save(player);
+
+        return new PlayerDTOwAll(player);
     }
 
 }
