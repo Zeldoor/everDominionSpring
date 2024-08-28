@@ -24,13 +24,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-
-
 @RestController
 @RequestMapping("/player")
 public class PlayerController 
 {
-
     @Autowired
     private PlayerRepository playerRepository;
     @Autowired
@@ -49,7 +46,7 @@ public class PlayerController
     public Player createPlayer(@RequestBody PlayerDTOwAll playerDto) 
     { 
         Player player = new Player(playerDto);
-        return playerRepository.save(player); 
+        return playerRepository.save(player);
     }
 
 
@@ -84,7 +81,7 @@ public class PlayerController
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player "+id+" non trovato");
         }
         else
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Errore: id null");
     }
         
     
