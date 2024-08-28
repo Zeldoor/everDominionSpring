@@ -10,11 +10,12 @@ import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.TroopInShop;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/shop")
-public class ShopController 
+public class ShopController
 {
     @Autowired
     private ShopService shopService;
@@ -39,13 +40,13 @@ public class ShopController
     }
 
     @PostMapping("/upgrade/{id}")
-    public ResponseEntity<?> upGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
+    public ResponseEntity<?> upGear(@RequestBody PlayerDTO playerDto, @PathVariable int id)
     {
         try 
         {
             return ResponseEntity.ok(shopService.upgradeGear(playerDto, id));
         } 
-        catch (RuntimeException e) 
+        catch(RuntimeException e)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -58,8 +59,8 @@ public class ShopController
         try 
         {
             return ResponseEntity.ok(shopService.buyTroop(player, id));
-        } 
-        catch (RuntimeException e) 
+        }
+        catch(RuntimeException e)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -79,5 +80,19 @@ public class ShopController
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         
+    }
+
+    // Vende Troop
+    @PostMapping("/sell/{id}")
+    public ResponseEntity<?> sellTroop(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
+    {
+        try 
+        {
+            return ResponseEntity.ok(shopService.sellTroop(playerDto, id));
+        } 
+        catch (RuntimeException e) 
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

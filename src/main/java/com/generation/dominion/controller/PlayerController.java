@@ -154,7 +154,7 @@ public class PlayerController
     //Online
     @GetMapping("/{id}/online-friends")
     public List<PlayerDTO> getOnlineFriends(@PathVariable int id) 
-    {
+    {   
         return playerServ.getOnlineFriends(id).stream().map(p -> new PlayerDTO(p)).toList();
     }
 

@@ -81,6 +81,12 @@ public class Player
         this.shield = playerDto.getShield();
     }
 
+    public void addChat(Chat c)
+    {
+        chats.add(c);
+        c.setPlayer(this);
+    }
+
     //SHOP METHODS
 
     public void buyGear(Player_Gear gear)
@@ -263,6 +269,7 @@ public class Player
 
     public void addStamina(int amount) 
     {
+        this.gold -= 20;
         this.stamina += amount;
     }
     
