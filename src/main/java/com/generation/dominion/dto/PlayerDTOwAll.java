@@ -92,6 +92,9 @@ public class PlayerDTOwAll
             {
                 gearDto.upgradePlayerDto(this);
             }
+
+            if(this.playerMinDmg > this.playerMaxDmg)
+                this.playerMaxDmg = this.playerMinDmg;
         }
     }
 
