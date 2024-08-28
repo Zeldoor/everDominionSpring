@@ -56,45 +56,6 @@ public class PvePlayerDto
         }
     }
 
-    public Integer maxDamage()
-    {
-        Integer res = 1;
-
-        if(pveTroops.size() != 0)
-            for (PveTroop troop : pveTroops) 
-            {
-                res += troop.maxDamage;
-            }
-
-        return res;
-    }
-
-    public Integer minDamage()
-    {
-        Integer res = 0;
-
-        if(pveTroops.size()!= 0)
-        for (PveTroop troop : pveTroops) 
-        {
-            res += troop.minDamage;
-        }
-
-        return res;
-    }
-
-    public Integer totalHealth()
-    {
-        Integer res = 0;
-
-        if(pveTroops.size() != 0 )
-            for (PveTroop troop : pveTroops) 
-            {
-                res += troop.health;
-            }
-
-        return res;
-    }
-
     public void attack(PlayerDTOwAll enemy) 
     {
         enemy.takeDamage(randomAttackInRange());
@@ -111,12 +72,12 @@ public class PvePlayerDto
 
     public Integer randomAttackInRange() 
     {
-        if (minDamage() > maxDamage()) 
+        if (this.pveMinDmg > this.pveMaxDmg) 
             throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
 
-        Integer diff = minDamage() - maxDamage();
+        Integer diff = this.pveMinDmg - this.pveMaxDmg;
 
-        return (int)(((Math.random() * diff)+1)+minDamage());
+        return (int)(((Math.random() * diff)+1)+this.pveMinDmg);
     }
 
     @JsonIgnore
