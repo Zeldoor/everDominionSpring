@@ -2,6 +2,7 @@ package com.generation.dominion.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,10 +50,16 @@ public class ChatController
     @PostMapping
     public void insertChat(@RequestBody ChatDto dto)
     {
-        Player p = playerRepo.findById(dto.getPlayer().getId()).get();
-        Chat chat = new Chat(dto);
-        p.addChat(chat);
+        Optional<Player> playerOpt = playerRepo.findById(dto.getPlayer().getId());
 
-        playerRepo.save(p);
+        if(playerOpt.isPresent())
+        {
+            Player player = playerOpt.get();
+
+            Chat chat = new Chat(dto);
+            player.addChat(chat);
+    
+            playerRepo.save(player);
+        }
     }
 }
