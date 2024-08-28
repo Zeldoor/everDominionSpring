@@ -103,10 +103,6 @@ public class PvePlayerDto
     public void takeDamage(Integer damage) 
     {
         this.lastDmg = damage;
-
-        if(this.pveHealth == null)
-            this.pveHealth = totalHealth();
-
         this.pveHealth -= damage;
 
         if(this.pveHealth < 0)
