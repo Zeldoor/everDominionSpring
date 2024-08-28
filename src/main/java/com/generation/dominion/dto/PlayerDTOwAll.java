@@ -87,6 +87,11 @@ public class PlayerDTOwAll
         {
             this.activeGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.ACTIVE.toString())).map(g -> new GearDto(g)).toList();
             this.storageGears = player.getGears().stream().filter(g -> g.getStatus().equalsIgnoreCase(E_Status.STORAGE.toString())).map(g -> new GearDto(g)).toList();
+
+            for (GearDto gearDto : activeGears) 
+            {
+                gearDto.upgradePlayerDto(this);
+            }
         }
     }
 
