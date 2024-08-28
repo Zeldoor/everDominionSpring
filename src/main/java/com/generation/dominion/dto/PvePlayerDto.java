@@ -2,25 +2,30 @@ package com.generation.dominion.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.generation.dominion.model.PvePlayer;
 import com.generation.dominion.model.PveTroop;
 
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
 public class PvePlayerDto 
 {
-    private int id;
+    private Integer id;
     private String nick;
-    private int gold;
+    private Integer gold;
     private String icon;
-    private int pveMinDmg;
-    private int pveMaxDmg;
-    private int pveHealth;
+    private Integer pveMinDmg;
+    private Integer pveMaxDmg;
+    private Integer pveHealth;
 
     private String description;
 
     private List<PveTroop> pveTroops;
+
+    @Transient
+    private Integer lastDmg = 0;
 
     public PvePlayerDto(PvePlayer pvePlayer) 
     {
@@ -49,5 +54,84 @@ public class PvePlayerDto
             this.pveMaxDmg = 1;
             this.pveHealth = 1;
         }
+    }
+
+    public Integer maxDamage()
+    {
+        Integer res = 1;
+
+        if(pveTroops.size() != 0)
+            for (PveTroop troop : pveTroops) 
+            {
+                res += troop.maxDamage;
+            }
+
+        return res;
+    }
+
+    public Integer minDamage()
+    {
+        Integer res = 0;
+
+        if(pveTroops.size()!= 0)
+        for (PveTroop troop : pveTroops) 
+        {
+            res += troop.minDamage;
+        }
+
+        return res;
+    }
+
+    public Integer totalHealth()
+    {
+        Integer res = 0;
+
+        if(pveTroops.size() != 0 )
+            for (PveTroop troop : pveTroops) 
+            {
+                res += troop.health;
+            }
+
+        return res;
+    }
+
+    public void attack(PlayerDTOwAll enemy) 
+    {
+        enemy.takeDamage(randomAttackInRange());
+    }
+
+    public void takeDamage(Integer damage) 
+    {
+        this.lastDmg = damage;
+
+        if(this.pveHealth == null)
+            this.pveHealth = totalHealth();
+
+        this.pveHealth -= damage;
+
+        if(this.pveHealth < 0)
+        this.pveHealth= 0;
+    }
+
+    public Integer randomAttackInRange() 
+    {
+        if (minDamage() > maxDamage()) 
+            throw new IllegalArgumentException("Il valore minimo deve essere minore o uguale al valore massimo.");
+
+        Integer diff = minDamage() - maxDamage();
+
+        return (int)(((Math.random() * diff)+1)+minDamage());
+    }
+
+    @JsonIgnore
+    public boolean isAlive() 
+    {
+        return this.pveHealth > 0;
+    }
+
+    @JsonIgnore
+    public boolean isDead() 
+    {
+        return this.pveHealth <= 0;
     }
 }

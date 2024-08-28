@@ -60,9 +60,6 @@ public class CombatService
         PlayerDTOwAll attackerDto = new PlayerDTOwAll(attackerP);
         PlayerDTOwAll defenderDto = new PlayerDTOwAll(defenderP);
 
-        // PlayerDTOwAll attackerDtoUpgraded = gearEffects(attackerDto);
-        // PlayerDTOwAll defenderDtoUpgraded = gearEffects(defenderDto);
-
         NotifyDto notify = new NotifyDto();
         notify.setAttacker(new PlayerDTO(attackerDto));
         notify.setDefender(new PlayerDTO(defenderDto));
@@ -156,37 +153,4 @@ public class CombatService
         messagingTemplate.convertAndSend(destination, fightResult);
     }
 
-    // private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto)
-    // {
-    //     PlayerDTOwAll playerDtoUpgraded = playerDto;
-
-    //     List<GearDto> activePG = playerDto.getActiveGears();
-
-    //     for (GearDto pg : activePG) 
-    //     {
-    //         playerDtoUpgraded = applyGearEffect(playerDtoUpgraded, pg);
-    //     }
-
-    //     return playerDtoUpgraded;
-    // }
-
-    // public PlayerDTOwAll applyGearEffect(PlayerDTOwAll playerDto, GearDto gearDto) 
-    // {
-    //     switch (E_Gear.valueOf(gearDto.getName())) 
-    //     { 
-    //         case ANELLO:
-    //             playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (gearDto.getTier() * 10)); // Aumenta la salute in base al tier
-    //             break;
-    //         case PUGNALE:
-    //             playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (gearDto.getTier() * 4)); // Aumenta il danno massimo
-    //             break;
-    //         case PIUMA:
-    //             playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (gearDto.getTier() * 2)); // Aumenta il danno minimo
-    //             break;
-    //         default:
-    //             break;
-    //     }
-
-    //     return playerDto;
-    // }
 }
