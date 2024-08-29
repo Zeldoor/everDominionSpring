@@ -28,6 +28,7 @@ public class WebSocketService
 
     public void sendPlayerNotify(NotifyDto payload)
     {
+        System.out.println(payload.getDefender().getId());
         messagingTemplate.convertAndSend("/topic/notify/"+payload.getDefender().getId(), payload);
     }
 

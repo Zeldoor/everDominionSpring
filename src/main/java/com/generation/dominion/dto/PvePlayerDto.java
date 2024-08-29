@@ -47,8 +47,6 @@ public class PvePlayerDto
                 this.pveMinDmg += troop.minDamage;
                 this.pveMaxDmg += troop.maxDamage;
                 this.pveHealth += troop.health;
-                System.out.println(pveMinDmg);
-                System.out.println(pveMaxDmg);
             }
         else
         {
