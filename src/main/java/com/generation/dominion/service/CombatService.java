@@ -111,6 +111,8 @@ public class CombatService
             fightDtoRes.setVictory(false);
 
             notify.setResult(attackerDto.getNick()+"ti ha attaccato, hai vinto "+loots[0]+" oro");
+
+            fightDtoRes.setGold(loots[1]);
         }
         else
         {
@@ -126,6 +128,8 @@ public class CombatService
             fightDtoRes.setVictory(true);
                 
             notify.setResult(attackerDto.getNick()+"ti ha attaccato, hai perso "+loots[1]+" oro");
+
+            fightDtoRes.setGold(loots[0]);
         }
 
         if(attackerP.hasShield())

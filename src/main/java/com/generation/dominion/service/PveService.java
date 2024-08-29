@@ -76,6 +76,9 @@ public class PveService
             fightDtoRes.getResults().add(
                 playerDto.getNick()+" ha VINTO "+gold+" oro"
                 );
+
+            fightDtoRes.setGold(gold);
+
         }
         else
         {
@@ -84,6 +87,8 @@ public class PveService
             fightDtoRes.getResults().add(
                 playerDto.getNick()+" ha PERSO "+pvePlayer.getGold()/2+" oro"
                 );
+
+            fightDtoRes.setGold(pvePlayer.getGold()/2);
         }
 
         fightDtoRes.setPlayer(playerDto);
