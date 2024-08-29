@@ -78,6 +78,7 @@ public class PveService
                 );
 
             fightDtoRes.setGold(gold);
+            fightDtoRes.setVictory(true);
 
         }
         else
@@ -89,6 +90,7 @@ public class PveService
                 );
 
             fightDtoRes.setGold(pvePlayer.getGold()/2);
+            fightDtoRes.setVictory(false);
         }
 
         fightDtoRes.setPlayer(playerDto);
