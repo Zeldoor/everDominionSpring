@@ -108,6 +108,8 @@ public class CombatService
                 attackerDto.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
 
+            fightDtoRes.setVictory(false);
+
             notify.setResult("Hai vinto "+loots[0]+" oro");
         }
         else
@@ -121,6 +123,8 @@ public class CombatService
                 defenderDto.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
                 
+            fightDtoRes.setVictory(true);
+
             notify.setResult("Hai perso "+loots[1]+" oro");
         }
 
