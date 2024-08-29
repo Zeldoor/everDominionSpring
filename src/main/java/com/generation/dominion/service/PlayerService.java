@@ -45,25 +45,13 @@ public class PlayerService
 
     public Player_Gear switchSingleGearState(Player player, Gear gear) 
     {
-        Player_Gear playerGear = player.getGears().stream()
-                                      .filter(pg -> pg.getGear().getId().equals(gear.getId()))
-                                      .findFirst()
-                                      .orElseThrow(() -> new IllegalArgumentException("Gear not found for player"));
-    
-        if (playerGear.isActive()) 
-        {
-            
-            playerGear.setStorage();           
-        } 
-        else 
-        {
-            
+        Player_Gear playerGear = player.getGears().stream().filter(pg -> pg.getGear().getId().equals(gear.getId())).toList().get(0);
+
+        if(playerGear.isActive())
+            playerGear.setStorage();
+        else
             playerGear.setActive();
-        }
-    
-        playerGearRepository.save(playerGear);
-        playerRepository.save(player);
-        
+
         return playerGear;
     }
 

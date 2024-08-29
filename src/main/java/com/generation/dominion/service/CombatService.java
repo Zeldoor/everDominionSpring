@@ -108,7 +108,9 @@ public class CombatService
                 attackerDto.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
 
-            notify.setResult("Hai vinto "+loots[0]+" oro");
+            fightDtoRes.setVictory(false);
+
+            notify.setResult(attackerDto.getNick()+"ti ha attaccato, hai vinto "+loots[0]+" oro");
         }
         else
         {
@@ -121,7 +123,9 @@ public class CombatService
                 defenderDto.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
                 
-            notify.setResult("Hai perso "+loots[1]+" oro");
+            fightDtoRes.setVictory(true);
+                
+            notify.setResult(attackerDto.getNick()+"ti ha attaccato, hai perso "+loots[1]+" oro");
         }
 
         if(attackerP.hasShield())
