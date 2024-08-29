@@ -36,7 +36,7 @@ public class WebSocketEmitter
     //     this.id = id;
     // }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 500)
     public void refreshPlayers()
     {
         List<Player> players = playerServ.getAllPlayers();
