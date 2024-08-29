@@ -34,16 +34,16 @@ public class TroopInShop
 
     public Integer minDamage()
     {
-        return this.damage - random.nextInt((className.equalsIgnoreCase("archer") ? 3 : 3)); 
+        return this.damage - random.nextInt((className.equalsIgnoreCase("archer") ? 3 : 2)); 
     }
 
     public Integer maxDamage()
     {
-        return random.nextInt((className.equalsIgnoreCase("archer") ? 7 : 4)) + this.damage; 
+        return random.nextInt((className.equalsIgnoreCase("archer") ? 10 : 6)) + this.damage; 
     }
 
     public Integer randomHealth()
     {
-        return random.nextInt((className.equalsIgnoreCase("archer") ? 3 : 8)) + this.health; 
+        return random.nextInt((className.equalsIgnoreCase("archer") ? 5 : 10)) + this.health; 
     }
 }   
