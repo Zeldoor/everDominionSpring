@@ -44,7 +44,7 @@ public class GearDto
     {
         switch(E_Gear.valueOf(name))
         {
-            case FROMAGGIO:
+            case FORMAGGIO:
                 return "+"+10*pg.getTier()+" "+pg.getGear().getDescription();
 
             case PUGNALE:
@@ -65,7 +65,7 @@ public class GearDto
     {
         switch(E_Gear.valueOf(name))
         {
-            case FROMAGGIO:
+            case FORMAGGIO:
                 return "+10 "+gear.getDescription();
 
             case PUGNALE:
@@ -86,7 +86,7 @@ public class GearDto
     {
         switch (E_Gear.valueOf(this.name)) 
         { 
-            case FROMAGGIO:
+            case FORMAGGIO:
                 playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (this.tier * 10)); // Aumenta la salute in base al tier
                 break;
             case PUGNALE:

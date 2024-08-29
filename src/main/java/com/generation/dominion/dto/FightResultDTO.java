@@ -12,6 +12,7 @@ public class FightResultDTO
     private List<String> results;
     private List<Integer> playerHealth;
     private List<Integer> enemyHealth;
+    private Integer gold;
     private boolean victory;
 
     public void addPlayerHeath(Integer playerHealth)
