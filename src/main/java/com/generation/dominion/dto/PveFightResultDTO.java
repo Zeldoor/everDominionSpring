@@ -13,6 +13,7 @@ public class PveFightResultDTO
     private List<Integer> playerHealth = new ArrayList<>();
     private List<Integer> enemyHealth = new ArrayList<>();
     private Integer gold;
+    private Boolean victory;
 
     public void addPlayerHeath(Integer playerHealth)
     {
