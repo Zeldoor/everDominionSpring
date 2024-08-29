@@ -9,7 +9,6 @@ import com.generation.dominion.service.ShopService;
 import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
-import com.generation.dominion.dto.TroopDTO;
 import com.generation.dominion.model.TroopInShop;
 
 import java.util.List;
@@ -80,17 +79,15 @@ public class ShopController
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        
     }
 
     // Vende Troop
-    @DeleteMapping("/sell")
-    public ResponseEntity<?> sellTroop(@RequestBody TroopDTO troopDto) 
+    @PostMapping("/sell/{id}")
+    public ResponseEntity<?> sellTroop(@PathVariable Integer id, @RequestBody Integer playerId) 
     {
         try 
         {
-            shopService.sellTroop(troopDto);
-            return ResponseEntity.ok("Venduta");
+            return ResponseEntity.ok(shopService.sellTroop(id, playerId));
         } 
         catch (RuntimeException e) 
         {

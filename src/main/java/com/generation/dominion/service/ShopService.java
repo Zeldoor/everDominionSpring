@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
 import com.generation.dominion.dto.PlayerDTOwAll;
-import com.generation.dominion.dto.TroopDTO;
 import com.generation.dominion.enums.E_Status;
 import com.generation.dominion.model.Gear;
 import com.generation.dominion.model.Player;
@@ -151,10 +150,10 @@ public class ShopService
 
 
     //vendita di calzini usati
-    public PlayerDTOwAll sellTroop(TroopDTO troopDto) 
+    public PlayerDTOwAll sellTroop(Integer troopId, Integer playerId) 
     {
-        Player player = playerRepository.findById(troopDto.getPlayerId()).orElseThrow(() -> new RuntimeException("Troop non trovata per questo player"));
-        Troop troopToSell = player.getTroops().stream().filter(t -> t.getId().equals(troopDto.getId())).findFirst().orElseThrow(() -> new RuntimeException("Troop non trovata per questo player"));
+        Player player = playerRepository.findById(playerId).orElseThrow(() -> new RuntimeException("Troop non trovata per questo player"));
+        Troop troopToSell = player.getTroops().stream().filter(t -> t.getId().equals(troopId)).findFirst().orElseThrow(() -> new RuntimeException("Troop non trovata per questo player"));
 
         Integer sellPrice = (Integer) troopToSell.getPrice()/3;
         player.setGold(player.getGold() + sellPrice);
