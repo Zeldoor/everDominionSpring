@@ -15,7 +15,6 @@ import com.generation.dominion.repository.PlayerRepository;
 @Service
 public class PveService 
 {
-
     @Autowired
     private PvePlayerRepository pvePlayerRepository;
 
