@@ -2,7 +2,7 @@ package com.generation.dominion.enums;
 
 public enum E_Gear 
 {
-    ANELLO,
+    FORMAGGIO,
     PUGNALE,
     PIUMA,
     GETTONE,
