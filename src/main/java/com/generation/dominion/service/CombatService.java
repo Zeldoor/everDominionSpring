@@ -1,7 +1,5 @@
 package com.generation.dominion.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -60,10 +58,7 @@ public class CombatService
         Player defenderP = playerRepository.findById(fightDtoRes.getDefender().getId()).get();
 
         PlayerDTOwAll attackerDto = new PlayerDTOwAll(attackerP);
-        PlayerDTOwAll defenderDto = gearEffects(new PlayerDTOwAll(defenderP));
-
-        PlayerDTOwAll attackerDtoUpgraded = gearEffects(attackerDto);
-        PlayerDTOwAll defenderDtoUpgraded = gearEffects(defenderDto);
+        PlayerDTOwAll defenderDto = new PlayerDTOwAll(defenderP);
 
         NotifyDto notify = new NotifyDto();
         notify.setAttacker(new PlayerDTO(attackerDto));
@@ -73,36 +68,36 @@ public class CombatService
 
         do
         {
-            attackerDtoUpgraded.attack(defenderDtoUpgraded);
+            attackerDto.attack(defenderDto);
 
             fightDtoRes.getResults().add(
-                attackerDtoUpgraded.getNick()+" ha inflitto "+defenderDtoUpgraded.getLastDmg()+" danni a "+defenderDtoUpgraded.getNick()
+                attackerDto.getNick()+" ha inflitto "+defenderDto.getLastDmg()+" danni a "+defenderDto.getNick()
                 );
             fightDtoRes.getResults().add(
-                defenderDtoUpgraded.getNick()+" ha "+defenderDtoUpgraded.getPlayerHealth()+" HP"
+                defenderDto.getNick()+" ha "+defenderDto.getPlayerHealth()+" HP"
                 );
 
-            fightDtoRes.addEnemyHealth(defenderDtoUpgraded.getPlayerHealth());
+            fightDtoRes.addEnemyHealth(defenderDto.getPlayerHealth());
 
 
-            if(defenderDtoUpgraded.isDead())
+            if(defenderDto.isDead())
                 break;
 
 
-            defenderDtoUpgraded.attack(attackerDtoUpgraded);
+            defenderDto.attack(attackerDto);
             fightDtoRes.getResults().add(
-                defenderDtoUpgraded.getNick()+" ha inflitto "+attackerDtoUpgraded.getLastDmg()+" danni a "+attackerDtoUpgraded.getNick()
+                defenderDto.getNick()+" ha inflitto "+attackerDto.getLastDmg()+" danni a "+attackerDto.getNick()
                 );
             fightDtoRes.getResults().add(
-            attackerDtoUpgraded.getNick()+" ha "+attackerDtoUpgraded.getPlayerHealth()+" HP"
+            attackerDto.getNick()+" ha "+attackerDto.getPlayerHealth()+" HP"
             );
 
-            fightDtoRes.addPlayerHeath(attackerDtoUpgraded.getPlayerHealth());
+            fightDtoRes.addPlayerHeath(attackerDto.getPlayerHealth());
         } 
-        while (attackerDtoUpgraded.isAlive() && defenderDtoUpgraded.isAlive());
+        while (attackerDto.isAlive() && defenderDto.isAlive());
 
 
-        if(attackerDtoUpgraded.isDead())
+        if(attackerDto.isDead())
         {
             Integer[] loots = rewardSystem(defenderDto, attackerDto);
 
@@ -110,7 +105,7 @@ public class CombatService
                 defenderDto.getNick()+" ha VINTO "+loots[0]+" oro"
                 );
             fightDtoRes.getResults().add(
-                attackerDtoUpgraded.getNick()+" ha PERSO "+loots[1]+" oro"
+                attackerDto.getNick()+" ha PERSO "+loots[1]+" oro"
                 );
 
             notify.setResult("Hai vinto "+loots[0]+" oro");
@@ -120,7 +115,7 @@ public class CombatService
             Integer[] loots = rewardSystem(attackerDto, defenderDto);
 
             fightDtoRes.getResults().add(
-                attackerDtoUpgraded.getNick()+" ha VINTO "+loots[0]+" oro"
+                attackerDto.getNick()+" ha VINTO "+loots[0]+" oro"
                 );
             fightDtoRes.getResults().add(
                 defenderDto.getNick()+" ha PERSO "+loots[1]+" oro"
@@ -158,37 +153,4 @@ public class CombatService
         messagingTemplate.convertAndSend(destination, fightResult);
     }
 
-    private PlayerDTOwAll gearEffects(PlayerDTOwAll playerDto)
-    {
-        PlayerDTOwAll playerDtoUpgraded = playerDto;
-
-        List<GearDto> activePG = playerDto.getActiveGears();
-
-        for (GearDto pg : activePG) 
-        {
-            playerDtoUpgraded = applyGearEffect(playerDtoUpgraded, pg);
-        }
-
-        return playerDtoUpgraded;
-    }
-
-    public PlayerDTOwAll applyGearEffect(PlayerDTOwAll playerDto, GearDto gearDto) 
-    {
-        switch (E_Gear.valueOf(gearDto.getName())) 
-        { 
-            case ANELLO:
-                playerDto.setPlayerHealth(playerDto.getPlayerHealth() + (gearDto.getTier() * 10)); // Aumenta la salute in base al tier
-                break;
-            case PUGNALE:
-                playerDto.setPlayerMaxDmg(playerDto.getPlayerMaxDmg() + (gearDto.getTier() * 4)); // Aumenta il danno massimo
-                break;
-            case PIUMA:
-                playerDto.setPlayerMinDmg(playerDto.getPlayerMinDmg() + (gearDto.getTier() * 2)); // Aumenta il danno minimo
-                break;
-            default:
-                break;
-        }
-
-        return playerDto;
-    }
 }
