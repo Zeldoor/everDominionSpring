@@ -1,6 +1,8 @@
 package com.generation.dominion.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.generation.dominion.dto.GearDto;
@@ -17,6 +19,7 @@ import com.generation.dominion.repository.PlayerRepository;
 import com.generation.dominion.repository.Player_GearRepository;
 import com.generation.dominion.repository.TroopInShopRepository;
 import com.generation.dominion.repository.TroopRepository;
+
 
 import java.util.List;
 @Service
@@ -49,7 +52,7 @@ public class ShopService
         return troopShopRepository.findAll();
     }
 
-    public PlayerDTOwAll buyGear(PlayerDTO playerDto, Integer gearId) 
+    public ResponseEntity<?> buyGear(PlayerDTO playerDto, Integer gearId) 
     {
         Player_Gear p_g = new Player_Gear();
 
@@ -57,10 +60,10 @@ public class ShopService
         Gear gear = gearRepository.findById(gearId).get();
 
         if (player == null || gear == null) 
-            throw new RuntimeException("Player o Gear non trovato");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player o Gear non trovato");
 
         if(player.getGears().stream().filter(g -> g.getGear().getId() == gear.getId()).toList().size() != 0)
-            throw new RuntimeException("Gear already bought");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Gear già comprato");
 
         p_g.setPlayerGear(player, gear);
 
@@ -76,31 +79,31 @@ public class ShopService
             player.buyGear(p_g);
             playerRepository.save(player);
 
-            return new PlayerDTOwAll(player);
+            return ResponseEntity.ok(player);
         }
 
-        throw new RuntimeException("Oro insufficente");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oro insufficente");
     }
 
-    public PlayerDTOwAll upgradeGear(PlayerDTO playerDto, Integer gearId)
+    public ResponseEntity<?> upgradeGear(PlayerDTO playerDto, Integer gearId)
     {
         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
         Player_Gear pg = player.getGears().stream().filter(g -> g.getGear().getId().equals(gearId)).toList().get(0);
 
         if (player == null || pg == null) 
-            throw new RuntimeException("Giocatore o Gear non trovato");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Giocatore o Gear non trovato");
 
         if(pg.getTier() == 3)
-            throw new RuntimeException("Gear già al massimo");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Gear già al massimo");
 
         if (player.checkForBuy(pg.getGear().getPrice()*pg.getTier())) 
         {
             player.upgradeTier(pg);
             playerRepository.save(player);
-            return new PlayerDTOwAll(player);
-        }
 
-        throw new RuntimeException("Oro insufficente");
+            return ResponseEntity.ok(player);
+        }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oro insufficente");
     }
 
 
@@ -124,15 +127,13 @@ public class ShopService
     }
 
 
-    public PlayerDTOwAll buyTroop(PlayerDTO playerDto, Integer TroopShopid) 
+    public ResponseEntity<?> buyTroop(PlayerDTO playerDto, Integer TroopShopid) 
     {
         Player player = playerRepository.findById(playerDto.getId()).orElse(null);
         TroopInShop troopShop = troopShopRepository.findById(TroopShopid).get();
 
         if (player == null) 
-        {
-            throw new RuntimeException("Player non esistente");
-        }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Player non esistente");
 
         if(player.checkForBuy(troopShop.getPrice()))
         {
@@ -141,15 +142,14 @@ public class ShopService
             player.buyTroop(troop);
             playerRepository.save(player);
 
-            return new PlayerDTOwAll(player);
+            return ResponseEntity.ok(player);
         }
 
-        throw new RuntimeException("Oro insufficente");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oro insufficente");
     }
 
 
 
-    //vendita di calzini usati
     public PlayerDTOwAll sellTroop(Integer troopId, Integer playerId) 
     {
         Player player = playerRepository.findById(playerId).orElseThrow(() -> new RuntimeException("Troop non trovata per questo player"));
