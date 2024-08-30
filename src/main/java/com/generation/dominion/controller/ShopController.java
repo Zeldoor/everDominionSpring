@@ -48,14 +48,7 @@ public class ShopController
     @PostMapping("/troop/{id}")
     public ResponseEntity<?> buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        try 
-        {
-            return ResponseEntity.ok(shopService.buyTroop(player, id));
-        }
-        catch(RuntimeException e)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+            return shopService.buyTroop(player, id);
     }
 
     //compra stamina
