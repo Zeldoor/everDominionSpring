@@ -50,9 +50,9 @@ public class CombatService
         return loots;
     }
 
-    public FightResultDTO fightSystem(FightResultDTO FightDto)
+    public FightResultDTO fightSystem(FightResultDTO fightDto)
     {
-        FightResultDTO fightDtoRes = FightDto;
+        FightResultDTO fightDtoRes = fightDto;
 
         Player attackerP = playerRepository.findById(fightDtoRes.getAttacker().getId()).get();
         Player defenderP = playerRepository.findById(fightDtoRes.getDefender().getId()).get();
