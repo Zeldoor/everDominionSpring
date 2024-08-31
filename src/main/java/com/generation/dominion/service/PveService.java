@@ -70,7 +70,7 @@ public class PveService
                 gold += coin.getTier() * 5;
             }
 
-            playerDto.setGold(playerDto.getGold() + gold);
+            playerDto.addGold(gold);
 
             fightDtoRes.getResults().add(
                 playerDto.getNick()+" ha VINTO "+gold+" oro"
@@ -82,7 +82,7 @@ public class PveService
         }
         else
         {
-            playerDto.setGold(playerDto.getGold() - (pvePlayer.getGold()/2));
+            playerDto.removeGold(pvePlayer.getGold()/2);
 
             fightDtoRes.getResults().add(
                 playerDto.getNick()+" ha PERSO "+pvePlayer.getGold()/2+" oro"

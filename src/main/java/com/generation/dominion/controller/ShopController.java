@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import com.generation.dominion.service.ShopService;
 import com.generation.dominion.dto.GearDto;
 import com.generation.dominion.dto.PlayerDTO;
-import com.generation.dominion.dto.PlayerDTOwAll;
 import com.generation.dominion.model.TroopInShop;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class ShopController
 
     // Compra Gear
     @PostMapping("/gear/{id}")
-    public PlayerDTOwAll buyGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
+    public ResponseEntity<?> buyGear(@RequestBody PlayerDTO playerDto, @PathVariable int id) 
     {
         return shopService.buyGear(playerDto, id);
     }
@@ -42,28 +41,14 @@ public class ShopController
     @PostMapping("/upgrade/{id}")
     public ResponseEntity<?> upGear(@RequestBody PlayerDTO playerDto, @PathVariable int id)
     {
-        try 
-        {
-            return ResponseEntity.ok(shopService.upgradeGear(playerDto, id));
-        } 
-        catch(RuntimeException e)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+            return shopService.upgradeGear(playerDto, id);
     }
     
     // Compra Troop
     @PostMapping("/troop/{id}")
     public ResponseEntity<?> buyTroop(@RequestBody PlayerDTO player, @PathVariable int id) 
     {
-        try 
-        {
-            return ResponseEntity.ok(shopService.buyTroop(player, id));
-        }
-        catch(RuntimeException e)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+            return shopService.buyTroop(player, id);
     }
 
     //compra stamina
