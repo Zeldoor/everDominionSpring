@@ -127,7 +127,7 @@ public class CombatService
                 
             fightDtoRes.setVictory(true);
                 
-            notify.setResult(attackerDto.getNick()+"ti ha attaccato, hai perso "+loots[1]+" oro");
+            notify.setResult(attackerDto.getNick()+" ti ha attaccato, hai perso "+loots[1]+" oro");
 
             fightDtoRes.setGold(loots[0]);
         }

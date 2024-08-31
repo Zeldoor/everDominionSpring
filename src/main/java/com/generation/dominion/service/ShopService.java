@@ -79,7 +79,7 @@ public class ShopService
             player.buyGear(p_g);
             playerRepository.save(player);
 
-            return ResponseEntity.ok(player);
+            return ResponseEntity.ok(new PlayerDTOwAll(player));
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oro insufficente");
@@ -101,7 +101,7 @@ public class ShopService
             player.upgradeTier(pg);
             playerRepository.save(player);
 
-            return ResponseEntity.ok(player);
+            return ResponseEntity.ok(new PlayerDTOwAll(player));
         }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oro insufficente");
     }
@@ -142,7 +142,7 @@ public class ShopService
             player.buyTroop(troop);
             playerRepository.save(player);
 
-            return ResponseEntity.ok(player);
+            return ResponseEntity.ok(new PlayerDTOwAll(player));
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oro insufficente");
